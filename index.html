@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>ScalpLayer Origin Core Feature Generator v1.0</title>
+<title>ScalpLayer Origin Core Feature Generator v1.1</title>
 <style>
 :root{--bg:#070910;--panel:#111522;--line:rgba(212,175,55,.28);--gold:#d4af37;--gold2:#ffe47b;--text:#f8fafc;--muted:#b7c0cd;--green:#22c55e;--cyan:#38bdf8}
 *{box-sizing:border-box}body{margin:0;padding:18px;background:linear-gradient(180deg,#151a28,var(--bg) 48%);color:var(--text);font-family:system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.55}
@@ -24,7 +24,7 @@ button{border:0;background:linear-gradient(135deg,var(--gold),#9f7d1d);color:#11
 <main class="wrap">
 <section class="hero">
 <div class="pill">ONE CORE, ONE FEATURE LANGUAGE</div>
-<h1>ScalpLayer Origin Core Feature Generator v1.0</h1>
+<h1>ScalpLayer Origin Core Feature Generator v1.1</h1>
 <p class="muted">Motion・Direction・Quality・Importance・Exit・Simulatorが同じ特徴量定義を共有するための共通Core</p>
 </section>
 
@@ -47,9 +47,9 @@ button{border:0;background:linear-gradient(135deg,var(--gold),#9f7d1d);color:#11
 <div class="toolbar">
 <div><label>入力時刻</label><select id="timezoneMode"><option value="JST">JST</option><option value="UTC">UTC</option><option value="OFFSET">固定UTCオフセット</option></select></div>
 <div><label>入力UTCオフセット</label><input id="utcOffset" type="number" step="0.5" value="0"></div>
-<div><label>出力間引き</label><select id="stride"><option value="1">全バー</option><option value="2" selected>2本ごと</option><option value="5">5本ごと</option></select></div>
+<div><label>出力間引き</label><select id="stride"><option value="1" selected>全バー（推奨・Simulator対応）</option><option value="2">2本ごと（分析専用）</option><option value="5">5本ごと（分析専用）</option></select></div>
 </div>
-<div id="fileInfo" class="small">未選択</div>
+<div id="fileInfo" class="small">未選択</div><div id="strideWarning" class="small" style="color:#fde68a;margin-top:8px">全バー出力は、TP・SL・保有時間を正確に検証するために必要です。</div>
 </section>
 
 <section class="card">
@@ -135,12 +135,21 @@ const DICTIONARY=[
 ];
 
 $("csvFiles").addEventListener("change",e=>{S.files=[...e.target.files];$("fileInfo").textContent=`CSV ${S.files.length}件`});
+$("stride").addEventListener("change",updateStrideWarning);
+function updateStrideWarning(){
+ const n=+$("stride").value;
+ $("strideWarning").textContent=n===1
+  ?"全バー出力です。Exit OptimizerとFinal Simulatorで1分足の高値・安値を欠落なく評価できます。"
+  :`警告：${n}本ごとの出力では途中バーが失われるため、TP・SL・最大保有時間の検証には使用できません。Motion/Importanceの軽量分析専用です。`;
+ $("strideWarning").style.color=n===1?"#bbf7d0":"#fecaca";
+}
+
 $("runBtn").addEventListener("click",run);
 $("cancelBtn").addEventListener("click",()=>{S.cancel=true;log("中止要求")});
-$("downloadCsv").addEventListener("click",()=>downloadText("ScalpLayer_Origin_CoreFeatures_v1_0.csv",toCsv(),"text/csv"));
-$("downloadJson").addEventListener("click",()=>downloadText("ScalpLayer_Origin_CoreFeatures_v1_0.json",JSON.stringify(jsonExport(),null,2),"application/json"));
-$("downloadDict").addEventListener("click",()=>downloadText("ScalpLayer_Origin_FeatureDictionary_v1_0.json",JSON.stringify(dictionaryExport(),null,2),"application/json"));
-$("downloadManifest").addEventListener("click",()=>downloadText("ScalpLayer_Origin_CoreManifest_v1_0.json",JSON.stringify(manifest(),null,2),"application/json"));
+$("downloadCsv").addEventListener("click",()=>downloadText("ScalpLayer_Origin_CoreFeatures_v1_1.csv",toCsv(),"text/csv"));
+$("downloadJson").addEventListener("click",()=>downloadText("ScalpLayer_Origin_CoreFeatures_v1_1.json",JSON.stringify(jsonExport(),null,2),"application/json"));
+$("downloadDict").addEventListener("click",()=>downloadText("ScalpLayer_Origin_FeatureDictionary_v1_1.json",JSON.stringify(dictionaryExport(),null,2),"application/json"));
+$("downloadManifest").addEventListener("click",()=>downloadText("ScalpLayer_Origin_CoreManifest_v1_1.json",JSON.stringify(manifest(),null,2),"application/json"));
 
 function log(s){let e=$("log");e.textContent+=`\n[${new Date().toLocaleTimeString()}] ${s}`;e.scrollTop=e.scrollHeight}
 function status(s,p){$("status").textContent=s;$("bar").style.width=Math.max(0,Math.min(100,p))+"%"}
@@ -229,7 +238,7 @@ function renderDictionary(){
  $("dictionary").innerHTML=`<table><thead><tr><th>#</th><th>Feature</th><th>Definition</th></tr></thead><tbody>${DICTIONARY.map((x,i)=>`<tr><td>${i+1}</td><td>${x[0]}</td><td>${x[1]}</td></tr>`).join("")}</tbody></table>`
 }
 function renderData(){
- const first=S.rows[0],last=S.rows.at(-1),v=[["Bars",S.bars.length.toLocaleString()],["Feature Rows",S.rows.length.toLocaleString()],["Features",DICTIONARY.length],["Period",first&&last?`${first.DateTime.slice(0,10)} → ${last.DateTime.slice(0,10)}`:"--"]];
+ const first=S.rows[0],last=S.rows.at(-1),stride=+$("stride").value,v=[["Bars",S.bars.length.toLocaleString()],["Feature Rows",S.rows.length.toLocaleString()],["Features",DICTIONARY.length],["Simulator Safety",stride===1?"SAFE":"ANALYSIS ONLY"],["Period",first&&last?`${first.DateTime.slice(0,10)} → ${last.DateTime.slice(0,10)}`:"--"]];
  $("dataSummary").innerHTML=v.map(([a,x])=>`<div class="stat"><span>${a}</span><strong>${x}</strong></div>`).join("")
 }
 function renderPreview(){
@@ -243,14 +252,50 @@ function toCsv(){
 }
 function jsonExport(){
  const lim=Math.max(1,+$("jsonLimit").value||200000);
- return{version:"ScalpLayer Origin Core Feature Generator v1.0",generatedAt:new Date().toISOString(),rows:S.rows.slice(0,lim),truncated:S.rows.length>lim,totalRows:S.rows.length}
+ return{version:"ScalpLayer Origin Core Feature Generator v1.1",generatedAt:new Date().toISOString(),rows:S.rows.slice(0,lim),truncated:S.rows.length>lim,totalRows:S.rows.length}
 }
-function dictionaryExport(){return{version:"ScalpLayer Origin Feature Dictionary v1.0",features:DICTIONARY.map(([name,definition])=>({name,definition}))}}
-function manifest(){return{version:"ScalpLayer Origin Core Manifest v1.0",generatedAt:new Date().toISOString(),sourceFiles:S.files.map(f=>f.name),bars:S.bars.length,featureRows:S.rows.length,featureCount:DICTIONARY.length,timezoneOutput:"JST-normalized Date object rendered as ISO",stride:+$("stride").value,warmup:+$("warmup").value,compatibility:{legacyBaseRules:["ATR","RSI","Session"],engines:["Motion Discovery","Direction Analyzer","Quality Filter","Feature Importance","Exit Optimizer","Final Trade Simulator"]},notes:["All downstream engines must consume these feature names without redefining them","ATR is an alias of ATR14 class","RSI is an alias of RSI14 class","Feature thresholds must be versioned together with this manifest"]}}
+function dictionaryExport(){return{version:"ScalpLayer Origin Feature Dictionary v1.1",features:DICTIONARY.map(([name,definition])=>({name,definition}))}}
+function manifest(){
+ const stride=+$("stride").value;
+ return{
+  version:"ScalpLayer Origin Core Manifest v1.1",
+  generatedAt:new Date().toISOString(),
+  sourceFiles:S.files.map(f=>f.name),
+  bars:S.bars.length,
+  featureRows:S.rows.length,
+  featureCount:DICTIONARY.length,
+  timezoneOutput:"JST-normalized Date object rendered as ISO",
+  stride,
+  warmup:+$("warmup").value,
+  simulatorSafe:stride===1,
+  compatibility:{
+   legacyBaseRules:["ATR","RSI","Session"],
+   engines:stride===1
+    ?["Motion Discovery","Direction Analyzer","Quality Filter","Feature Importance","Exit Optimizer","Final Trade Simulator"]
+    :["Motion Discovery","Direction Analyzer","Quality Filter","Feature Importance"]
+  },
+  validation:{
+   continuousM1RequiredForExit:true,
+   missingIntermediateBars:stride>1,
+   status:stride===1?"FULL_CORE":"ANALYSIS_ONLY"
+  },
+  notes:[
+   "All downstream engines must consume these feature names without redefining them",
+   "ATR is an alias of ATR14 class",
+   "RSI is an alias of RSI14 class",
+   "Feature thresholds must be versioned together with this manifest",
+   stride===1
+    ?"This bundle preserves every M1 bar and is safe for TP/SL/Hold simulation"
+    :"This sampled bundle omits intermediate M1 bars and must not be used for TP/SL/Hold simulation"
+  ]
+ }
+}
 async function run(){
  if(!S.files.length){status("CSVを選択してください。",0);return}
  S.cancel=false;$("runBtn").disabled=true;$("cancelBtn").disabled=false;
  try{
+  updateStrideWarning();
+  if(+$("stride").value!==1)log("WARNING: 間引き出力は分析専用です。Exit/Simulatorには使用しないでください。");
   status("CSV解析中",3);log("Core生成開始");const p=await parseFiles(S.files);S.bars=p.bars;S.bad=p.bad;if(S.bars.length<5000)throw new Error("有効バー不足");
   status("共通特徴量を生成中",20);S.rows=generateFeatures(S.bars);await breathe();
   renderData();renderDictionary();renderPreview();["downloadCsv","downloadJson","downloadDict","downloadManifest"].forEach(id=>$(id).disabled=!S.rows.length);
@@ -259,6 +304,7 @@ async function run(){
  finally{$("runBtn").disabled=false;$("cancelBtn").disabled=true}
 }
 renderDictionary();
+updateStrideWarning();
 </script>
 </body>
 </html>
