@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>ScalpLayer Origin Quality Filter Engine v1.0</title>
+<title>ScalpLayer Origin Feature Importance Engine v1.0</title>
 <style>
 :root{--bg:#06080e;--panel:#111522;--line:rgba(212,175,55,.28);--gold:#d4af37;--gold2:#ffe47b;--text:#f8fafc;--muted:#b7c0cd;--green:#22c55e;--red:#ef4444;--cyan:#38bdf8}
 *{box-sizing:border-box}body{margin:0;padding:18px;min-height:100vh;color:var(--text);font-family:system-ui,-apple-system,"Segoe UI",sans-serif;background:radial-gradient(circle at top left,rgba(212,175,55,.16),transparent 30%),linear-gradient(180deg,#141925,var(--bg) 48%);line-height:1.55}
@@ -14,19 +14,20 @@
 input,select,button{width:100%;min-height:44px;border-radius:9px;border:1px solid rgba(212,175,55,.36);background:#070a11;color:var(--text);padding:9px 11px;margin-bottom:8px}
 button{border:0;background:linear-gradient(135deg,var(--gold),#9f7d1d);color:#111827;font-weight:950;cursor:pointer}button.secondary{background:#263244;color:#fff}button:disabled{opacity:.45;cursor:not-allowed}
 .progress{height:12px;border-radius:999px;background:rgba(148,163,184,.18);overflow:hidden}.progress i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--gold),var(--cyan),var(--green))}
-.tableWrap{overflow:auto;max-height:680px}table{width:100%;border-collapse:collapse;min-width:1750px}th,td{border-bottom:1px solid rgba(148,163,184,.15);padding:8px;text-align:left;font-size:12px;white-space:nowrap}th{position:sticky;top:0;background:#080b12;z-index:1}
+.tableWrap{overflow:auto;max-height:680px}table{width:100%;border-collapse:collapse;min-width:1650px}th,td{border-bottom:1px solid rgba(148,163,184,.15);padding:8px;text-align:left;font-size:12px;white-space:nowrap}th{position:sticky;top:0;background:#080b12;z-index:1}
 .good{color:#bbf7d0}.bad{color:#fecaca}.warn{color:#fde68a}.pill{display:inline-block;padding:4px 9px;border-radius:999px;border:1px solid var(--line);background:rgba(212,175,55,.12);color:#f7e6a5}
 .log{height:180px;overflow:auto;background:#04060a;border-radius:10px;padding:12px;font-family:ui-monospace,Consolas,monospace;font-size:12px;white-space:pre-wrap}
 .flow{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}.flow>div{padding:14px;border-radius:12px;border:1px solid rgba(56,189,248,.25);background:rgba(56,189,248,.06)}
+.barCell{min-width:180px}.miniBar{height:9px;background:rgba(148,163,184,.16);border-radius:999px;overflow:hidden}.miniBar i{display:block;height:100%;background:linear-gradient(90deg,var(--gold),var(--cyan))}
 @media(max-width:760px){body{padding:10px}.hero h1{font-size:24px}.grid,.flow{grid-template-columns:1fr}.card{padding:14px}}
 </style>
 </head>
 <body>
 <main class="wrap">
 <section class="hero">
-<div class="pill">BASE PATTERN → PROFITABLE SUBSET</div>
-<h1>ScalpLayer Origin Quality Filter Engine v1.0</h1>
-<p class="muted">既存のMotion Patternを土台に、利益期待値を改善する追加条件をBeam Searchで抽出する研究専用エンジン</p>
+<div class="pill">FEATURE VALUE × PROFIT SEPARATION</div>
+<h1>ScalpLayer Origin Feature Importance Engine v1.0</h1>
+<p class="muted">各特徴量が勝ち・負けをどれだけ分離できるかを、Train/OOS安定性込みで順位付けする統計研究エンジン</p>
 </section>
 
 <section class="card">
@@ -34,9 +35,9 @@ button{border:0;background:linear-gradient(135deg,var(--gold),#9f7d1d);color:#11
 <div class="flow">
 <div><strong>1. Motion</strong><div class="small">動く場所</div></div>
 <div><strong>2. Direction</strong><div class="small">売買方向</div></div>
-<div><strong>3. Quality Filter</strong><div class="small">良いEntryだけ抽出</div></div>
-<div><strong>4. Exit Optimizer</strong><div class="small">TP/SL/Hold</div></div>
-<div><strong>5. Final Simulator</strong><div class="small">資金曲線・DD・連敗</div></div>
+<div><strong>3. Feature Importance</strong><div class="small">効く特徴量を選別</div></div>
+<div><strong>4. Quality Filter</strong><div class="small">条件組合せ</div></div>
+<div><strong>5. Final Simulator</strong><div class="small">最終検証</div></div>
 </div>
 </section>
 
@@ -44,8 +45,8 @@ button{border:0;background:linear-gradient(135deg,var(--gold),#9f7d1d);color:#11
 <h2>1. 入力</h2>
 <label>USDJPY M1 CSV</label>
 <input id="csvFiles" type="file" accept=".csv,text/csv" multiple>
-<label>Exit Summary JSON</label>
-<input id="exitSummary" type="file" accept=".json,application/json">
+<label>Quality Filter Summary JSON</label>
+<input id="qualitySummary" type="file" accept=".json,application/json">
 <div class="toolbar">
 <div><label>入力時刻</label><select id="timezoneMode"><option value="JST">JST</option><option value="UTC">UTC</option><option value="OFFSET">固定UTCオフセット</option></select></div>
 <div><label>入力UTCオフセット</label><input id="utcOffset" type="number" step="0.5" value="0"></div>
@@ -55,22 +56,22 @@ button{border:0;background:linear-gradient(135deg,var(--gold),#9f7d1d);color:#11
 </section>
 
 <section class="card">
-<h2>2. Beam Search設定</h2>
+<h2>2. 評価設定</h2>
 <div class="toolbar">
-<div><label>最大追加条件数</label><select id="maxConditions"><option value="1">1</option><option value="2" selected>2</option><option value="3">3</option></select></div>
-<div><label>Beam幅</label><input id="beamWidth" type="number" value="50"></div>
-<div><label>最低Train件数</label><input id="minTrain" type="number" value="100"></div>
-<div><label>最低OOS件数</label><input id="minOos" type="number" value="30"></div>
+<div><label>最低Train件数/値</label><input id="minBucketTrain" type="number" value="40"></div>
+<div><label>最低OOS件数/値</label><input id="minBucketOos" type="number" value="10"></div>
+<div><label>上位保持特徴量数</label><input id="topFeatures" type="number" value="20"></div>
+<div><label>最大相関しきい値</label><input id="corrThreshold" type="number" step="0.05" value="0.85"></div>
 </div>
 <div class="toolbar">
 <div><label>Spread</label><input id="spread" type="number" step="0.1" value="0.8"></div>
 <div><label>Slippage</label><input id="slippage" type="number" step="0.1" value="0.2"></div>
-<div><label>最低OOS PF</label><input id="minPf" type="number" step="0.01" value="1.00"></div>
-<div><label>最低OOS平均pips</label><input id="minAvg" type="number" step="0.01" value="0.00"></div>
+<div><label>Train比率</label><input id="trainRatio" type="number" step="0.05" value="0.8"></div>
+<div><label>重要度の最低値</label><input id="minImportance" type="number" step="0.1" value="0"></div>
 </div>
-<button id="runBtn">Quality Filter探索を実行</button>
+<button id="runBtn">Feature Importanceを計算</button>
 <button id="cancelBtn" class="secondary" disabled>中止</button>
-<div id="status" class="small">CSVとExit Summary JSONを選択してください。</div>
+<div id="status" class="small">CSVとQuality Filter Summary JSONを選択してください。</div>
 <div class="progress"><i id="bar"></i></div>
 </section>
 
@@ -80,23 +81,22 @@ button{border:0;background:linear-gradient(135deg,var(--gold),#9f7d1d);color:#11
 </section>
 
 <section class="card">
-<h2>4. Quality Filter Ranking</h2>
-<p class="small">Base Patternに追加条件を重ね、Trainで発見しOOSで残る条件だけを評価します。</p>
+<h2>4. Feature Importance Ranking</h2>
+<p class="small">Importanceは、値ごとの平均損益分離・PF分離・OOS再現性・年別安定性・サンプル量を合成した相対スコアです。</p>
 <div id="ranking" class="tableWrap">未実行</div>
 </section>
 
 <section class="card">
-<h2>5. Best Quality Filter</h2>
-<div id="bestCards" class="grid"></div>
-<div id="yearly" class="tableWrap" style="margin-top:12px"></div>
+<h2>5. Top Feature Details</h2>
+<div id="details" class="tableWrap">未実行</div>
 </section>
 
 <section class="card">
 <h2>6. Export</h2>
 <div class="toolbar">
-<button id="downloadRanking" disabled>QualityFilterRanking.csv</button>
-<button id="downloadTrades" disabled>BestQualityTrades.csv</button>
-<button id="downloadSummary" disabled>QualityFilterSummary.json</button>
+<button id="downloadRanking" disabled>FeatureImportanceRanking.csv</button>
+<button id="downloadValues" disabled>FeatureValueStats.csv</button>
+<button id="downloadSummary" disabled>FeatureImportanceSummary.json</button>
 </div>
 </section>
 
@@ -106,17 +106,17 @@ button{border:0;background:linear-gradient(135deg,var(--gold),#9f7d1d);color:#11
 <script>
 "use strict";
 const $=id=>document.getElementById(id),PIP=.01;
-let S={files:[],exitFile:null,exit:null,bars:[],rows:[],candidates:[],best:null,splitTime:null,cancel:false};
+let S={files:[],summaryFile:null,summary:null,bars:[],rows:[],ranking:[],selected:[],splitTime:null,cancel:false};
 
 $("csvFiles").addEventListener("change",e=>{S.files=[...e.target.files];updateFileInfo()});
-$("exitSummary").addEventListener("change",e=>{S.exitFile=e.target.files[0]||null;updateFileInfo()});
+$("qualitySummary").addEventListener("change",e=>{S.summaryFile=e.target.files[0]||null;updateFileInfo()});
 $("runBtn").addEventListener("click",run);
 $("cancelBtn").addEventListener("click",()=>{S.cancel=true;log("中止要求")});
-$("downloadRanking").addEventListener("click",()=>downloadCsv("ScalpLayer_Origin_QualityFilterRanking_v1_0.csv",rankingRows()));
-$("downloadTrades").addEventListener("click",()=>downloadCsv("ScalpLayer_Origin_BestQualityTrades_v1_0.csv",tradeRows()));
-$("downloadSummary").addEventListener("click",()=>downloadText("ScalpLayer_Origin_QualityFilterSummary_v1_0.json",JSON.stringify(summary(),null,2),"application/json"));
+$("downloadRanking").addEventListener("click",()=>downloadCsv("ScalpLayer_Origin_FeatureImportanceRanking_v1_0.csv",rankingRows()));
+$("downloadValues").addEventListener("click",()=>downloadCsv("ScalpLayer_Origin_FeatureValueStats_v1_0.csv",valueRows()));
+$("downloadSummary").addEventListener("click",()=>downloadText("ScalpLayer_Origin_FeatureImportanceSummary_v1_0.json",JSON.stringify(summary(),null,2),"application/json"));
 
-function updateFileInfo(){$("fileInfo").textContent=`CSV ${S.files.length}件 / Exit JSON ${S.exitFile?S.exitFile.name:"未選択"}`}
+function updateFileInfo(){$("fileInfo").textContent=`CSV ${S.files.length}件 / Quality JSON ${S.summaryFile?S.summaryFile.name:"未選択"}`}
 function log(s){let e=$("log");e.textContent+=`\n[${new Date().toLocaleTimeString()}] ${s}`;e.scrollTop=e.scrollHeight}
 function status(s,p){$("status").textContent=s;$("bar").style.width=Math.max(0,Math.min(100,p))+"%"}
 function breathe(){return new Promise(r=>setTimeout(r,0))}
@@ -153,130 +153,132 @@ function session(d){let h=d.getUTCHours();if(h>=8&&h<16)return"Tokyo";if(h>=16&&
 function weekday(d){return["Sun","Mon","Tue","Wed","Thu","Fri","Sat"][d.getUTCDay()]}
 function parsePattern(pattern){return String(pattern||"").split("&").map(x=>x.trim()).filter(Boolean).map(x=>{const i=x.indexOf("=");return[x.slice(0,i),x.slice(i+1)]})}
 function match(rule,f){for(const [k,v] of rule)if(f[k]!==v)return false;return true}
-
 function buildRows(bars,baseRule){
- const c=bars.map(x=>x.c),e8=ema(c,8),e20=ema(c,20),e30=ema(c,30),e50=ema(c,50),r=rsi(c),a=atr(bars),bb=rolling(c,20),rows=[],stride=+$("stride").value;
- for(let i=60;i<bars.length-31;i+=stride){
+ const c=bars.map(x=>x.c),periods=[5,8,13,20,21,30,34,50,55,89,144,200],emas=Object.fromEntries(periods.map(p=>[p,ema(c,p)])),rsis={7:rsi(c,7),14:rsi(c,14),21:rsi(c,21)},atrs={5:atr(bars,5),14:atr(bars,14),50:atr(bars,50)},bb20=rolling(c,20),bb50=rolling(c,50),rows=[],stride=+$("stride").value;
+ for(let i=220;i<bars.length-61;i+=stride){
   if(S.cancel)break;
-  let hi20=-Infinity,lo20=Infinity;for(let j=i-19;j<=i;j++){hi20=Math.max(hi20,bars[j].h);lo20=Math.min(lo20,bars[j].l)}
+  let hi20=-Infinity,lo20=Infinity,hi50=-Infinity,lo50=Infinity;
+  for(let j=i-49;j<=i;j++){if(j>=i-19){hi20=Math.max(hi20,bars[j].h);lo20=Math.min(lo20,bars[j].l)}hi50=Math.max(hi50,bars[j].h);lo50=Math.min(lo50,bars[j].l)}
   const body=(bars[i].c-bars[i].o)/PIP,range=(bars[i].h-bars[i].l)/PIP,upper=(bars[i].h-Math.max(bars[i].o,bars[i].c))/PIP,lower=(Math.min(bars[i].o,bars[i].c)-bars[i].l)/PIP;
-  const mom5=(c[i]-c[i-5])/PIP,mom15=(c[i]-c[i-15])/PIP,atrp=a[i]/PIP,z=bb.sd[i]?(c[i]-bb.mean[i])/bb.sd[i]:0,rp=hi20>lo20?(c[i]-lo20)/(hi20-lo20):.5;
   let bull=0,bear=0;for(let j=i;j>=i-4;j--){if(bars[j].c>bars[j].o)bull++;else if(bars[j].c<bars[j].o)bear++}
   const f={
-    Trend8_30:binned((e8[i]-e30[i])/PIP,[-2,-.5,.5,2],["StrongDown","Down","Flat","Up","StrongUp"]),
-    Trend20_50:binned((e20[i]-e50[i])/PIP,[-3,-1,1,3],["StrongDown","Down","Flat","Up","StrongUp"]),
-    EMA8Slope:binned((e8[i]-e8[i-5])/PIP,[-2,-.5,.5,2],["StrongDown","Down","Flat","Up","StrongUp"]),
-    RSI:binned(r[i],[30,40,50,60,70],["0-30","30-40","40-50","50-60","60-70","70-100"]),
-    ATR:binned(atrp,[1.5,2.5,4,6],["VeryLow","Low","Mid","High","VeryHigh"]),
-    Momentum5:binned(mom5,[-3,-1,1,3],["StrongDown","Down","Flat","Up","StrongUp"]),
-    Momentum15:binned(mom15,[-6,-2,2,6],["StrongDown","Down","Flat","Up","StrongUp"]),
-    Bollinger:binned(z,[-2,-1,0,1,2],["Below-2","-2--1","-1-0","0-1","1-2","Above2"]),
-    RangePos20:binned(rp,[.2,.4,.6,.8],["Bottom","LowMid","Middle","HighMid","Top"]),
+    EMA8_30:binned((emas[8][i]-emas[30][i])/PIP,[-2,-.5,.5,2],["StrongDown","Down","Flat","Up","StrongUp"]),
+    EMA20_50:binned((emas[20][i]-emas[50][i])/PIP,[-3,-1,1,3],["StrongDown","Down","Flat","Up","StrongUp"]),
+    EMA55_200:binned((emas[55][i]-emas[200][i])/PIP,[-8,-2,2,8],["StrongDown","Down","Flat","Up","StrongUp"]),
+    EMA8Slope5:binned((emas[8][i]-emas[8][i-5])/PIP,[-2,-.5,.5,2],["StrongDown","Down","Flat","Up","StrongUp"]),
+    EMA21Slope13:binned((emas[21][i]-emas[21][i-13])/PIP,[-4,-1,1,4],["StrongDown","Down","Flat","Up","StrongUp"]),
+    RSI7:binned(rsis[7][i],[30,40,50,60,70],["0-30","30-40","40-50","50-60","60-70","70-100"]),
+    RSI14:binned(rsis[14][i],[30,40,50,60,70],["0-30","30-40","40-50","50-60","60-70","70-100"]),
+    RSI21:binned(rsis[21][i],[35,45,55,65],["0-35","35-45","45-55","55-65","65-100"]),
+    ATR5:binned(atrs[5][i]/PIP,[1.5,2.5,4,6],["VeryLow","Low","Mid","High","VeryHigh"]),
+    ATR14:binned(atrs[14][i]/PIP,[1.5,2.5,4,6],["VeryLow","Low","Mid","High","VeryHigh"]),
+    ATRRatio5_50:binned(atrs[50][i]?atrs[5][i]/atrs[50][i]:1,[.7,.9,1.1,1.4],["VeryLow","Low","Normal","High","VeryHigh"]),
+    Momentum3:binned((c[i]-c[i-3])/PIP,[-2,-.5,.5,2],["StrongDown","Down","Flat","Up","StrongUp"]),
+    Momentum5:binned((c[i]-c[i-5])/PIP,[-3,-1,1,3],["StrongDown","Down","Flat","Up","StrongUp"]),
+    Momentum8:binned((c[i]-c[i-8])/PIP,[-4,-1.5,1.5,4],["StrongDown","Down","Flat","Up","StrongUp"]),
+    Momentum13:binned((c[i]-c[i-13])/PIP,[-5,-2,2,5],["StrongDown","Down","Flat","Up","StrongUp"]),
+    Momentum21:binned((c[i]-c[i-21])/PIP,[-7,-3,3,7],["StrongDown","Down","Flat","Up","StrongUp"]),
+    Bollinger20:binned(bb20.sd[i]?(c[i]-bb20.mean[i])/bb20.sd[i]:0,[-2,-1,0,1,2],["Below-2","-2--1","-1-0","0-1","1-2","Above2"]),
+    Bollinger50:binned(bb50.sd[i]?(c[i]-bb50.mean[i])/bb50.sd[i]:0,[-2,-1,0,1,2],["Below-2","-2--1","-1-0","0-1","1-2","Above2"]),
+    RangePos20:binned(hi20>lo20?(c[i]-lo20)/(hi20-lo20):.5,[.2,.4,.6,.8],["Bottom","LowMid","Middle","HighMid","Top"]),
+    RangePos50:binned(hi50>lo50?(c[i]-lo50)/(hi50-lo50):.5,[.2,.4,.6,.8],["Bottom","LowMid","Middle","HighMid","Top"]),
     Body:binned(body,[-2,-.5,.5,2],["StrongBear","Bear","Small","Bull","StrongBull"]),
     Range:binned(range,[2,4,6,10],["VerySmall","Small","Mid","Large","VeryLarge"]),
     UpperWick:binned(upper,[.5,1.5,3,5],["Tiny","Small","Mid","Large","VeryLarge"]),
     LowerWick:binned(lower,[.5,1.5,3,5],["Tiny","Small","Mid","Large","VeryLarge"]),
-    BullCount5:String(bull),
-    BearCount5:String(bear),
-    Session:session(bars[i].t),
-    Weekday:weekday(bars[i].t),
-    Hour:String(bars[i].t.getUTCHours())
+    BullCount5:String(bull),BearCount5:String(bear),Session:session(bars[i].t),Weekday:weekday(bars[i].t),Hour:String(bars[i].t.getUTCHours())
   };
   if(match(baseRule,f))rows.push({i,t:bars[i].t,price:bars[i].c,f})
  }
  return rows
 }
-function simulateRows(rows,bars,side,tp,sl,hold,cost,rule){
- const trades=[];
- for(const r of rows){
-  if(rule&&!match(rule,r.f))continue;
-  const entry=r.price,limit=Math.min(bars.length-1,r.i+hold);let exitI=limit,reason="TIME",gross=0;
-  for(let j=r.i+1;j<=limit;j++){
-   const up=(bars[j].h-entry)/PIP,down=(entry-bars[j].l)/PIP;
-   const tpHit=side==="LONG"?up>=tp:down>=tp,slHit=side==="LONG"?down>=sl:up>=sl;
-   if(tpHit&&slHit){gross=-sl;reason="SL";exitI=j;break}
-   if(slHit){gross=-sl;reason="SL";exitI=j;break}
-   if(tpHit){gross=tp;reason="TP";exitI=j;break}
-   if(j===limit){gross=(side==="LONG"?(bars[j].c-entry):(entry-bars[j].c))/PIP;reason="TIME"}
-  }
-  trades.push({entryTime:r.t,exitTime:bars[exitI].t,entry,exit:bars[exitI].c,reason,gross,net:gross-cost,year:r.t.getFullYear()})
+function simulateOne(row,bars,side,tp,sl,hold,cost){
+ const entry=row.price,limit=Math.min(bars.length-1,row.i+hold);let gross=0,exitI=limit,reason="TIME";
+ for(let j=row.i+1;j<=limit;j++){
+  const up=(bars[j].h-entry)/PIP,down=(entry-bars[j].l)/PIP,tpHit=side==="LONG"?up>=tp:down>=tp,slHit=side==="LONG"?down>=sl:up>=sl;
+  if(tpHit&&slHit){gross=-sl;reason="SL";exitI=j;break}
+  if(slHit){gross=-sl;reason="SL";exitI=j;break}
+  if(tpHit){gross=tp;reason="TP";exitI=j;break}
+  if(j===limit){gross=(side==="LONG"?(bars[j].c-entry):(entry-bars[j].c))/PIP;reason="TIME"}
  }
- return trades
+ return{net:gross-cost,reason,year:row.t.getFullYear()}
 }
-function stats(trades){
- let gp=0,gl=0,sum=0,w=0,eq=0,peak=0,dd=0;const yearly={};
- for(const t of trades){sum+=t.net;eq+=t.net;peak=Math.max(peak,eq);dd=Math.max(dd,peak-eq);if(t.net>0){gp+=t.net;w++}else gl+=-t.net;yearly[t.year]=(yearly[t.year]||0)+t.net}
- return{n:trades.length,pf:gl?gp/gl:(gp?99:0),avg:trades.length?sum/trades.length:0,winRate:trades.length?w/trades.length*100:0,net:sum,maxDD:dd,yearly}
+function stats(vals){
+ let gp=0,gl=0,sum=0,w=0;for(const v of vals){sum+=v;if(v>0){gp+=v;w++}else gl+=-v}
+ return{n:vals.length,pf:gl?gp/gl:(gp?99:0),avg:vals.length?sum/vals.length:0,winRate:vals.length?w/vals.length*100:0,net:sum}
 }
-function featureValues(rows){
- const map={};for(const r of rows)for(const [k,v] of Object.entries(r.f))(map[k]||(map[k]=new Set())).add(v);
- return Object.entries(map).flatMap(([k,s])=>[...s].map(v=>[[k,v]])).filter(rule=>!["ATR","Session"].includes(rule[0][0]))
-}
-function key(rule){return rule.map(([k,v])=>`${k}=${v}`).sort().join(" & ")}
-function beamSearch(rows,bars,splitTime,side,tp,sl,hold,cost){
- const trainRows=rows.filter(r=>r.t<splitTime),oosRows=rows.filter(r=>r.t>=splitTime),atoms=featureValues(trainRows),beamWidth=+$("beamWidth").value||50,maxC=+$("maxConditions").value||2,minTr=+$("minTrain").value||100,minO=+$("minOos").value||30;
- let beam=[[]],all=[];
- for(let depth=1;depth<=maxC;depth++){
-  const seen=new Set(),next=[];
-  for(const base of beam)for(const atom of atoms){
-   const r=[...base,...atom],features=r.map(x=>x[0]);if(new Set(features).size!==features.length)continue;
-   const k=key(r);if(seen.has(k))continue;seen.add(k);
-   const tr=stats(simulateRows(trainRows,bars,side,tp,sl,hold,cost,r));if(tr.n<minTr)continue;
-   const score=(tr.pf-1)*50+tr.avg*20+Math.min(20,tr.n/minTr*10)-Math.min(20,tr.maxDD/500);
-   next.push({rule:r,train:tr,trainScore:score})
-  }
-  next.sort((a,b)=>b.trainScore-a.trainScore);beam=next.slice(0,beamWidth).map(x=>x.rule);
-  for(const x of next.slice(0,beamWidth)){
-   const teTrades=simulateRows(oosRows,bars,side,tp,sl,hold,cost,x.rule),te=stats(teTrades);if(te.n<minO)continue;
-   const yrs=Object.values(te.yearly),posYr=yrs.length?yrs.filter(v=>v>0).length/yrs.length:0;
-   const score=(te.pf-1)*60+te.avg*25+posYr*20+Math.min(15,te.n/minO*10)-Math.min(20,te.maxDD/500);
-   all.push({...x,test:te,testTrades:teTrades,positiveYearRate:posYr,score})
-  }
-  status(`Beam Search depth ${depth}/${maxC}`,50+depth/maxC*35)
+function evaluateFeature(feature,rows,splitTime){
+ const buckets={};
+ for(const r of rows){const v=r.f[feature],part=r.t<splitTime?"train":"oos";buckets[v] ||= {train:[],oos:[],yearly:{}};buckets[v][part].push(r.result.net);buckets[v].yearly[r.result.year]=(buckets[v].yearly[r.result.year]||0)+r.result.net}
+ const minTr=+$("minBucketTrain").value||40,minO=+$("minBucketOos").value||10,values=[];
+ for(const [value,b] of Object.entries(buckets)){
+  const tr=stats(b.train),te=stats(b.oos);if(tr.n<minTr||te.n<minO)continue;
+  const years=Object.values(b.yearly),posYr=years.length?years.filter(x=>x>0).length/years.length:0;
+  values.push({value,train:tr,oos:te,positiveYearRate:posYr})
  }
- return all.sort((a,b)=>b.score-a.score)
+ if(values.length<2)return null;
+ const trAvgs=values.map(x=>x.train.avg),teAvgs=values.map(x=>x.oos.avg),spreadTr=Math.max(...trAvgs)-Math.min(...trAvgs),spreadTe=Math.max(...teAvgs)-Math.min(...teAvgs);
+ const bestTr=[...values].sort((a,b)=>b.train.avg-a.train.avg)[0],bestTe=[...values].sort((a,b)=>b.oos.avg-a.oos.avg)[0];
+ const directionStable=Math.sign(bestTr.train.avg)===Math.sign(bestTr.oos.avg)?1:0;
+ const sameBest=bestTr.value===bestTe.value?1:0;
+ const sample=Math.min(1,values.reduce((s,x)=>s+x.oos.n,0)/100);
+ const stability=(directionStable*.5+sameBest*.25+bestTr.positiveYearRate*.25);
+ const raw=Math.max(0,spreadTr)*20+Math.max(0,spreadTe)*30+Math.max(0,bestTr.oos.pf-1)*25+stability*20+sample*5;
+ return{feature,importance:raw,trainSpread:spreadTr,oosSpread:spreadTe,bestTrainValue:bestTr.value,bestOosValue:bestTe.value,bestTrainAvg:bestTr.train.avg,bestOosAvg:bestTr.oos.avg,bestOosPF:bestTr.oos.pf,stability,sampleN:values.reduce((s,x)=>s+x.oos.n,0),values}
 }
-function renderData(b){
- const v=[["Bars",b.length.toLocaleString()],["Base Pattern",S.exit?.pattern||"--"],["Direction",S.exit?.direction||"--"],["Base Exit",S.exit?.best?`TP${S.exit.best.tpPips}/SL${S.exit.best.slPips}/H${S.exit.best.holdMinutes}`:"--"]];
+function cramersV(a,b,rows){
+ const xs=[...new Set(rows.map(r=>r.f[a]))],ys=[...new Set(rows.map(r=>r.f[b]))];if(xs.length<2||ys.length<2)return 0;
+ const xi=Object.fromEntries(xs.map((x,i)=>[x,i])),yi=Object.fromEntries(ys.map((y,i)=>[y,i])),m=Array.from({length:xs.length},()=>Array(ys.length).fill(0)),rx=Array(xs.length).fill(0),cy=Array(ys.length).fill(0);
+ for(const r of rows){let i=xi[r.f[a]],j=yi[r.f[b]];m[i][j]++;rx[i]++;cy[j]++}
+ const n=rows.length;let chi=0;for(let i=0;i<xs.length;i++)for(let j=0;j<ys.length;j++){let e=rx[i]*cy[j]/n;if(e>0)chi+=(m[i][j]-e)**2/e}
+ return Math.sqrt(chi/(n*Math.max(1,Math.min(xs.length-1,ys.length-1))))
+}
+function selectFeatures(ranking,rows){
+ const top=+$("topFeatures").value||20,thr=+$("corrThreshold").value||.85,selected=[];
+ for(const x of ranking){let correlated=false;for(const y of selected){if(cramersV(x.feature,y.feature,rows)>=thr){correlated=true;break}}if(!correlated)selected.push(x);if(selected.length>=top)break}
+ return selected
+}
+function renderData(){
+ const v=[["Bars",S.bars.length.toLocaleString()],["Base Pattern",S.summary.basePattern],["Direction",S.summary.direction],["Base Exit",`TP${S.summary.baseExit.tpPips}/SL${S.summary.baseExit.slPips}/H${S.summary.baseExit.holdMinutes}`]];
  $("dataSummary").innerHTML=v.map(([a,x])=>`<div class="stat"><span>${a}</span><strong>${x}</strong></div>`).join("")
 }
-function renderRanking(list){
- const minPf=+$("minPf").value||1,minAvg=+$("minAvg").value||0;
- $("ranking").innerHTML=`<table><thead><tr><th>#</th><th>追加条件</th><th>Train N</th><th>Train PF</th><th>Train Avg</th><th>OOS N</th><th>OOS PF</th><th>OOS Avg</th><th>OOS Win%</th><th>OOS Net</th><th>OOS MaxDD</th><th>Positive Years</th><th>Score</th><th>Status</th></tr></thead><tbody>${list.slice(0,100).map((x,i)=>`<tr><td>${i+1}</td><td>${key(x.rule)}</td><td>${x.train.n}</td><td>${x.train.pf.toFixed(2)}</td><td>${x.train.avg.toFixed(3)}</td><td>${x.test.n}</td><td>${x.test.pf.toFixed(2)}</td><td>${x.test.avg.toFixed(3)}</td><td>${x.test.winRate.toFixed(1)}</td><td>${x.test.net.toFixed(1)}</td><td>${x.test.maxDD.toFixed(1)}</td><td>${(x.positiveYearRate*100).toFixed(0)}%</td><td>${x.score.toFixed(1)}</td><td class="${x.test.pf>=minPf&&x.test.avg>=minAvg?"good":"warn"}">${x.test.pf>=minPf&&x.test.avg>=minAvg?"PASS":"RESEARCH"}</td></tr>`).join("")}</tbody></table>`
+function renderRanking(){
+ const max=S.ranking.length?S.ranking[0].importance:1,sel=new Set(S.selected.map(x=>x.feature));
+ $("ranking").innerHTML=`<table><thead><tr><th>#</th><th>Feature</th><th>Importance</th><th>Visual</th><th>Train Separation</th><th>OOS Separation</th><th>Best Train Value</th><th>Best OOS Value</th><th>Best OOS PF</th><th>Stability</th><th>OOS N</th><th>Selected</th></tr></thead><tbody>${S.ranking.map((x,i)=>`<tr><td>${i+1}</td><td>${x.feature}</td><td>${x.importance.toFixed(2)}</td><td class="barCell"><div class="miniBar"><i style="width:${max?x.importance/max*100:0}%"></i></div></td><td>${x.trainSpread.toFixed(3)}</td><td>${x.oosSpread.toFixed(3)}</td><td>${x.bestTrainValue}</td><td>${x.bestOosValue}</td><td>${x.bestOosPF.toFixed(2)}</td><td>${(x.stability*100).toFixed(0)}%</td><td>${x.sampleN}</td><td class="${sel.has(x.feature)?"good":"warn"}">${sel.has(x.feature)?"KEEP":"DROP"}</td></tr>`).join("")}</tbody></table>`
 }
-function renderBest(b){
- if(!b){$("bestCards").innerHTML="候補なし";return}
- const v=[["Base Pattern",S.exit.pattern],["追加条件",key(b.rule)],["Direction",S.exit.direction],["Exit",`TP${S.exit.best.tpPips}/SL${S.exit.best.slPips}/H${S.exit.best.holdMinutes}`],["OOS N",b.test.n],["OOS PF",b.test.pf.toFixed(2)],["OOS Avg",b.test.avg.toFixed(3)+" pips"],["OOS MaxDD",b.test.maxDD.toFixed(1)+" pips"]];
- $("bestCards").innerHTML=v.map(([a,x])=>`<div class="stat"><span>${a}</span><strong>${x}</strong></div>`).join("");
- $("yearly").innerHTML=`<table><thead><tr><th>Year</th><th>Net pips</th><th>Result</th></tr></thead><tbody>${Object.entries(b.test.yearly).map(([y,n])=>`<tr><td>${y}</td><td>${n.toFixed(1)}</td><td class="${n>0?"good":"bad"}">${n>0?"PLUS":"MINUS"}</td></tr>`).join("")}</tbody></table>`
+function renderDetails(){
+ const x=S.selected[0]||S.ranking[0];if(!x){$("details").textContent="候補なし";return}
+ $("details").innerHTML=`<table><thead><tr><th>Feature</th><th>Value</th><th>Train N</th><th>Train PF</th><th>Train Avg</th><th>OOS N</th><th>OOS PF</th><th>OOS Avg</th><th>OOS Win%</th><th>Positive Years</th></tr></thead><tbody>${x.values.map(v=>`<tr><td>${x.feature}</td><td>${v.value}</td><td>${v.train.n}</td><td>${v.train.pf.toFixed(2)}</td><td>${v.train.avg.toFixed(3)}</td><td>${v.oos.n}</td><td>${v.oos.pf.toFixed(2)}</td><td>${v.oos.avg.toFixed(3)}</td><td>${v.oos.winRate.toFixed(1)}</td><td>${(v.positiveYearRate*100).toFixed(0)}%</td></tr>`).join("")}</tbody></table>`
 }
 async function run(){
- if(!S.files.length||!S.exitFile){status("CSVとExit Summary JSONを選択してください。",0);return}
+ if(!S.files.length||!S.summaryFile){status("CSVとQuality Filter Summary JSONを選択してください。",0);return}
  S.cancel=false;$("runBtn").disabled=true;$("cancelBtn").disabled=false;
  try{
-  S.exit=JSON.parse(await S.exitFile.text());if(!S.exit?.pattern||!S.exit?.direction||!S.exit?.best)throw new Error("Exit Summaryにpattern、direction、bestがありません");
-  status("CSV解析中",3);log("Quality Filter探索開始");const p=await parseFiles(S.files);S.bars=p.bars;if(S.bars.length<5000)throw new Error("有効バー不足");renderData(S.bars);
-  const baseRule=parsePattern(S.exit.pattern);status("特徴量生成中",20);S.rows=buildRows(S.bars,baseRule);await breathe();
-  const splitIndex=Math.floor(S.bars.length*.8);S.splitTime=S.bars[splitIndex].t;
-  const cost=(+$("spread").value||.8)+(+$("slippage").value||.2);
-  status("Beam Search中",50);S.candidates=beamSearch(S.rows,S.bars,S.splitTime,S.exit.direction,S.exit.best.tpPips,S.exit.best.slPips,S.exit.best.holdMinutes,cost);
-  const minPf=+$("minPf").value||1,minAvg=+$("minAvg").value||0;S.best=S.candidates.find(x=>x.test.pf>=minPf&&x.test.avg>=minAvg)||S.candidates[0]||null;
-  renderRanking(S.candidates);renderBest(S.best);["downloadRanking","downloadTrades","downloadSummary"].forEach(id=>$(id).disabled=!S.best);
-  status("完了",100);log(`Candidates=${S.candidates.length}, Best=${S.best?key(S.best.rule):"none"}`)
+  S.summary=JSON.parse(await S.summaryFile.text());if(!S.summary?.basePattern||!S.summary?.direction||!S.summary?.baseExit)throw new Error("Quality SummaryにbasePattern、direction、baseExitがありません");
+  status("CSV解析中",3);log("Feature Importance開始");const p=await parseFiles(S.files);S.bars=p.bars;if(S.bars.length<5000)throw new Error("有効バー不足");
+  renderData();const baseRule=parsePattern(S.summary.basePattern);status("特徴量生成中",20);S.rows=buildRows(S.bars,baseRule);
+  const ratio=Math.max(.5,Math.min(.9,+$("trainRatio").value||.8)),splitIndex=Math.floor(S.bars.length*ratio);S.splitTime=S.bars[splitIndex].t;
+  const cost=(+$("spread").value||.8)+(+$("slippage").value||.2),be=S.summary.baseExit;
+  for(let i=0;i<S.rows.length;i++){S.rows[i].result=simulateOne(S.rows[i],S.bars,S.summary.direction,be.tpPips,be.slPips,be.holdMinutes,cost);if(i%200===0){status(`Trade評価 ${i}/${S.rows.length}`,35+i/Math.max(1,S.rows.length)*20);await breathe()}}
+  const features=Object.keys(S.rows[0]?.f||{}),rank=[];
+  for(let i=0;i<features.length;i++){const x=evaluateFeature(features[i],S.rows,S.splitTime);if(x&&x.importance>=(+$("minImportance").value||0))rank.push(x);status(`重要度計算 ${i+1}/${features.length}`,58+(i+1)/features.length*25);await breathe()}
+  S.ranking=rank.sort((a,b)=>b.importance-a.importance);S.selected=selectFeatures(S.ranking,S.rows.filter(r=>r.t<S.splitTime));
+  renderRanking();renderDetails();["downloadRanking","downloadValues","downloadSummary"].forEach(id=>$(id).disabled=!S.ranking.length);
+  status("完了",100);log(`Features=${S.ranking.length}, Selected=${S.selected.map(x=>x.feature).join(", ")}`)
  }catch(e){status("エラー: "+e.message,0);log("ERROR "+(e.stack||e.message))}
  finally{$("runBtn").disabled=false;$("cancelBtn").disabled=true}
 }
 function rankingRows(){
- const h=["Rank","BasePattern","AdditionalRule","Direction","TP","SL","HoldMinutes","TrainN","TrainPF","TrainAvg","OOSN","OOSPF","OOSAvg","OOSWinRate","OOSNet","OOSMaxDD","PositiveYearRate","Score"];
- return[h,...S.candidates.map((x,i)=>[i+1,S.exit.pattern,key(x.rule),S.exit.direction,S.exit.best.tpPips,S.exit.best.slPips,S.exit.best.holdMinutes,x.train.n,x.train.pf.toFixed(4),x.train.avg.toFixed(4),x.test.n,x.test.pf.toFixed(4),x.test.avg.toFixed(4),x.test.winRate.toFixed(2),x.test.net.toFixed(2),x.test.maxDD.toFixed(2),x.positiveYearRate.toFixed(4),x.score.toFixed(2)])]
+ const h=["Rank","Feature","Importance","TrainSeparation","OOSSeparation","BestTrainValue","BestOOSValue","BestOOSPF","Stability","OOSN","Selected"];
+ const sel=new Set(S.selected.map(x=>x.feature));
+ return[h,...S.ranking.map((x,i)=>[i+1,x.feature,x.importance.toFixed(4),x.trainSpread.toFixed(4),x.oosSpread.toFixed(4),x.bestTrainValue,x.bestOosValue,x.bestOosPF.toFixed(4),x.stability.toFixed(4),x.sampleN,sel.has(x.feature)])]
 }
-function tradeRows(){
- if(!S.best)return[];
- const h=["TradeId","EntryTime","ExitTime","BasePattern","AdditionalRule","Direction","TP","SL","HoldMinutes","EntryPrice","ExitPrice","ExitReason","GrossPips","NetPips","Year"];
- return[h,...S.best.testTrades.map((t,i)=>[i+1,t.entryTime.toISOString(),t.exitTime.toISOString(),S.exit.pattern,key(S.best.rule),S.exit.direction,S.exit.best.tpPips,S.exit.best.slPips,S.exit.best.holdMinutes,t.entry.toFixed(3),t.exit.toFixed(3),t.reason,t.gross.toFixed(3),t.net.toFixed(3),t.year])]
+function valueRows(){
+ const h=["Feature","Value","TrainN","TrainPF","TrainAvg","TrainWinRate","OOSN","OOSPF","OOSAvg","OOSWinRate","PositiveYearRate"];
+ return[h,...S.ranking.flatMap(x=>x.values.map(v=>[x.feature,v.value,v.train.n,v.train.pf.toFixed(4),v.train.avg.toFixed(4),v.train.winRate.toFixed(2),v.oos.n,v.oos.pf.toFixed(4),v.oos.avg.toFixed(4),v.oos.winRate.toFixed(2),v.positiveYearRate.toFixed(4)]))]
 }
 function summary(){
- return{version:"ScalpLayer Origin Quality Filter Engine v1.0",generatedAt:new Date().toISOString(),sourceFiles:S.files.map(f=>f.name),exitSummaryFile:S.exitFile?.name||null,basePattern:S.exit?.pattern||null,direction:S.exit?.direction||null,baseExit:S.exit?.best?{tpPips:S.exit.best.tpPips,slPips:S.exit.best.slPips,holdMinutes:S.exit.best.holdMinutes}:null,bars:S.bars.length,baseRows:S.rows.length,settings:{maxConditions:+$("maxConditions").value,beamWidth:+$("beamWidth").value,minimumTrain:+$("minTrain").value,minimumOOS:+$("minOos").value,spreadPips:+$("spread").value,slippagePips:+$("slippage").value},best:S.best?{additionalRule:key(S.best.rule),train:S.best.train,oos:S.best.test,positiveYearRate:S.best.positiveYearRate,score:S.best.score}:null,notes:["Quality Filter is discovered on Train and validated on OOS","Base Exit settings are fixed from Exit Summary","Same-bar TP/SL is conservatively treated as SL","No nested walk-forward validation in v1.0","No multiple-testing correction in v1.0","Final candidate must be re-tested in an independent period and MT5 Strategy Tester"]}
+ return{version:"ScalpLayer Origin Feature Importance Engine v1.0",generatedAt:new Date().toISOString(),sourceFiles:S.files.map(f=>f.name),qualitySummaryFile:S.summaryFile?.name||null,basePattern:S.summary?.basePattern||null,direction:S.summary?.direction||null,baseExit:S.summary?.baseExit||null,bars:S.bars.length,baseRows:S.rows.length,settings:{minimumBucketTrain:+$("minBucketTrain").value,minimumBucketOOS:+$("minBucketOos").value,topFeatures:+$("topFeatures").value,correlationThreshold:+$("corrThreshold").value,spreadPips:+$("spread").value,slippagePips:+$("slippage").value,trainRatio:+$("trainRatio").value},selectedFeatures:S.selected.map(x=>({feature:x.feature,importance:x.importance,bestTrainValue:x.bestTrainValue,bestOosValue:x.bestOosValue,bestOosPF:x.bestOosPF,stability:x.stability})),ranking:S.ranking.map(x=>({feature:x.feature,importance:x.importance,trainSeparation:x.trainSpread,oosSeparation:x.oosSpread,bestTrainValue:x.bestTrainValue,bestOosValue:x.bestOosValue,bestOosPF:x.bestOosPF,stability:x.stability,oosN:x.sampleN})),notes:["This is statistical feature importance, not XGBoost or LightGBM","Importance is relative and combines profit separation, PF, stability and sample size","Categorical association pruning uses Cramer's V","No nested walk-forward validation in v1.0","No multiple-testing correction in v1.0","Selected features must return to Quality Filter and then independent final validation"]}
 }
 </script>
 </body>
