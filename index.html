@@ -3,18 +3,18 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="scalplayer-version" content="origin-research-simulator-v1.1-explorer">
-<title>ScalpLayer Origin Research Simulator v1.1 Explorer Edition</title>
+<meta name="scalplayer-version" content="origin-discovery-engine-v1.0">
+<title>ScalpLayer Origin Discovery Engine v1.0</title>
 <style>
 :root{--bg:#05070d;--panel:#10131c;--line:rgba(212,175,55,.28);--gold:#d4af37;--gold2:#f7dc75;--text:#f8fafc;--muted:#b8c0cc;--green:#22c55e;--red:#ef4444;--yellow:#facc15;--cyan:#38bdf8}
 *{box-sizing:border-box}body{margin:0;min-height:100vh;padding:20px;color:var(--text);font-family:system-ui,-apple-system,"Segoe UI",sans-serif;background:radial-gradient(circle at top left,rgba(212,175,55,.18),transparent 28%),linear-gradient(180deg,#141925,var(--bg) 46%);line-height:1.6}
-.container{max-width:1320px;margin:auto}.hero{text-align:center;padding:10px 0 22px}h1{margin:0;font-size:32px}h2{margin:0 0 12px;color:var(--gold2)}h3{color:#fff}.sub,.small{color:var(--muted);font-size:13px}
-.card{background:rgba(16,19,28,.96);border:1px solid var(--line);border-radius:14px;padding:20px;margin-bottom:18px;box-shadow:0 18px 38px rgba(0,0,0,.32);overflow:hidden}.notice{background:rgba(212,175,55,.09)}.goal{border-color:rgba(56,189,248,.36);background:rgba(56,189,248,.08)}
+.container{max-width:1380px;margin:auto}.hero{text-align:center;padding:10px 0 22px}h1{margin:0;font-size:32px}h2{margin:0 0 12px;color:var(--gold2)}.sub,.small{color:var(--muted);font-size:13px}
+.card{background:rgba(16,19,28,.96);border:1px solid var(--line);border-radius:14px;padding:20px;margin-bottom:18px;box-shadow:0 18px 38px rgba(0,0,0,.32);overflow:hidden}.goal{border-color:rgba(56,189,248,.36);background:rgba(56,189,248,.08)}.notice{background:rgba(212,175,55,.08)}
 .grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}.stat{background:rgba(5,7,13,.68);border:1px solid rgba(212,175,55,.22);border-radius:12px;padding:14px}.stat span{display:block;color:var(--muted);font-size:13px}.stat strong{display:block;font-size:21px;margin-top:3px;overflow-wrap:anywhere}
 .toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:end}.toolbar>*{flex:1 1 180px}
 label{display:block;margin:7px 0 5px;color:var(--muted);font-weight:800}input,select,button{width:100%;min-height:46px;border-radius:10px;border:1px solid rgba(212,175,55,.38);background:#070a11;color:var(--text);padding:10px 12px;font-size:14px;margin-bottom:9px}button{border:0;background:linear-gradient(135deg,var(--gold),#9f7d1d);color:#111827;font-weight:950;cursor:pointer}button.secondary{background:#263244;color:#fff}button:disabled{opacity:.45;cursor:not-allowed}
 .progress{height:12px;border-radius:999px;background:rgba(148,163,184,.18);overflow:hidden}.progress i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--gold),var(--cyan),var(--green))}
-.tableWrap{overflow:auto;max-height:520px}table{width:100%;border-collapse:collapse;min-width:1100px}th,td{border-bottom:1px solid rgba(148,163,184,.16);padding:8px;text-align:left;font-size:12px;white-space:nowrap}th{position:sticky;top:0;background:#080b12;z-index:1}
+.tableWrap{overflow:auto;max-height:560px}table{width:100%;border-collapse:collapse;min-width:1250px}th,td{border-bottom:1px solid rgba(148,163,184,.16);padding:8px;text-align:left;font-size:12px;white-space:nowrap}th{position:sticky;top:0;background:#080b12;z-index:1}
 .good{color:#bbf7d0}.bad{color:#fecaca}.warn{color:#fde68a}.pill{display:inline-block;padding:4px 9px;border-radius:999px;border:1px solid var(--line);background:rgba(212,175,55,.12);color:#f7e6a5;margin:2px}
 .checks{display:flex;gap:14px;flex-wrap:wrap}.checks label{display:flex;gap:7px;align-items:center}.checks input{width:auto;min-height:auto;margin:0}
 .log{height:180px;overflow:auto;background:#04060a;border-radius:10px;padding:12px;font-family:ui-monospace,Consolas,monospace;font-size:12px;white-space:pre-wrap}
@@ -24,20 +24,20 @@ label{display:block;margin:7px 0 5px;color:var(--muted);font-weight:800}input,se
 <body>
 <main class="container">
 <section class="hero">
-<div class="pill">ORIGIN RESEARCH</div>
-<h1>ScalpLayer Origin Research Simulator v1.1 Explorer Edition</h1>
-<p class="sub">v1.0の検証結果を受け、ATR決済・Exit Engine・Session・曜日・Pareto候補を追加した探索強化版</p>
+<div class="pill">PATTERN DISCOVERY</div>
+<h1>ScalpLayer Origin Discovery Engine v1.0</h1>
+<p class="sub">人間が先に売買条件を固定せず、USDJPY M1の将来値動きから特徴パターンを発見する研究専用エンジン</p>
 </section>
 
 <section class="card goal">
-<h2>研究目標</h2>
+<h2>Discoveryの考え方</h2>
 <div class="grid">
-<div class="stat"><span>対象</span><strong>USDJPY M1</strong></div>
-<div class="stat"><span>目標期間</span><strong>5年間</strong></div>
-<div class="stat"><span>最低平均頻度</span><strong id="goalFreqView">10回/営業日</strong></div>
-<div class="stat"><span>設計方針</span><strong>頻度 → 期待値 → 安定性</strong></div>
+<div class="stat"><span>入力</span><strong>USDJPY M1</strong></div>
+<div class="stat"><span>学習区間</span><strong id="trainView">80%</strong></div>
+<div class="stat"><span>検証区間</span><strong id="testView">20%</strong></div>
+<div class="stat"><span>最低平均頻度</span><strong id="goalFreqView">10回/日</strong></div>
 </div>
-<p class="small">1日10回を強制するのではなく、全営業日の平均値で判定します。静かな日に無理な売買を作らないためです。</p>
+<p class="small">未来の情報を特徴量へ混ぜないよう、各バー時点の特徴だけで候補を作り、後半データをアウト・オブ・サンプル検証に使います。</p>
 </section>
 
 <section class="card">
@@ -47,68 +47,46 @@ label{display:block;margin:7px 0 5px;color:var(--muted);font-weight:800}input,se
 <div class="toolbar">
 <div><label>入力時刻</label><select id="timezoneMode"><option value="JST">JST</option><option value="UTC">UTC</option><option value="OFFSET">固定UTCオフセット</option></select></div>
 <div><label>入力UTCオフセット</label><input id="utcOffset" type="number" step="0.5" value="0"></div>
-<div><label>固定Spread (pips)</label><input id="spread" type="number" step="0.1" value="1.2"></div>
+<div><label>Spread (pips)</label><input id="spread" type="number" step="0.1" value="1.2"></div>
 <div><label>Slippage (pips)</label><input id="slippage" type="number" step="0.1" value="0.2"></div>
 </div>
 <div id="fileInfo" class="small">未選択</div>
 </section>
 
 <section class="card">
-<h2>2. 探索設定</h2>
-<div class="checks">
-<label><input id="useTrend" type="checkbox" checked>Trend Pullback</label>
-<label><input id="useBreakout" type="checkbox" checked>Micro Breakout</label>
-<label><input id="useRange" type="checkbox" checked>Range Reversion</label>
-</div>
+<h2>2. 発見設定</h2>
 <div class="toolbar">
-<div><label>Exit Engine</label><select id="exitModes" multiple size="4">
-<option value="FIXED" selected>固定SL/TP＋時間決済</option>
-<option value="ATR" selected>ATR連動SL/TP＋時間決済</option>
-<option value="RSI_RETURN">RSI中央値復帰</option>
-<option value="EMA_REVERSE">EMA反転</option>
-</select></div>
-<div><label>Session</label><select id="sessionList" multiple size="4">
-<option value="ALL" selected>全時間帯</option>
-<option value="TOKYO">東京 08:00-16:59 JST</option>
-<option value="LONDON">ロンドン 16:00-00:59 JST</option>
-<option value="NEWYORK">NY 21:00-05:59 JST</option>
-</select></div>
-<div><label>曜日フィルター</label><select id="weekdayList" multiple size="4">
-<option value="ALL" selected>全曜日</option>
-<option value="NO_MON">月曜除外</option>
-<option value="NO_FRI">金曜除外</option>
-<option value="TUE_THU">火〜木のみ</option>
-</select></div>
-<div><label>Pareto表示</label><select id="paretoOnly">
-<option value="NO">全候補</option>
-<option value="YES">Pareto候補のみ</option>
-</select></div>
-</div>
-<div class="toolbar">
+<div><label>将来判定</label><select id="horizon"><option value="5">5分後</option><option value="10" selected>10分後</option><option value="15">15分後</option><option value="30">30分後</option><option value="60">60分後</option></select></div>
+<div><label>学習比率</label><input id="trainRatio" type="number" step="0.05" min="0.5" max="0.9" value="0.8"></div>
+<div><label>最低サンプル数</label><input id="minSamples" type="number" step="100" value="1000"></div>
 <div><label>最低平均トレード/日</label><input id="minTradesDay" type="number" step="0.1" value="10"></div>
-<div><label>最低PF表示</label><input id="minPf" type="number" step="0.01" value="1.00"></div>
-<div><label>最大候補数</label><input id="maxCandidates" type="number" step="1" value="120"></div>
-<div><label>同時保有</label><select id="positionMode"><option value="ONE">1ポジションのみ</option></select></div>
 </div>
 <div class="toolbar">
-<div><label>固定SL候補 pips</label><input id="slList" value="3,5,8"></div>
-<div><label>固定TP候補 pips</label><input id="tpList" value="3,5,8,10"></div>
-<div><label>時間決済 分</label><input id="holdList" value="5,10,15,30"></div>
-<div><label>Cooldown 分</label><input id="cooldownList" value="0,2,5"></div>
+<div><label>最低OOS PF</label><input id="minPf" type="number" step="0.01" value="1.00"></div>
+<div><label>候補上限</label><input id="maxCandidates" type="number" value="500"></div>
+<div><label>表示件数</label><input id="displayLimit" type="number" value="100"></div>
+<div><label>探索間引き</label><select id="stride"><option value="1">全バー</option><option value="2" selected>2本ごと</option><option value="5">5本ごと</option><option value="10">10本ごと</option></select></div>
 </div>
-<div class="toolbar">
-<div><label>ATR SL倍率</label><input id="atrSlList" value="0.6,0.8,1.0,1.2"></div>
-<div><label>ATR TP倍率</label><input id="atrTpList" value="0.6,0.8,1.0,1.3,1.6"></div>
-<div><label>ATR最小値 pips</label><input id="minAtrList" value="0,1.5,2.5"></div>
-<div><label>最大表示候補</label><input id="displayLimit" type="number" value="100"></div>
+
+<h3>特徴量</h3>
+<div class="checks">
+<label><input id="fTrend" type="checkbox" checked>EMA Trend</label>
+<label><input id="fRsi" type="checkbox" checked>RSI</label>
+<label><input id="fAtr" type="checkbox" checked>ATR</label>
+<label><input id="fMomentum" type="checkbox" checked>5分Momentum</label>
+<label><input id="fBollinger" type="checkbox" checked>Bollinger位置</label>
+<label><input id="fRange" type="checkbox" checked>20分Range位置</label>
+<label><input id="fBody" type="checkbox" checked>ローソク実体</label>
+<label><input id="fSession" type="checkbox" checked>Session</label>
+<label><input id="fWeekday" type="checkbox" checked>曜日</label>
 </div>
-<div class="toolbar">
-<div><label>EMA Fast候補</label><input id="emaFastList" value="5,8,12"></div>
-<div><label>EMA Slow候補</label><input id="emaSlowList" value="20,30,50"></div>
-<div><label>RSI閾値候補</label><input id="rsiList" value="25,30,35"></div>
-<div><label>Breakout lookback候補</label><input id="breakoutList" value="5,10,15"></div>
+
+<h3>探索する条件</h3>
+<div class="checks">
+<label><input id="singleRules" type="checkbox" checked>単独条件</label>
+<label><input id="pairRules" type="checkbox" checked>2条件組合せ</label>
 </div>
-<button id="runBtn">Origin Researchを実行</button>
+<button id="runBtn">Discoveryを実行</button>
 <button id="cancelBtn" class="secondary" disabled>中止</button>
 <div id="status" class="small">CSVを選択してください。</div>
 <div class="progress"><i id="progressBar"></i></div>
@@ -121,14 +99,14 @@ label{display:block;margin:7px 0 5px;color:var(--muted);font-weight:800}input,se
 </div>
 </section>
 
-<section class="card">
-<h2>4. 候補ランキング</h2>
-<p class="small">頻度条件を満たす候補を優先し、PF、年別安定性、最大DDを加味して順位付けします。</p>
-<div class="notice small" style="padding:10px;border-radius:10px;margin-bottom:10px">Pareto候補とは、PF・頻度・DDのいずれかを改善しようとすると、別の指標が悪化する候補です。単一順位だけでなく、複数の現実的な選択肢を残します。</div><div id="ranking" class="tableWrap">未実行</div>
+<section class="card notice">
+<h2>4. Discovery Candidate Ranking</h2>
+<p class="small">Train区間で候補を発見し、Test区間のPF・平均損益・頻度・年別安定性で順位を付けます。PFは将来終値ベースの仮想損益から計算します。</p>
+<div id="ranking" class="tableWrap">未実行</div>
 </section>
 
 <section class="card">
-<h2>5. 最上位候補</h2>
+<h2>5. 最上位パターン</h2>
 <div id="bestCards" class="grid"></div>
 <div id="yearly" class="tableWrap" style="margin-top:12px">--</div>
 </section>
@@ -136,9 +114,9 @@ label{display:block;margin:7px 0 5px;color:var(--muted);font-weight:800}input,se
 <section class="card">
 <h2>6. 出力</h2>
 <div class="toolbar">
-<button id="downloadRanking" disabled>CandidateRanking.csv</button>
-<button id="downloadTrades" disabled>BestCandidate_TradeHistory.csv</button>
-<button id="downloadSummary" disabled>OriginResearch_Summary.json</button>
+<button id="downloadRanking" disabled>DiscoveryCandidates.csv</button>
+<button id="downloadSamples" disabled>BestPattern_Samples.csv</button>
+<button id="downloadSummary" disabled>DiscoverySummary.json</button>
 </div>
 </section>
 
@@ -151,271 +129,154 @@ label{display:block;margin:7px 0 5px;color:var(--muted);font-weight:800}input,se
 <script>
 "use strict";
 const $=id=>document.getElementById(id);
-let STATE={cancel:false,bars:[],candidates:[],best:null,days:0,files:[]};
+let STATE={cancel:false,bars:[],rows:[],candidates:[],best:null,days:0,files:[],split:0};
 const PIP=0.01;
-
-$("csvFiles").addEventListener("change",e=>{
-  STATE.files=[...e.target.files];
-  $("fileInfo").textContent=STATE.files.length?`${STATE.files.length}ファイル: ${STATE.files.map(f=>f.name).join(", ")}`:"未選択";
-});
-$("minTradesDay").addEventListener("input",e=>$("goalFreqView").textContent=`${e.target.value}回/営業日`);$("paretoOnly").addEventListener("change",()=>STATE.candidates.length&&renderRanking(STATE.candidates));
+$("csvFiles").addEventListener("change",e=>{STATE.files=[...e.target.files];$("fileInfo").textContent=STATE.files.length?`${STATE.files.length}ファイル: ${STATE.files.map(f=>f.name).join(", ")}`:"未選択"});
+$("minTradesDay").addEventListener("input",e=>$("goalFreqView").textContent=`${e.target.value}回/日`);
+$("trainRatio").addEventListener("input",e=>{const v=Math.max(.5,Math.min(.9,+e.target.value||.8));$("trainView").textContent=Math.round(v*100)+"%";$("testView").textContent=Math.round((1-v)*100)+"%"});
 $("runBtn").addEventListener("click",run);
-$("cancelBtn").addEventListener("click",()=>{STATE.cancel=true;log("中止を要求しました。現在の候補計算後に停止します。")});
-$("downloadRanking").addEventListener("click",()=>downloadCsv("ScalpLayer_Origin_CandidateRanking_v1_1.csv",rankingRows()));
-$("downloadTrades").addEventListener("click",()=>downloadCsv("ScalpLayer_Origin_BestCandidate_TradeHistory_v1_1.csv",tradeRows()));
-$("downloadSummary").addEventListener("click",()=>downloadText("ScalpLayer_Origin_Research_Summary_v1_1.json",JSON.stringify(summaryJson(),null,2),"application/json"));
+$("cancelBtn").addEventListener("click",()=>{STATE.cancel=true;log("中止要求を受け付けました。")});
+$("downloadRanking").addEventListener("click",()=>downloadCsv("ScalpLayer_Origin_DiscoveryCandidates_v1_0.csv",rankingRows()));
+$("downloadSamples").addEventListener("click",()=>downloadCsv("ScalpLayer_Origin_BestPattern_Samples_v1_0.csv",sampleRows()));
+$("downloadSummary").addEventListener("click",()=>downloadText("ScalpLayer_Origin_Discovery_Summary_v1_0.json",JSON.stringify(summaryJson(),null,2),"application/json"));
 
-function log(s){const el=$("log");el.textContent+=`\n[${new Date().toLocaleTimeString()}] ${s}`;el.scrollTop=el.scrollHeight}
+function log(s){const e=$("log");e.textContent+=`\n[${new Date().toLocaleTimeString()}] ${s}`;e.scrollTop=e.scrollHeight}
 function status(s,p){$("status").textContent=s;$("progressBar").style.width=`${Math.max(0,Math.min(100,p))}%`}
 function breathe(){return new Promise(r=>setTimeout(r,0))}
-function nums(id){return $(id).value.split(",").map(Number).filter(Number.isFinite)}
-function selectedValues(id){
-  return [...$(id).selectedOptions].map(o=>o.value);
-}
-function sessionMatch(mode,date){
-  if(mode==="ALL")return true;
-  const h=date.getUTCHours(); // parser normalizes display timeline to JST stored in UTC fields
-  if(mode==="TOKYO")return h>=8&&h<17;
-  if(mode==="LONDON")return h>=16||h<1;
-  if(mode==="NEWYORK")return h>=21||h<6;
-  return true;
-}
-function weekdayMatch(mode,date){
-  if(mode==="ALL")return true;
-  const d=date.getUTCDay();
-  if(mode==="NO_MON")return d!==1;
-  if(mode==="NO_FRI")return d!==5;
-  if(mode==="TUE_THU")return d>=2&&d<=4;
-  return true;
-}
-function anyFilterMatch(values,fn,date){
-  return values.includes("ALL") || values.some(v=>fn(v,date));
-}
-
 function esc(v){const s=String(v??"");return /[",\n]/.test(s)?`"${s.replace(/"/g,'""')}"`:s}
 function downloadText(name,text,type="text/plain"){const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([text],{type:`${type};charset=utf-8`}));a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}
-function downloadCsv(name,rows){if(!rows.length)return;downloadText(name,rows.map(r=>r.map(esc).join(",")).join("\n"),"text/csv")}
+function downloadCsv(name,rows){if(rows.length)downloadText(name,rows.map(r=>r.map(esc).join(",")).join("\n"),"text/csv")}
+function splitCsvLine(line){const out=[];let s="",q=false;for(let i=0;i<line.length;i++){const c=line[i];if(c==='"'){if(q&&line[i+1]==='"'){s+='"';i++}else q=!q}else if(c===","&&!q){out.push(s);s=""}else s+=c}out.push(s);return out}
 function parseDate(v){
   const s=String(v||"").trim().replace(/\//g,"-").replace(/\./g,"-").replace("T"," ");
-  const m=s.match(/^(\d{4})-(\d{1,2})-(\d{1,2})[ _](\d{1,2}):(\d{1,2})(?::(\d{1,2}))?/);
-  if(!m)return null;
+  const m=s.match(/^(\d{4})-(\d{1,2})-(\d{1,2})[ _](\d{1,2}):(\d{1,2})(?::(\d{1,2}))?/);if(!m)return null;
   let ms=Date.UTC(+m[1],+m[2]-1,+m[3],+m[4],+m[5],+(m[6]||0));
-  const mode=$("timezoneMode").value;
-  if(mode==="UTC")ms+=9*3600000;
-  if(mode==="OFFSET")ms+=(9-Number($("utcOffset").value||0))*3600000;
+  const mode=$("timezoneMode").value;if(mode==="UTC")ms+=9*3600000;if(mode==="OFFSET")ms+=(9-(+$("utcOffset").value||0))*3600000;
   return new Date(ms);
 }
-function splitCsvLine(line){
-  const out=[];let s="",q=false;
-  for(let i=0;i<line.length;i++){const c=line[i];if(c==='"'){if(q&&line[i+1]==='"'){s+='"';i++}else q=!q}else if(c===","&&!q){out.push(s);s=""}else s+=c}
-  out.push(s);return out;
-}
-function headerMap(h){
-  const n=h.map(x=>String(x).trim().toLowerCase().replace(/[^a-z0-9]/g,""));
-  const find=(...ks)=>n.findIndex(x=>ks.includes(x));
-  return{datetime:find("datetime","time","timestamp"),date:find("date"),clock:find("clock"),open:find("open"),high:find("high"),low:find("low"),close:find("close"),volume:find("volume","tickvolume")};
-}
+function headerMap(h){const n=h.map(x=>String(x).trim().toLowerCase().replace(/[^a-z0-9]/g,""));const f=(...ks)=>n.findIndex(x=>ks.includes(x));return{datetime:f("datetime","time","timestamp"),date:f("date"),clock:f("clock"),open:f("open"),high:f("high"),low:f("low"),close:f("close"),volume:f("volume","tickvolume")}}
 async function parseFiles(files){
-  const all=[];let totalRows=0,bad=0;
+  const all=[];let bad=0;
   for(let fi=0;fi<files.length;fi++){
-    if(STATE.cancel)break;
-    status(`CSV読込 ${fi+1}/${files.length}: ${files[fi].name}`,5+fi/files.length*15);
-    const text=await files[fi].text();
-    const lines=text.split(/\r?\n/).filter(Boolean);
-    if(!lines.length)continue;
+    status(`CSV読込 ${fi+1}/${files.length}`,3+fi/files.length*13);
+    const lines=(await files[fi].text()).split(/\r?\n/).filter(Boolean);if(!lines.length)continue;
     let first=splitCsvLine(lines[0]),map=headerMap(first),start=0;
-    const hasHeader=map.open>=0&&map.high>=0&&map.low>=0&&map.close>=0;
-    if(hasHeader)start=1; else map={datetime:0,date:-1,clock:-1,open:1,high:2,low:3,close:4,volume:5};
-    for(let i=start;i<lines.length;i++){
-      const r=splitCsvLine(lines[i]);totalRows++;
-      const dt=map.datetime>=0?parseDate(r[map.datetime]):parseDate(`${r[map.date]} ${r[map.clock]}`);
-      const o=+r[map.open],h=+r[map.high],l=+r[map.low],c=+r[map.close];
-      if(dt&&[o,h,l,c].every(Number.isFinite)&&h>=l)all.push({t:dt,o,h,l,c,v:map.volume>=0?+r[map.volume]||0:0}); else bad++;
-    }
+    if(map.open>=0&&map.high>=0&&map.low>=0&&map.close>=0)start=1;else map={datetime:0,date:-1,clock:-1,open:1,high:2,low:3,close:4,volume:5};
+    for(let i=start;i<lines.length;i++){const r=splitCsvLine(lines[i]);const dt=map.datetime>=0?parseDate(r[map.datetime]):parseDate(`${r[map.date]} ${r[map.clock]}`);const o=+r[map.open],h=+r[map.high],l=+r[map.low],c=+r[map.close];if(dt&&[o,h,l,c].every(Number.isFinite)&&h>=l)all.push({t:dt,o,h,l,c,v:map.volume>=0?+r[map.volume]||0:0});else bad++}
     await breathe();
   }
-  all.sort((a,b)=>a.t-b.t);
-  const uniq=[];let last=-1;
-  for(const b of all){const k=b.t.getTime();if(k!==last){uniq.push(b);last=k}}
-  return{bars:uniq,totalRows,bad:bad+(all.length-uniq.length)};
+  all.sort((a,b)=>a.t-b.t);const uniq=[];let last=-1;for(const b of all){const k=b.t.getTime();if(k!==last){uniq.push(b);last=k}else bad++}
+  return{bars:uniq,bad};
 }
-function ema(vals,p){
-  const out=new Float64Array(vals.length);const k=2/(p+1);let x=vals[0]||0;
-  for(let i=0;i<vals.length;i++){x=i?vals[i]*k+x*(1-k):vals[i];out[i]=x}return out
+function ema(vals,p){const out=new Float64Array(vals.length),k=2/(p+1);let x=vals[0]||0;for(let i=0;i<vals.length;i++){x=i?vals[i]*k+x*(1-k):vals[i];out[i]=x}return out}
+function rsi(vals,p=14){const out=new Float64Array(vals.length);let g=0,l=0;for(let i=1;i<vals.length;i++){const d=vals[i]-vals[i-1],u=Math.max(d,0),dn=Math.max(-d,0);if(i<=p){g+=u;l+=dn;if(i===p){g/=p;l/=p}}else{g=(g*(p-1)+u)/p;l=(l*(p-1)+dn)/p}out[i]=i<p?50:(l===0?100:100-100/(1+g/l))}return out}
+function atr(b,p=14){const out=new Float64Array(b.length);let x=0;for(let i=0;i<b.length;i++){const tr=i?Math.max(b[i].h-b[i].l,Math.abs(b[i].h-b[i-1].c),Math.abs(b[i].l-b[i-1].c)):b[i].h-b[i].l;x=i?((x*(p-1)+tr)/p):tr;out[i]=x}return out}
+function rollingStats(vals,p){const mean=new Float64Array(vals.length),sd=new Float64Array(vals.length);let s=0,s2=0;for(let i=0;i<vals.length;i++){s+=vals[i];s2+=vals[i]*vals[i];if(i>=p){s-=vals[i-p];s2-=vals[i-p]*vals[i-p]}const n=Math.min(i+1,p),m=s/n;mean[i]=m;sd[i]=Math.sqrt(Math.max(0,s2/n-m*m))}return{mean,sd}}
+function binned(v,cuts,labels){for(let i=0;i<cuts.length;i++)if(v<cuts[i])return labels[i];return labels[labels.length-1]}
+function session(d){const h=d.getUTCHours();if(h>=8&&h<16)return"Tokyo";if(h>=16&&h<21)return"London";if(h>=21||h<6)return"NewYork";return"Off"}
+function weekday(d){return["Sun","Mon","Tue","Wed","Thu","Fri","Sat"][d.getUTCDay()]}
+function buildFeatures(bars){
+  const c=bars.map(x=>x.c),e8=ema(c,8),e30=ema(c,30),r=rsi(c,14),a=atr(bars,14),bb=rollingStats(c,20),rows=[];
+  const horizon=+$("horizon").value,stride=+$("stride").value,spread=+$("spread").value||0,slip=+$("slippage").value||0,cost=spread+slip;
+  for(let i=40;i<bars.length-horizon;i+=stride){
+    if(STATE.cancel)break;
+    let hi=-Infinity,lo=Infinity;for(let j=i-19;j<=i;j++){hi=Math.max(hi,bars[j].h);lo=Math.min(lo,bars[j].l)}
+    const trend=(e8[i]-e30[i])/PIP,mom=(c[i]-c[i-5])/PIP,atrp=a[i]/PIP,z=bb.sd[i]?(c[i]-bb.mean[i])/bb.sd[i]:0,rpos=hi>lo?(c[i]-lo)/(hi-lo):.5,body=(bars[i].c-bars[i].o)/PIP;
+    const ret=(c[i+horizon]-c[i])/PIP;
+    const f={};
+    if($("fTrend").checked)f.Trend=binned(trend,[-2,-.5,.5,2],["StrongDown","Down","Flat","Up","StrongUp"]);
+    if($("fRsi").checked)f.RSI=binned(r[i],[30,40,50,60,70],["0-30","30-40","40-50","50-60","60-70","70-100"]);
+    if($("fAtr").checked)f.ATR=binned(atrp,[1.5,2.5,4,6],["VeryLow","Low","Mid","High","VeryHigh"]);
+    if($("fMomentum").checked)f.Momentum=binned(mom,[-3,-1,1,3],["StrongDown","Down","Flat","Up","StrongUp"]);
+    if($("fBollinger").checked)f.Bollinger=binned(z,[-2,-1,0,1,2],["Below-2","-2--1","-1-0","0-1","1-2","Above2"]);
+    if($("fRange").checked)f.RangePos=binned(rpos,[.2,.4,.6,.8],["Bottom","LowMid","Middle","HighMid","Top"]);
+    if($("fBody").checked)f.Body=binned(body,[-2,-.5,.5,2],["StrongBear","Bear","Small","Bull","StrongBull"]);
+    if($("fSession").checked)f.Session=session(bars[i].t);
+    if($("fWeekday").checked)f.Weekday=weekday(bars[i].t);
+    rows.push({i,t:bars[i].t,price:c[i],ret,longNet:ret-cost,shortNet:-ret-cost,f});
+  }
+  return rows;
 }
-function rsi(vals,p=14){
-  const out=new Float64Array(vals.length);let g=0,l=0;
-  for(let i=1;i<vals.length;i++){const d=vals[i]-vals[i-1],up=Math.max(d,0),dn=Math.max(-d,0);if(i<=p){g+=up;l+=dn;if(i===p){g/=p;l/=p}}else{g=(g*(p-1)+up)/p;l=(l*(p-1)+dn)/p}out[i]=i<p?50:(l===0?100:100-100/(1+g/l))}
-  return out
+function statFromValues(values){
+  let win=0,loss=0,sum=0,wins=0;for(const v of values){sum+=v;if(v>0){win+=v;wins++}else loss+=-v}
+  return{n:values.length,pf:loss?win/loss:(win?99:0),avg:values.length?sum/values.length:0,winRate:values.length?wins/values.length*100:0,sum};
 }
-function atr(bars,p=14){
-  const tr=new Float64Array(bars.length),out=new Float64Array(bars.length);let x=0;
-  for(let i=0;i<bars.length;i++){tr[i]=i?Math.max(bars[i].h-bars[i].l,Math.abs(bars[i].h-bars[i-1].c),Math.abs(bars[i].l-bars[i-1].c)):bars[i].h-bars[i].l;x=i?((x*(p-1)+tr[i])/p):tr[i];out[i]=x}
-  return out
-}
-function stddev(vals,i,p){
-  if(i<p)return 0;let s=0,s2=0;for(let j=i-p+1;j<=i;j++){s+=vals[j];s2+=vals[j]*vals[j]}const m=s/p;return Math.sqrt(Math.max(0,s2/p-m*m))
-}
-function configList(){
-  const fam=[];if($("useTrend").checked)fam.push("TrendPullback");if($("useBreakout").checked)fam.push("MicroBreakout");if($("useRange").checked)fam.push("RangeReversion");
-  const sLs=nums("slList"),tPs=nums("tpList"),holds=nums("holdList"),cds=nums("cooldownList"),efs=nums("emaFastList"),ess=nums("emaSlowList"),rs=nums("rsiList"),bos=nums("breakoutList");
-  const atrSls=nums("atrSlList"),atrTps=nums("atrTpList"),minAtrs=nums("minAtrList");
-  const exitModes=selectedValues("exitModes"),sessions=selectedValues("sessionList"),weekdays=selectedValues("weekdayList");
-  const out=[];
-  for(const f of fam){
-    const variants=f==="TrendPullback"?efs.flatMap(ef=>ess.filter(es=>es>ef).map(es=>({ef,es}))):
-      f==="MicroBreakout"?bos.map(bo=>({bo})):rs.map(rv=>({rv}));
-    for(const v of variants)for(const exitMode of exitModes)for(const hold of holds)for(const cd of cds)for(const session of sessions)for(const weekday of weekdays){
-      if(exitMode==="ATR"){
-        for(const atrSl of atrSls)for(const atrTp of atrTps)for(const minAtr of minAtrs){
-          const id=`${f}-${JSON.stringify(v)}-ATRSL${atrSl}-ATRTP${atrTp}-MINATR${minAtr}-H${hold}-C${cd}-${session}-${weekday}`;
-          out.push({id,family:f,...v,exitMode,atrSl,atrTp,minAtr,hold,cd,session,weekday});
-        }
-      }else{
-        for(const sl of sLs)for(const tp of tPs){
-          const id=`${f}-${JSON.stringify(v)}-${exitMode}-SL${sl}-TP${tp}-H${hold}-C${cd}-${session}-${weekday}`;
-          out.push({id,family:f,...v,exitMode,sl,tp,hold,cd,session,weekday});
-        }
-      }
+function keyFor(rule,row){return rule.map(k=>`${k}=${row.f[k]}`).join(" & ")}
+function discover(rows,split){
+  const keys=Object.keys(rows[0]?.f||{}),rules=[];
+  if($("singleRules").checked)for(const k of keys)rules.push([k]);
+  if($("pairRules").checked)for(let i=0;i<keys.length;i++)for(let j=i+1;j<keys.length;j++)rules.push([keys[i],keys[j]]);
+  const train=rows.slice(0,split),test=rows.slice(split),minN=+$("minSamples").value||1000,max=+$("maxCandidates").value||500;
+  const agg=new Map();
+  for(const rule of rules){
+    for(const row of train){
+      const k=rule.join("|")+"::"+keyFor(rule,row);
+      let a=agg.get(k);if(!a){a={rule,key:keyFor(rule,row),long:[],short:[]};agg.set(k,a)}
+      a.long.push(row.longNet);a.short.push(row.shortNet);
     }
   }
-  const max=Math.max(1,+$("maxCandidates").value||120);
-  if(out.length<=max)return out;
-  const step=out.length/max,res=[];for(let i=0;i<max;i++)res.push(out[Math.floor(i*step)]);return res
-}
-function signalAt(c,i,bars,closes,features){
-  if(i<60)return 0;
-  if(c.family==="TrendPullback"){
-    const fast=features.ema[c.ef][i],slow=features.ema[c.es][i],prev=closes[i-1],now=closes[i];
-    if(fast>slow&&prev<=fast&&now>fast)return 1;
-    if(fast<slow&&prev>=fast&&now<fast)return -1;
-  }else if(c.family==="MicroBreakout"){
-    let hi=-Infinity,lo=Infinity;for(let j=i-c.bo;j<i;j++){hi=Math.max(hi,bars[j].h);lo=Math.min(lo,bars[j].l)}
-    if(closes[i]>hi)return 1;if(closes[i]<lo)return -1;
-  }else{
-    const r=features.rsi[i],sd=stddev(closes,i,20),mid=features.ema20[i];
-    if(r<c.rv&&closes[i]<mid-2*sd)return 1;
-    if(r>100-c.rv&&closes[i]>mid+2*sd)return -1;
+  let cand=[];
+  for(const a of agg.values()){
+    if(a.long.length>=minN){const s=statFromValues(a.long);cand.push({...a,side:"LONG",train:s})}
+    if(a.short.length>=minN){const s=statFromValues(a.short);cand.push({...a,side:"SHORT",train:s})}
   }
-  return 0;
-}
-function simulate(c,bars,closes,features,spread,slip){
-  const trades=[];let lastExit=-1;
-  for(let i=60;i<bars.length-1;i++){
-    if(STATE.cancel)break;if(lastExit>=0&&(i-lastExit)<c.cd)continue;
-    if(!sessionMatch(c.session,bars[i].t)||!weekdayMatch(c.weekday,bars[i].t))continue;
-    const atrPips=features.atr[i]/PIP;
-    if((c.minAtr||0)>atrPips)continue;
-    const side=signalAt(c,i,bars,closes,features);if(!side)continue;
-    const entryI=i+1,entry=bars[entryI].o+side*(spread+slip)*PIP/2;
-    const slPips=c.exitMode==="ATR"?Math.max(0.5,atrPips*c.atrSl):c.sl;
-    const tpPips=c.exitMode==="ATR"?Math.max(0.5,atrPips*c.atrTp):c.tp;
-    let exitI=Math.min(bars.length-1,entryI+c.hold),reason="TimeExit",exit=bars[exitI].c;
-    for(let j=entryI;j<=Math.min(bars.length-1,entryI+c.hold);j++){
-      const profitHit=side>0?bars[j].h>=entry+tpPips*PIP:bars[j].l<=entry-tpPips*PIP;
-      const stopHit=side>0?bars[j].l<=entry-slPips*PIP:bars[j].h>=entry+slPips*PIP;
-      if(stopHit){exitI=j;exit=entry-side*slPips*PIP;reason="SL";break}
-      if(profitHit){exitI=j;exit=entry+side*tpPips*PIP;reason="TP";break}
-      if(c.exitMode==="RSI_RETURN"){
-        const rv=features.rsi[j];
-        if((side>0&&rv>=50)||(side<0&&rv<=50)){exitI=j;exit=bars[j].c;reason="RSIReturn";break}
-      }
-      if(c.exitMode==="EMA_REVERSE"){
-        const ef=c.ef||8,es=c.es||30,fast=features.ema[ef]?.[j]??features.ema20[j],slow=features.ema[es]?.[j]??features.ema20[j];
-        if((side>0&&fast<slow)||(side<0&&fast>slow)){exitI=j;exit=bars[j].c;reason="EMAReverse";break}
-      }
+  cand=cand.filter(x=>x.train.avg>0).sort((a,b)=>(b.train.avg*b.train.n)-(a.train.avg*a.train.n)).slice(0,max);
+  const testDays=new Set(test.map(x=>x.t.toISOString().slice(0,10))).size||1;
+  for(const c of cand){
+    const vals=[],samples=[],yearly={};
+    for(const row of test){
+      if(keyFor(c.rule,row)!==c.key)continue;
+      const v=c.side==="LONG"?row.longNet:row.shortNet;vals.push(v);
+      if(samples.length<10000)samples.push({...row,net:v});
+      const y=row.t.getFullYear();yearly[y]=(yearly[y]||0)+v;
     }
-    const gross=side*(exit-entry)/PIP,net=gross-spread-slip;
-    let mfe=-Infinity,mae=Infinity;
-    for(let j=entryI;j<=exitI;j++){const fav=side>0?(bars[j].h-entry)/PIP:(entry-bars[j].l)/PIP;const adv=side>0?(bars[j].l-entry)/PIP:(entry-bars[j].h)/PIP;mfe=Math.max(mfe,fav);mae=Math.min(mae,adv)}
-    trades.push({entryTime:bars[entryI].t,exitTime:bars[exitI].t,side:side>0?"BUY":"SELL",entry,exit,reason,gross,net,mfe,mae,hold:exitI-entryI,family:c.family,id:c.id,slPips,tpPips,exitMode:c.exitMode,session:c.session,weekday:c.weekday});
-    lastExit=exitI;i=exitI;
+    const s=statFromValues(vals),positiveYears=Object.values(yearly).filter(v=>v>0).length,yrN=Object.keys(yearly).length;
+    c.test={...s,tpd:s.n/testDays,yearly,positiveYearRate:yrN?positiveYears/yrN:0,samples};
+    c.score=Math.max(0,Math.min(2,s.pf)-1)*35+Math.max(0,Math.min(5,s.avg))*12+Math.min(1,c.test.tpd/(+$("minTradesDay").value||10))*25+c.test.positiveYearRate*20;
   }
-  return scoreCandidate(c,trades)
+  return cand.sort((a,b)=>b.score-a.score);
 }
-function scoreCandidate(c,trades){
-  let grossWin=0,grossLoss=0,eq=0,peak=0,maxDD=0,wins=0;
-  const y={};
-  for(const t of trades){eq+=t.net;peak=Math.max(peak,eq);maxDD=Math.max(maxDD,peak-eq);if(t.net>0){grossWin+=t.net;wins++}else grossLoss+=-t.net;const yr=t.entryTime.getFullYear();y[yr]=(y[yr]||0)+t.net}
-  const pf=grossLoss?grossWin/grossLoss:(grossWin?99:0),tpd=STATE.days?trades.length/STATE.days:0,years=Object.values(y),positiveYears=years.filter(v=>v>0).length;
-  const stability=years.length?positiveYears/years.length:0,net=eq;
-  const freqTarget=+$("minTradesDay").value||10;
-  const score=(Math.min(tpd/freqTarget,1)*35)+(Math.min(pf/1.5,1)*30)+(stability*20)+(Math.max(0,1-maxDD/Math.max(100,Math.abs(net)+100))*15);
-  return{config:c,trades,total:trades.length,tpd,pf,net,maxDD,winRate:trades.length?wins/trades.length*100:0,stability,yearly:y,score}
-}
-function markPareto(list){
-  for(const a of list){
-    a.pareto=true;
-    for(const b of list){
-      if(a===b)continue;
-      const dominates=(b.pf>=a.pf&&b.tpd>=a.tpd&&b.maxDD<=a.maxDD)&&
-        (b.pf>a.pf||b.tpd>a.tpd||b.maxDD<a.maxDD);
-      if(dominates){a.pareto=false;break}
-    }
-  }
-}
+function renderData(b){const days=new Set(b.map(x=>x.t.toISOString().slice(0,10)));STATE.days=days.size;let exp=b.length>1?Math.round((b.at(-1).t-b[0].t)/60000)+1:0;const v=[["Bars",b.length.toLocaleString()],["期間",b.length?`${b[0].t.toISOString()} ～ ${b.at(-1).t.toISOString()}`:"--"],["営業日",days.size],["欠損推定",Math.max(0,exp-b.length).toLocaleString()]];$("dataSummary").innerHTML=v.map(([a,x])=>`<div class="stat"><span>${a}</span><strong>${x}</strong></div>`).join("")}
 function renderRanking(list){
-  const minPf=+$("minPf").value||0,minT=+$("minTradesDay").value||0,limit=Math.max(1,+$("displayLimit").value||100);
-  const paretoOnly=$("paretoOnly").value==="YES";
-  let shown=list.filter(x=>x.pf>=minPf);
-  if(paretoOnly)shown=shown.filter(x=>x.pareto);
-  shown=shown.sort((a,b)=>b.score-a.score).slice(0,limit);
-  $("ranking").innerHTML=`<table><thead><tr><th>#</th><th>Family</th><th>設定</th><th>Trades</th><th>/Day</th><th>PF</th><th>Net pips</th><th>Win%</th><th>MaxDD</th><th>Positive Years</th><th>Score</th><th>Pareto</th><th>Frequency</th></tr></thead><tbody>${shown.map((x,i)=>`<tr><td>${i+1}</td><td>${x.config.family}</td><td>${x.config.id}</td><td>${x.total}</td><td>${x.tpd.toFixed(2)}</td><td>${x.pf.toFixed(2)}</td><td>${x.net.toFixed(1)}</td><td>${x.winRate.toFixed(1)}</td><td>${x.maxDD.toFixed(1)}</td><td>${(x.stability*100).toFixed(0)}%</td><td>${x.score.toFixed(1)}</td><td class="${x.pareto?"good":""}">${x.pareto?"YES":"-"}</td><td class="${x.tpd>=minT?"good":"warn"}">${x.tpd>=minT?"PASS":"BELOW"}</td></tr>`).join("")}</tbody></table>`;
+  const minPf=+$("minPf").value||0,minT=+$("minTradesDay").value||0,limit=+$("displayLimit").value||100;
+  const shown=list.filter(x=>x.test.pf>=minPf).slice(0,limit);
+  $("ranking").innerHTML=`<table><thead><tr><th>#</th><th>Direction</th><th>Pattern</th><th>Train N</th><th>Train PF</th><th>Train Avg</th><th>OOS N</th><th>OOS /Day</th><th>OOS PF</th><th>OOS Avg</th><th>OOS Win%</th><th>Positive Years</th><th>Score</th><th>Frequency</th></tr></thead><tbody>${shown.map((x,i)=>`<tr><td>${i+1}</td><td>${x.side}</td><td>${x.key}</td><td>${x.train.n}</td><td>${x.train.pf.toFixed(2)}</td><td>${x.train.avg.toFixed(3)}</td><td>${x.test.n}</td><td>${x.test.tpd.toFixed(2)}</td><td>${x.test.pf.toFixed(2)}</td><td>${x.test.avg.toFixed(3)}</td><td>${x.test.winRate.toFixed(1)}</td><td>${(x.test.positiveYearRate*100).toFixed(0)}%</td><td>${x.score.toFixed(1)}</td><td class="${x.test.tpd>=minT?"good":"warn"}">${x.test.tpd>=minT?"PASS":"BELOW"}</td></tr>`).join("")}</tbody></table>`;
 }
 function renderBest(b){
-  if(!b){$("bestCards").innerHTML="候補なし";return}
-  $("bestCards").innerHTML=[
-    ["Family",b.config.family],["Trades/Day",b.tpd.toFixed(2)],["PF",b.pf.toFixed(2)],["Net pips",b.net.toFixed(1)],
-    ["Max DD pips",b.maxDD.toFixed(1)],["Win Rate",b.winRate.toFixed(1)+"%"],["Positive Years",(b.stability*100).toFixed(0)+"%"],["Score",b.score.toFixed(1)]
-  ].map(([a,v])=>`<div class="stat"><span>${a}</span><strong>${v}</strong></div>`).join("");
-  $("yearly").innerHTML=`<table><thead><tr><th>Year</th><th>Net pips</th><th>Result</th></tr></thead><tbody>${Object.entries(b.yearly).map(([y,v])=>`<tr><td>${y}</td><td>${v.toFixed(1)}</td><td class="${v>0?"good":"bad"}">${v>0?"PLUS":"MINUS"}</td></tr>`).join("")}</tbody></table>`;
-}
-function renderData(parsed){
-  const b=parsed.bars,days=new Set(b.map(x=>x.t.toISOString().slice(0,10)));
-  STATE.days=days.size;
-  let expected=0;if(b.length>1)expected=Math.round((b[b.length-1].t-b[0].t)/60000)+1;
-  const vals=[["Bars",b.length.toLocaleString()],["期間",b.length?`${b[0].t.toISOString()} ～ ${b[b.length-1].t.toISOString()}`:"--"],["営業日",days.size],["欠損推定",Math.max(0,expected-b.length).toLocaleString()]];
-  $("dataSummary").innerHTML=vals.map(([a,v])=>`<div class="stat"><span>${a}</span><strong>${v}</strong></div>`).join("");
+  if(!b){$("bestCards").innerHTML="有効候補なし";return}
+  const v=[["方向",b.side],["Pattern",b.key],["OOS Trades/Day",b.test.tpd.toFixed(2)],["OOS PF",b.test.pf.toFixed(2)],["OOS Avg pips",b.test.avg.toFixed(3)],["OOS Win Rate",b.test.winRate.toFixed(1)+"%"],["Positive Years",(b.test.positiveYearRate*100).toFixed(0)+"%"],["Score",b.score.toFixed(1)]];
+  $("bestCards").innerHTML=v.map(([a,x])=>`<div class="stat"><span>${a}</span><strong>${x}</strong></div>`).join("");
+  $("yearly").innerHTML=`<table><thead><tr><th>Year</th><th>OOS Net pips</th><th>Result</th></tr></thead><tbody>${Object.entries(b.test.yearly).map(([y,n])=>`<tr><td>${y}</td><td>${n.toFixed(1)}</td><td class="${n>0?"good":"bad"}">${n>0?"PLUS":"MINUS"}</td></tr>`).join("")}</tbody></table>`;
 }
 async function run(){
   if(!STATE.files.length){status("CSVを選択してください。",0);return}
   STATE.cancel=false;$("runBtn").disabled=true;$("cancelBtn").disabled=false;
   try{
-    log("Origin Research開始");status("CSVを解析中...",3);
-    const parsed=await parseFiles(STATE.files);STATE.bars=parsed.bars;renderData(parsed);
-    if(parsed.bars.length<1000)throw new Error("有効なM1バーが1,000本未満です。");
-    const closes=parsed.bars.map(b=>b.c),cfgs=configList(),periods=new Set([20]);
-    cfgs.forEach(c=>{if(c.ef)periods.add(c.ef);if(c.es)periods.add(c.es)});
-    periods.add(5);periods.add(8);periods.add(12);periods.add(20);periods.add(30);periods.add(50);const features={ema:{},rsi:rsi(closes,14),atr:atr(parsed.bars,14)};
-    for(const p of periods)features.ema[p]=ema(closes,p);features.ema20=features.ema[20];
-    log(`有効Bars=${parsed.bars.length.toLocaleString()} / 候補=${cfgs.length}`);
-    const spread=+$("spread").value||0,slip=+$("slippage").value||0,res=[];
-    for(let i=0;i<cfgs.length;i++){
-      if(STATE.cancel)break;
-      status(`候補探索 ${i+1}/${cfgs.length}`,20+75*(i+1)/cfgs.length);
-      res.push(simulate(cfgs[i],parsed.bars,closes,features,spread,slip));
-      if(i%3===0)await breathe();
-    }
-    markPareto(res);res.sort((a,b)=>b.score-a.score);STATE.candidates=res;const target=+$("minTradesDay").value||10;const passing=res.filter(x=>x.tpd>=target);STATE.best=(passing.length?passing:res)[0]||null;
-    renderRanking(res);renderBest(STATE.best);
-    ["downloadRanking","downloadTrades","downloadSummary"].forEach(id=>$(id).disabled=!STATE.best);
-    status(STATE.cancel?"中止しました。途中結果を表示しています。":"完了しました。",100);
-    log(`完了。Best=${STATE.best?.config.id||"none"} PF=${STATE.best?.pf.toFixed(2)||"--"} Trades/Day=${STATE.best?.tpd.toFixed(2)||"--"}`);
-  }catch(e){status(`エラー: ${e.message}`,0);log(`ERROR ${e.stack||e.message}`)}
+    log("Discovery開始");status("CSV解析中",3);
+    const p=await parseFiles(STATE.files);STATE.bars=p.bars;renderData(p.bars);if(p.bars.length<5000)throw new Error("有効バーが5,000本未満です。");
+    status("特徴量と将来ラベルを生成中",20);STATE.rows=buildFeatures(p.bars);await breathe();
+    const ratio=Math.max(.5,Math.min(.9,+$("trainRatio").value||.8));STATE.split=Math.floor(STATE.rows.length*ratio);
+    log(`Feature rows=${STATE.rows.length.toLocaleString()} Train=${STATE.split.toLocaleString()} Test=${(STATE.rows.length-STATE.split).toLocaleString()}`);
+    status("パターン探索中",55);STATE.candidates=discover(STATE.rows,STATE.split);await breathe();
+    const target=+$("minTradesDay").value||10,minPf=+$("minPf").value||1;
+    STATE.best=STATE.candidates.find(x=>x.test.tpd>=target&&x.test.pf>=minPf)||STATE.candidates[0]||null;
+    renderRanking(STATE.candidates);renderBest(STATE.best);
+    ["downloadRanking","downloadSamples","downloadSummary"].forEach(id=>$(id).disabled=!STATE.best);
+    status("完了",100);log(`Candidates=${STATE.candidates.length} Best=${STATE.best?STATE.best.side+" "+STATE.best.key:"none"}`);
+  }catch(e){status("エラー: "+e.message,0);log("ERROR "+(e.stack||e.message))}
   finally{$("runBtn").disabled=false;$("cancelBtn").disabled=true}
 }
 function rankingRows(){
-  const h=["Rank","Family","CandidateId","ExitMode","Session","WeekdayFilter","Trades","TradesPerDay","PF","NetPips","WinRate","MaxDDPips","PositiveYearRate","Score","Pareto"];
-  return [h,...STATE.candidates.map((x,i)=>[i+1,x.config.family,x.config.id,x.config.exitMode,x.config.session,x.config.weekday,x.total,x.tpd.toFixed(4),x.pf.toFixed(4),x.net.toFixed(2),x.winRate.toFixed(2),x.maxDD.toFixed(2),x.stability.toFixed(4),x.score.toFixed(2),x.pareto?"YES":"NO"])]
+  const h=["Rank","Direction","Pattern","TrainSamples","TrainPF","TrainAvgPips","OOSSamples","OOSTradesPerDay","OOSPF","OOSAvgPips","OOSWinRate","OOSPositiveYearRate","Score"];
+  return[h,...STATE.candidates.map((x,i)=>[i+1,x.side,x.key,x.train.n,x.train.pf.toFixed(4),x.train.avg.toFixed(4),x.test.n,x.test.tpd.toFixed(4),x.test.pf.toFixed(4),x.test.avg.toFixed(4),x.test.winRate.toFixed(2),x.test.positiveYearRate.toFixed(4),x.score.toFixed(2)])]
 }
-function tradeRows(){
-  if(!STATE.best)return [];
-  const h=["TradeId","EntryTime","ExitTime","Side","EntryPrice","ExitPrice","SpreadPips","SlippagePips","EntryFamily","CandidateId","ExitMode","Session","WeekdayFilter","SLPips","TPPips","ExitReason","HoldingMinutes","GrossPips","NetPips","MFE","MAE","Year","Month"];
-  const sp=+$("spread").value||0,sl=+$("slippage").value||0;
-  return [h,...STATE.best.trades.map((t,i)=>[i+1,t.entryTime.toISOString(),t.exitTime.toISOString(),t.side,t.entry.toFixed(3),t.exit.toFixed(3),sp,sl,t.family,t.id,t.exitMode,t.session,t.weekday,t.slPips.toFixed(2),t.tpPips.toFixed(2),t.reason,t.hold,t.gross.toFixed(2),t.net.toFixed(2),t.mfe.toFixed(2),t.mae.toFixed(2),t.entryTime.getFullYear(),t.entryTime.getMonth()+1])]
+function sampleRows(){
+  if(!STATE.best)return[];
+  const h=["SampleId","Time","Direction","Pattern","Price","FutureReturnPips","NetPips","Year","Month"];
+  return[h,...STATE.best.test.samples.map((r,i)=>[i+1,r.t.toISOString(),STATE.best.side,STATE.best.key,r.price.toFixed(3),r.ret.toFixed(3),r.net.toFixed(3),r.t.getFullYear(),r.t.getMonth()+1])]
 }
 function summaryJson(){
-  return{version:"ScalpLayer Origin Research Simulator v1.1 Explorer Edition",generatedAt:new Date().toISOString(),sourceFiles:STATE.files.map(f=>f.name),bars:STATE.bars.length,businessDays:STATE.days,goal:{minimumAverageTradesPerDay:+$("minTradesDay").value||10},costs:{spreadPips:+$("spread").value||0,slippagePips:+$("slippage").value||0},best:STATE.best?{candidateId:STATE.best.config.id,family:STATE.best.config.family,trades:STATE.best.total,tradesPerDay:STATE.best.tpd,pf:STATE.best.pf,netPips:STATE.best.net,maxDrawdownPips:STATE.best.maxDD,winRate:STATE.best.winRate,positiveYearRate:STATE.best.stability,yearly:STATE.best.yearly}:null,notes:["Research-only simulator","Same-bar SL/TP uses conservative SL-first","ATR, Exit Engine, Session, weekday and Pareto exploration added in v1.1","Browser large-file execution depends on available memory"]}
+  return{version:"ScalpLayer Origin Discovery Engine v1.0",generatedAt:new Date().toISOString(),sourceFiles:STATE.files.map(f=>f.name),bars:STATE.bars.length,featureRows:STATE.rows.length,trainRows:STATE.split,testRows:STATE.rows.length-STATE.split,horizonMinutes:+$("horizon").value,costs:{spreadPips:+$("spread").value||0,slippagePips:+$("slippage").value||0},goal:{minimumAverageTradesPerDay:+$("minTradesDay").value||10,minimumOOSPF:+$("minPf").value||1},best:STATE.best?{direction:STATE.best.side,pattern:STATE.best.key,train:STATE.best.train,oos:{samples:STATE.best.test.n,tradesPerDay:STATE.best.test.tpd,pf:STATE.best.test.pf,averagePips:STATE.best.test.avg,winRate:STATE.best.test.winRate,positiveYearRate:STATE.best.test.positiveYearRate,yearly:STATE.best.test.yearly},score:STATE.best.score}:null,notes:["Research-only discovery engine","Features use current and past bars only","OOS uses the chronological final segment","Profit factor is calculated from future-close net returns, not tick-accurate exits","A discovered pattern must be re-tested in a dedicated simulator before EA implementation"]}
 }
 </script>
 </body>
