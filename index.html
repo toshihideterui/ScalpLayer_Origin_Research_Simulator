@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>ScalpLayer Origin Evolution Engine v1.0</title>
+<title>ScalpLayer Origin Evolution Engine v1.1 Diagnostic Edition</title>
 <style>
 :root{--bg:#05070d;--panel:#10131c;--line:rgba(212,175,55,.28);--gold:#d4af37;--gold2:#f7dc75;--text:#f8fafc;--muted:#b8c0cc;--green:#22c55e;--red:#ef4444;--cyan:#38bdf8}
 *{box-sizing:border-box}body{margin:0;min-height:100vh;padding:18px;color:var(--text);font-family:system-ui,-apple-system,"Segoe UI",sans-serif;background:radial-gradient(circle at top left,rgba(212,175,55,.17),transparent 30%),linear-gradient(180deg,#141925,var(--bg) 48%);line-height:1.55}
@@ -18,6 +18,7 @@ button{border:0;background:linear-gradient(135deg,var(--gold),#9f7d1d);color:#11
 .tableWrap{overflow:auto;max-height:600px}table{width:100%;border-collapse:collapse;min-width:1500px}th,td{border-bottom:1px solid rgba(148,163,184,.15);padding:8px;text-align:left;font-size:12px;white-space:nowrap}th{position:sticky;top:0;background:#080b12;z-index:1}
 .good{color:#bbf7d0}.bad{color:#fecaca}.warn{color:#fde68a}.pill{display:inline-block;padding:4px 9px;border-radius:999px;border:1px solid var(--line);background:rgba(212,175,55,.12);color:#f7e6a5}
 .log{height:180px;overflow:auto;background:#04060a;border-radius:10px;padding:12px;font-family:ui-monospace,Consolas,monospace;font-size:12px;white-space:pre-wrap}
+.diagGrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}.diag{padding:12px;border:1px solid rgba(56,189,248,.25);background:rgba(56,189,248,.06);border-radius:10px}.diag span{display:block;color:var(--muted);font-size:12px}.diag strong{font-size:18px}.reason{color:#fca5a5;font-size:12px}.ok{color:#86efac}
 @media(max-width:760px){body{padding:10px}.hero h1{font-size:24px}.grid{grid-template-columns:1fr}.card{padding:14px}}
 </style>
 </head>
@@ -25,7 +26,7 @@ button{border:0;background:linear-gradient(135deg,var(--gold),#9f7d1d);color:#11
 <main class="wrap">
 <section class="hero">
 <div class="pill">BEAM SEARCH + WALK-FORWARD + ROBUSTNESS</div>
-<h1>ScalpLayer Origin Evolution Engine v1.0</h1>
+<h1>ScalpLayer Origin Evolution Engine v1.1 Diagnostic Edition</h1>
 <p class="muted">有望な単独条件から始め、最大5条件まで段階的に育て、年別・OOS・複数スプレッドで生き残るルールを探す研究専用エンジン</p>
 </section>
 
@@ -87,19 +88,37 @@ button{border:0;background:linear-gradient(135deg,var(--gold),#9f7d1d);color:#11
 </section>
 
 <section class="card">
-<h2>4. Evolution Ranking</h2>
+<h2>4. Diagnostic Pipeline</h2>
+<p class="small">候補がどの段階で脱落したかを世代別に表示します。ランキング0件でも診断結果と落選上位候補を残します。</p>
+<div class="checks">
+<label><input id="strictTrainPositive" type="checkbox" checked>Train平均利益&gt;0</label>
+<label><input id="strictMinTrain" type="checkbox" checked>最低Trainサンプル</label>
+<label><input id="strictMinOos" type="checkbox">最低OOSサンプル</label>
+<label><input id="strictOosPf" type="checkbox">最低OOS PF</label>
+<label><input id="strictFrequency" type="checkbox">最低頻度</label>
+</div>
+<div class="toolbar">
+<div><label>最低OOSサンプル</label><input id="minOosSamples" type="number" value="30"></div>
+<div><label>診断用落選候補保持数</label><input id="rejectedKeep" type="number" value="200"></div>
+</div>
+<div id="diagnostics" class="diagGrid"></div>
+<div id="rejectedTable" class="tableWrap" style="margin-top:12px"></div>
+</section>
+
+<section class="card">
+<h2>5. Evolution Ranking</h2>
 <p class="small">ScoreはOOS PF、平均pips、頻度、年別安定性、Walk-forward安定性、Spread耐性を統合します。</p>
 <div id="ranking" class="tableWrap">未実行</div>
 </section>
 
 <section class="card">
-<h2>5. Best Survivor</h2>
+<h2>6. Best Survivor</h2>
 <div id="bestCards" class="grid"></div>
 <div id="robustness" class="tableWrap" style="margin-top:12px"></div>
 </section>
 
 <section class="card">
-<h2>6. Export</h2>
+<h2>7. Export</h2>
 <div class="toolbar">
 <button id="downloadRanking" disabled>EvolutionRanking.csv</button>
 <button id="downloadSummary" disabled>EvolutionSummary.json</button>
@@ -115,12 +134,12 @@ button{border:0;background:linear-gradient(135deg,var(--gold),#9f7d1d);color:#11
 <script>
 "use strict";
 const $=id=>document.getElementById(id),PIP=.01;
-let S={files:[],bars:[],rows:[],candidates:[],best:null,cancel:false,days:0,split:0};
+let S={files:[],bars:[],rows:[],candidates:[],rejected:[],diagnostics:[],best:null,cancel:false,days:0,split:0};
 $("csvFiles").addEventListener("change",e=>{S.files=[...e.target.files];$("fileInfo").textContent=S.files.length?S.files.map(f=>f.name).join(", "):"未選択"});
 $("runBtn").addEventListener("click",run);
 $("cancelBtn").addEventListener("click",()=>{S.cancel=true;log("中止要求")});
-$("downloadRanking").addEventListener("click",()=>downloadCsv("ScalpLayer_Origin_EvolutionRanking_v1_0.csv",rankingRows()));
-$("downloadSummary").addEventListener("click",()=>downloadText("ScalpLayer_Origin_Evolution_Summary_v1_0.json",JSON.stringify(summary(),null,2),"application/json"));
+$("downloadRanking").addEventListener("click",()=>downloadCsv("ScalpLayer_Origin_EvolutionRanking_v1_1.csv",rankingRows()));
+$("downloadSummary").addEventListener("click",()=>downloadText("ScalpLayer_Origin_Evolution_Summary_v1_1.json",JSON.stringify(summary(),null,2),"application/json"));
 
 function log(s){let e=$("log");e.textContent+=`\n[${new Date().toLocaleTimeString()}] ${s}`;e.scrollTop=e.scrollHeight}
 function status(s,p){$("status").textContent=s;$("bar").style.width=Math.max(0,Math.min(100,p))+"%"}
@@ -203,45 +222,99 @@ function scoreCandidate(c,minTPD){
   return pf*34+avg*10+freq*20+yr*14+wf*12+rob*10
 }
 function evolve(rows,split){
-  const train=rows.slice(0,split),test=rows.slice(split),atoms=allAtoms(train),maxDepth=+$("maxDepth").value,beam=+$("beamWidth").value||40,minN=+$("minSamples").value||500,minTPD=+$("minTradesDay").value||10,foldN=+$("folds").value||3;
-  const baseSpread=+$("baseSpread").value||.8,slip=+$("slippage").value||.2,cost=baseSpread+slip,spreads=$("spreadSet").value.split(",").map(Number).filter(Number.isFinite);
+  const train=rows.slice(0,split),test=rows.slice(split),atoms=allAtoms(train),
+        maxDepth=+$("maxDepth").value,beam=+$("beamWidth").value||40,
+        minN=+$("minSamples").value||500,minOos=+$("minOosSamples").value||30,
+        minTPD=+$("minTradesDay").value||10,minPf=+$("minPf").value||1,
+        foldN=+$("folds").value||3,rejectedKeep=+$("rejectedKeep").value||200;
+  const baseSpread=+$("baseSpread").value||.8,slip=+$("slippage").value||.2,
+        cost=baseSpread+slip,spreads=$("spreadSet").value.split(",").map(Number).filter(Number.isFinite);
   const testDays=new Set(test.map(r=>r.t.toISOString().slice(0,10))).size||1;
-  let survivors=[],seen=new Set(),all=[];
+  let survivors=[],seen=new Set(),all=[],rejected=[],diags=[];
+
+  const reject=(depth,side,rule,stage,reason,tr=null,te=null)=>{
+    rejected.push({depth,side,rule,stage,reason,train:tr,test:te});
+    rejected.sort((a,b)=>((b.train?.avg||-999)-(a.train?.avg||-999)));
+    if(rejected.length>rejectedKeep)rejected.length=rejectedKeep;
+  };
+
   for(let depth=1;depth<=maxDepth;depth++){
     let pool=[];
     if(depth===1){
-      for(const atom of atoms)for(const side of["LONG","SHORT"])pool.push({rule:[atom],side})
+      for(const atom of atoms)for(const side of["LONG","SHORT"])pool.push({rule:[atom],side});
     }else{
       for(const parent of survivors){
         const used=new Set(parent.rule.map(x=>x[0]));
-        for(const atom of atoms)if(!used.has(atom[0]))pool.push({rule:[...parent.rule,atom].sort((a,b)=>a[0].localeCompare(b[0])),side:parent.side})
+        for(const atom of atoms)if(!used.has(atom[0]))
+          pool.push({rule:[...parent.rule,atom].sort((a,b)=>a[0].localeCompare(b[0])),side:parent.side});
       }
     }
+
+    const d={depth,evaluated:0,duplicate:0,trainSampleFail:0,trainAvgFail:0,oosSampleFail:0,oosPfFail:0,frequencyFail:0,qualified:0,survived:0};
     const next=[];
-    for(let pi=0;pi<pool.length;pi++){
+
+    for(const p of pool){
       if(S.cancel)break;
-      const p=pool[pi],key=p.side+"|"+ruleKey(p.rule);if(seen.has(key))continue;seen.add(key);
-      const tr=evalRule(p.rule,p.side,train,cost);if(tr.n<minN||tr.avg<=0)continue;
-      const te=evalRule(p.rule,p.side,test,cost);if(te.n<Math.max(30,minN*.1))continue;
-      const yrs=yearly(p.rule,p.side,test,cost),yearVals=Object.values(yrs),posYearRate=yearVals.length?yearVals.filter(x=>x.sum>0).length/yearVals.length:0;
-      const folds=foldsEval(p.rule,p.side,test,cost,foldN),walkStability=folds.length?folds.filter(x=>x.pf>=1).length/folds.length:0;
-      const robust=spreadRobust(p.rule,p.side,test,spreads,slip),robustness=robust.length?robust.filter(x=>x.pf>=1).length/robust.length:0;
+      const key=p.side+"|"+ruleKey(p.rule);
+      if(seen.has(key)){d.duplicate++;continue}
+      seen.add(key);d.evaluated++;
+
+      const tr=evalRule(p.rule,p.side,train,cost);
+      if($("strictMinTrain").checked&&tr.n<minN){d.trainSampleFail++;reject(depth,p.side,p.rule,"Train sample",`Train N ${tr.n} < ${minN}`,tr);continue}
+      if($("strictTrainPositive").checked&&tr.avg<=0){d.trainAvgFail++;reject(depth,p.side,p.rule,"Train expectancy",`Train Avg ${tr.avg.toFixed(4)} <= 0`,tr);continue}
+
+      const te=evalRule(p.rule,p.side,test,cost);
+      if($("strictMinOos").checked&&te.n<minOos){d.oosSampleFail++;reject(depth,p.side,p.rule,"OOS sample",`OOS N ${te.n} < ${minOos}`,tr,te);continue}
+
+      const yrs=yearly(p.rule,p.side,test,cost),yearVals=Object.values(yrs),
+            posYearRate=yearVals.length?yearVals.filter(x=>x.sum>0).length/yearVals.length:0;
+      const folds=foldsEval(p.rule,p.side,test,cost,foldN),
+            walkStability=folds.length?folds.filter(x=>x.pf>=1).length/folds.length:0;
+      const robust=spreadRobust(p.rule,p.side,test,spreads,slip),
+            robustness=robust.length?robust.filter(x=>x.pf>=1).length/robust.length:0;
       const c={...p,depth,train:tr,test:te,tpd:te.n/testDays,years:yrs,folds,robust,walkStability,posYearRate,robustness};
-      c.score=scoreCandidate(c,minTPD);next.push(c);all.push(c)
+
+      if($("strictOosPf").checked&&te.pf<minPf){d.oosPfFail++;reject(depth,p.side,p.rule,"OOS PF",`OOS PF ${te.pf.toFixed(3)} < ${minPf}`,tr,te);continue}
+      if($("strictFrequency").checked&&c.tpd<minTPD){d.frequencyFail++;reject(depth,p.side,p.rule,"Frequency",`OOS/Day ${c.tpd.toFixed(3)} < ${minTPD}`,tr,te);continue}
+
+      c.score=scoreCandidate(c,minTPD);
+      next.push(c);all.push(c);d.qualified++;
     }
-    next.sort((a,b)=>b.score-a.score);survivors=next.slice(0,beam);
-    log(`Generation ${depth}: evaluated=${pool.length}, survived=${survivors.length}`);status(`世代 ${depth}/${maxDepth} を評価`,45+depth/maxDepth*45)
+
+    next.sort((a,b)=>b.score-a.score);
+    survivors=next.slice(0,beam);
+    d.survived=survivors.length;
+    diags.push(d);
+
+    log(`Generation ${depth}: evaluated=${d.evaluated}, qualified=${d.qualified}, survived=${d.survived}, fail(trainN=${d.trainSampleFail}, trainAvg=${d.trainAvgFail}, oosN=${d.oosSampleFail}, oosPF=${d.oosPfFail}, freq=${d.frequencyFail})`);
+    status(`世代 ${depth}/${maxDepth} を評価`,45+depth/maxDepth*45);
+    if(!survivors.length){log(`Generation ${depth} で生存候補が0件。以降の世代を停止します。`);break}
   }
-  return all.sort((a,b)=>b.score-a.score)
+
+  S.rejected=rejected;
+  S.diagnostics=diags;
+  return all.sort((a,b)=>b.score-a.score);
 }
 function renderData(b){
   const days=new Set(b.map(x=>x.t.toISOString().slice(0,10)));S.days=days.size;
   const v=[["Bars",b.length.toLocaleString()],["期間",b.length?`${b[0].t.toISOString().slice(0,10)} ～ ${b.at(-1).t.toISOString().slice(0,10)}`:"--"],["営業日",days.size],["入力ファイル",S.files.length]];
   $("dataSummary").innerHTML=v.map(([a,x])=>`<div class="stat"><span>${a}</span><strong>${x}</strong></div>`).join("")
 }
+function renderDiagnostics(diags){
+  if(!diags.length){$("diagnostics").innerHTML="診断結果なし";return}
+  $("diagnostics").innerHTML=diags.map(d=>`
+    <div class="diag"><span>Generation ${d.depth}</span><strong>${d.survived} survivors</strong>
+    <div class="small">評価 ${d.evaluated} / 合格 ${d.qualified}</div>
+    <div class="reason">TrainN ${d.trainSampleFail}・TrainAvg ${d.trainAvgFail}・OOS N ${d.oosSampleFail}・OOS PF ${d.oosPfFail}・頻度 ${d.frequencyFail}</div></div>`).join("");
+}
+function renderRejected(list){
+  if(!list.length){$("rejectedTable").innerHTML="<span class='ok'>落選候補はありません。</span>";return}
+  $("rejectedTable").innerHTML=`<table><thead><tr><th>#</th><th>Depth</th><th>Side</th><th>Rule</th><th>Stage</th><th>Reason</th><th>Train N</th><th>Train PF</th><th>Train Avg</th><th>OOS N</th><th>OOS PF</th><th>OOS Avg</th></tr></thead><tbody>${list.map((x,i)=>`<tr><td>${i+1}</td><td>${x.depth}</td><td>${x.side}</td><td>${ruleKey(x.rule)}</td><td>${x.stage}</td><td class="reason">${x.reason}</td><td>${x.train?.n??""}</td><td>${x.train?x.train.pf.toFixed(2):""}</td><td>${x.train?x.train.avg.toFixed(3):""}</td><td>${x.test?.n??""}</td><td>${x.test?x.test.pf.toFixed(2):""}</td><td>${x.test?x.test.avg.toFixed(3):""}</td></tr>`).join("")}</tbody></table>`;
+}
 function renderRanking(list){
   const limit=+$("displayLimit").value||100,minPf=+$("minPf").value||1,minTPD=+$("minTradesDay").value||10;
   const show=list.slice(0,limit);
+  if(!show.length){$("ranking").innerHTML="<div class='warn'>合格候補は0件です。上のDiagnostic Pipelineで脱落理由を確認してください。</div>";return}
   $("ranking").innerHTML=`<table><thead><tr><th>#</th><th>Depth</th><th>Side</th><th>Rule</th><th>Train N</th><th>Train PF</th><th>OOS N</th><th>OOS/Day</th><th>OOS PF</th><th>OOS Avg</th><th>OOS Win%</th><th>Positive Years</th><th>Walk Stability</th><th>Spread Robustness</th><th>Score</th><th>Status</th></tr></thead><tbody>${show.map((x,i)=>`<tr><td>${i+1}</td><td>${x.depth}</td><td>${x.side}</td><td>${ruleKey(x.rule)}</td><td>${x.train.n}</td><td>${x.train.pf.toFixed(2)}</td><td>${x.test.n}</td><td>${x.tpd.toFixed(2)}</td><td>${x.test.pf.toFixed(2)}</td><td>${x.test.avg.toFixed(3)}</td><td>${x.test.winRate.toFixed(1)}</td><td>${(x.posYearRate*100).toFixed(0)}%</td><td>${(x.walkStability*100).toFixed(0)}%</td><td>${(x.robustness*100).toFixed(0)}%</td><td>${x.score.toFixed(1)}</td><td class="${x.test.pf>=minPf&&x.tpd>=minTPD?"good":"warn"}">${x.test.pf>=minPf&&x.tpd>=minTPD?"PASS":"RESEARCH"}</td></tr>`).join("")}</tbody></table>`
 }
 function renderBest(b){
@@ -261,7 +334,7 @@ async function run(){
     status("Beam Search開始",45);S.candidates=evolve(S.rows,S.split);
     const minPf=+$("minPf").value||1,minTPD=+$("minTradesDay").value||10;
     S.best=S.candidates.find(x=>x.test.pf>=minPf&&x.tpd>=minTPD&&x.walkStability>=.5)||S.candidates[0]||null;
-    renderRanking(S.candidates);renderBest(S.best);$("downloadRanking").disabled=!S.best;$("downloadSummary").disabled=!S.best;
+    renderDiagnostics(S.diagnostics);renderRejected(S.rejected);renderRanking(S.candidates);renderBest(S.best);$("downloadRanking").disabled=!S.best;$("downloadSummary").disabled=!S.best;
     status("完了",100);log(`Candidates=${S.candidates.length}, Best=${S.best?ruleKey(S.best.rule):"none"}`)
   }catch(e){status("エラー: "+e.message,0);log("ERROR "+(e.stack||e.message))}
   finally{$("runBtn").disabled=false;$("cancelBtn").disabled=true}
@@ -271,7 +344,7 @@ function rankingRows(){
   return[h,...S.candidates.map((x,i)=>[i+1,x.depth,x.side,ruleKey(x.rule),x.train.n,x.train.pf.toFixed(4),x.train.avg.toFixed(4),x.test.n,x.tpd.toFixed(4),x.test.pf.toFixed(4),x.test.avg.toFixed(4),x.test.winRate.toFixed(2),x.posYearRate.toFixed(4),x.walkStability.toFixed(4),x.robustness.toFixed(4),x.score.toFixed(2)])]
 }
 function summary(){
-  return{version:"ScalpLayer Origin Evolution Engine v1.0",generatedAt:new Date().toISOString(),sourceFiles:S.files.map(f=>f.name),bars:S.bars.length,featureRows:S.rows.length,trainRows:S.split,oosRows:S.rows.length-S.split,settings:{horizonMinutes:+$("horizon").value,maxDepth:+$("maxDepth").value,beamWidth:+$("beamWidth").value,minimumSamples:+$("minSamples").value,minimumTradesPerDay:+$("minTradesDay").value,minimumOOSPF:+$("minPf").value,baseSpread:+$("baseSpread").value,slippage:+$("slippage").value,robustnessSpreads:$("spreadSet").value},best:S.best?{depth:S.best.depth,side:S.best.side,rule:ruleKey(S.best.rule),train:S.best.train,oos:{...S.best.test,tradesPerDay:S.best.tpd},positiveYearRate:S.best.posYearRate,walkForwardStability:S.best.walkStability,spreadRobustness:S.best.robustness,spreadTests:S.best.robust,score:S.best.score}:null,notes:["Research-only heuristic beam-search engine","This is not a trained neural model","Future-close return is used as the discovery label","All discovered rules require a dedicated trade simulator before EA implementation"]}
+  return{version:"ScalpLayer Origin Evolution Engine v1.1 Diagnostic Edition",generatedAt:new Date().toISOString(),sourceFiles:S.files.map(f=>f.name),bars:S.bars.length,featureRows:S.rows.length,trainRows:S.split,oosRows:S.rows.length-S.split,settings:{horizonMinutes:+$("horizon").value,maxDepth:+$("maxDepth").value,beamWidth:+$("beamWidth").value,minimumSamples:+$("minSamples").value,minimumTradesPerDay:+$("minTradesDay").value,minimumOOSPF:+$("minPf").value,baseSpread:+$("baseSpread").value,slippage:+$("slippage").value,robustnessSpreads:$("spreadSet").value},best:S.best?{depth:S.best.depth,side:S.best.side,rule:ruleKey(S.best.rule),train:S.best.train,oos:{...S.best.test,tradesPerDay:S.best.tpd},positiveYearRate:S.best.posYearRate,walkForwardStability:S.best.walkStability,spreadRobustness:S.best.robustness,spreadTests:S.best.robust,score:S.best.score}:null,diagnostics:S.diagnostics,rejectedCandidateCount:S.rejected.length,notes:["Research-only heuristic beam-search engine","This is not a trained neural model","Future-close return is used as the discovery label","All discovered rules require a dedicated trade simulator before EA implementation"]}
 }
 </script>
 </body>
