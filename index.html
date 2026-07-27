@@ -3,41 +3,40 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>ScalpLayer Origin Feature Importance Engine v1.0</title>
+<title>ScalpLayer Origin Core Feature Generator v1.0</title>
 <style>
-:root{--bg:#06080e;--panel:#111522;--line:rgba(212,175,55,.28);--gold:#d4af37;--gold2:#ffe47b;--text:#f8fafc;--muted:#b7c0cd;--green:#22c55e;--red:#ef4444;--cyan:#38bdf8}
-*{box-sizing:border-box}body{margin:0;padding:18px;min-height:100vh;color:var(--text);font-family:system-ui,-apple-system,"Segoe UI",sans-serif;background:radial-gradient(circle at top left,rgba(212,175,55,.16),transparent 30%),linear-gradient(180deg,#141925,var(--bg) 48%);line-height:1.55}
+:root{--bg:#070910;--panel:#111522;--line:rgba(212,175,55,.28);--gold:#d4af37;--gold2:#ffe47b;--text:#f8fafc;--muted:#b7c0cd;--green:#22c55e;--cyan:#38bdf8}
+*{box-sizing:border-box}body{margin:0;padding:18px;background:linear-gradient(180deg,#151a28,var(--bg) 48%);color:var(--text);font-family:system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.55}
 .wrap{max-width:1500px;margin:auto}.hero{text-align:center;padding:8px 0 20px}.hero h1{font-size:32px;margin:4px 0}.muted,.small{color:var(--muted);font-size:13px}
-.card{background:rgba(17,21,34,.96);border:1px solid var(--line);border-radius:14px;padding:18px;margin-bottom:16px;box-shadow:0 16px 34px rgba(0,0,0,.32)}h2{margin:0 0 12px;color:var(--gold2)}
-.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}.stat{background:rgba(5,7,13,.7);border:1px solid rgba(212,175,55,.2);border-radius:12px;padding:13px}.stat span{display:block;color:var(--muted);font-size:12px}.stat strong{display:block;font-size:20px;overflow-wrap:anywhere}
+.card{background:rgba(17,21,34,.97);border:1px solid var(--line);border-radius:14px;padding:18px;margin-bottom:16px;box-shadow:0 16px 34px rgba(0,0,0,.32)}h2{margin:0 0 12px;color:var(--gold2)}
+.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}.stat{background:#080b12;border:1px solid rgba(212,175,55,.22);border-radius:12px;padding:13px}.stat span{display:block;color:var(--muted);font-size:12px}.stat strong{display:block;font-size:20px;overflow-wrap:anywhere}
 .toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:end}.toolbar>*{flex:1 1 180px}label{display:block;margin:6px 0 5px;color:var(--muted);font-weight:800}
 input,select,button{width:100%;min-height:44px;border-radius:9px;border:1px solid rgba(212,175,55,.36);background:#070a11;color:var(--text);padding:9px 11px;margin-bottom:8px}
 button{border:0;background:linear-gradient(135deg,var(--gold),#9f7d1d);color:#111827;font-weight:950;cursor:pointer}button.secondary{background:#263244;color:#fff}button:disabled{opacity:.45;cursor:not-allowed}
 .progress{height:12px;border-radius:999px;background:rgba(148,163,184,.18);overflow:hidden}.progress i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--gold),var(--cyan),var(--green))}
-.tableWrap{overflow:auto;max-height:680px}table{width:100%;border-collapse:collapse;min-width:1650px}th,td{border-bottom:1px solid rgba(148,163,184,.15);padding:8px;text-align:left;font-size:12px;white-space:nowrap}th{position:sticky;top:0;background:#080b12;z-index:1}
-.good{color:#bbf7d0}.bad{color:#fecaca}.warn{color:#fde68a}.pill{display:inline-block;padding:4px 9px;border-radius:999px;border:1px solid var(--line);background:rgba(212,175,55,.12);color:#f7e6a5}
-.log{height:180px;overflow:auto;background:#04060a;border-radius:10px;padding:12px;font-family:ui-monospace,Consolas,monospace;font-size:12px;white-space:pre-wrap}
-.flow{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}.flow>div{padding:14px;border-radius:12px;border:1px solid rgba(56,189,248,.25);background:rgba(56,189,248,.06)}
-.barCell{min-width:180px}.miniBar{height:9px;background:rgba(148,163,184,.16);border-radius:999px;overflow:hidden}.miniBar i{display:block;height:100%;background:linear-gradient(90deg,var(--gold),var(--cyan))}
+.tableWrap{overflow:auto;max-height:620px}table{width:100%;border-collapse:collapse;min-width:1800px}th,td{border-bottom:1px solid rgba(148,163,184,.15);padding:8px;text-align:left;font-size:12px;white-space:nowrap}th{position:sticky;top:0;background:#080b12;z-index:1}
+.pill{display:inline-block;padding:4px 9px;border-radius:999px;border:1px solid var(--line);background:rgba(212,175,55,.12);color:#f7e6a5}.log{height:180px;overflow:auto;background:#04060a;border-radius:10px;padding:12px;font-family:ui-monospace,Consolas,monospace;font-size:12px;white-space:pre-wrap}
+.flow{display:grid;grid-template-columns:repeat(6,1fr);gap:10px}.flow>div{padding:14px;border-radius:12px;border:1px solid rgba(56,189,248,.25);background:rgba(56,189,248,.06)}
 @media(max-width:760px){body{padding:10px}.hero h1{font-size:24px}.grid,.flow{grid-template-columns:1fr}.card{padding:14px}}
 </style>
 </head>
 <body>
 <main class="wrap">
 <section class="hero">
-<div class="pill">FEATURE VALUE × PROFIT SEPARATION</div>
-<h1>ScalpLayer Origin Feature Importance Engine v1.0</h1>
-<p class="muted">各特徴量が勝ち・負けをどれだけ分離できるかを、Train/OOS安定性込みで順位付けする統計研究エンジン</p>
+<div class="pill">ONE CORE, ONE FEATURE LANGUAGE</div>
+<h1>ScalpLayer Origin Core Feature Generator v1.0</h1>
+<p class="muted">Motion・Direction・Quality・Importance・Exit・Simulatorが同じ特徴量定義を共有するための共通Core</p>
 </section>
 
 <section class="card">
-<h2>研究パイプライン</h2>
+<h2>共通アーキテクチャ</h2>
 <div class="flow">
-<div><strong>1. Motion</strong><div class="small">動く場所</div></div>
-<div><strong>2. Direction</strong><div class="small">売買方向</div></div>
-<div><strong>3. Feature Importance</strong><div class="small">効く特徴量を選別</div></div>
-<div><strong>4. Quality Filter</strong><div class="small">条件組合せ</div></div>
-<div><strong>5. Final Simulator</strong><div class="small">最終検証</div></div>
+<div><strong>Market Data</strong><div class="small">USDJPY M1</div></div>
+<div><strong>Core Features</strong><div class="small">共通定義</div></div>
+<div><strong>Motion</strong><div class="small">動く場所</div></div>
+<div><strong>Direction</strong><div class="small">LONG/SHORT</div></div>
+<div><strong>Quality</strong><div class="small">選別</div></div>
+<div><strong>Simulator</strong><div class="small">最終検証</div></div>
 </div>
 </section>
 
@@ -45,33 +44,25 @@ button{border:0;background:linear-gradient(135deg,var(--gold),#9f7d1d);color:#11
 <h2>1. 入力</h2>
 <label>USDJPY M1 CSV</label>
 <input id="csvFiles" type="file" accept=".csv,text/csv" multiple>
-<label>Quality Filter Summary JSON</label>
-<input id="qualitySummary" type="file" accept=".json,application/json">
 <div class="toolbar">
 <div><label>入力時刻</label><select id="timezoneMode"><option value="JST">JST</option><option value="UTC">UTC</option><option value="OFFSET">固定UTCオフセット</option></select></div>
 <div><label>入力UTCオフセット</label><input id="utcOffset" type="number" step="0.5" value="0"></div>
-<div><label>探索間引き</label><select id="stride"><option value="1">全バー</option><option value="2" selected>2本ごと</option><option value="5">5本ごと</option></select></div>
+<div><label>出力間引き</label><select id="stride"><option value="1">全バー</option><option value="2" selected>2本ごと</option><option value="5">5本ごと</option></select></div>
 </div>
 <div id="fileInfo" class="small">未選択</div>
 </section>
 
 <section class="card">
-<h2>2. 評価設定</h2>
+<h2>2. Core Feature設定</h2>
 <div class="toolbar">
-<div><label>最低Train件数/値</label><input id="minBucketTrain" type="number" value="40"></div>
-<div><label>最低OOS件数/値</label><input id="minBucketOos" type="number" value="10"></div>
-<div><label>上位保持特徴量数</label><input id="topFeatures" type="number" value="20"></div>
-<div><label>最大相関しきい値</label><input id="corrThreshold" type="number" step="0.05" value="0.85"></div>
+<div><label>ウォームアップ本数</label><input id="warmup" type="number" value="220"></div>
+<div><label>JSON最大行数</label><input id="jsonLimit" type="number" value="200000"></div>
+<div><label>プレビュー件数</label><input id="previewLimit" type="number" value="100"></div>
+<div><label>CSV小数桁</label><input id="digits" type="number" value="4"></div>
 </div>
-<div class="toolbar">
-<div><label>Spread</label><input id="spread" type="number" step="0.1" value="0.8"></div>
-<div><label>Slippage</label><input id="slippage" type="number" step="0.1" value="0.2"></div>
-<div><label>Train比率</label><input id="trainRatio" type="number" step="0.05" value="0.8"></div>
-<div><label>重要度の最低値</label><input id="minImportance" type="number" step="0.1" value="0"></div>
-</div>
-<button id="runBtn">Feature Importanceを計算</button>
+<button id="runBtn">Core Featuresを生成</button>
 <button id="cancelBtn" class="secondary" disabled>中止</button>
-<div id="status" class="small">CSVとQuality Filter Summary JSONを選択してください。</div>
+<div id="status" class="small">CSVを選択してください。</div>
 <div class="progress"><i id="bar"></i></div>
 </section>
 
@@ -81,22 +72,22 @@ button{border:0;background:linear-gradient(135deg,var(--gold),#9f7d1d);color:#11
 </section>
 
 <section class="card">
-<h2>4. Feature Importance Ranking</h2>
-<p class="small">Importanceは、値ごとの平均損益分離・PF分離・OOS再現性・年別安定性・サンプル量を合成した相対スコアです。</p>
-<div id="ranking" class="tableWrap">未実行</div>
+<h2>4. Feature Dictionary</h2>
+<div id="dictionary" class="tableWrap"></div>
 </section>
 
 <section class="card">
-<h2>5. Top Feature Details</h2>
-<div id="details" class="tableWrap">未実行</div>
+<h2>5. Preview</h2>
+<div id="preview" class="tableWrap">未生成</div>
 </section>
 
 <section class="card">
 <h2>6. Export</h2>
 <div class="toolbar">
-<button id="downloadRanking" disabled>FeatureImportanceRanking.csv</button>
-<button id="downloadValues" disabled>FeatureValueStats.csv</button>
-<button id="downloadSummary" disabled>FeatureImportanceSummary.json</button>
+<button id="downloadCsv" disabled>CoreFeatures.csv</button>
+<button id="downloadJson" disabled>CoreFeatures.json</button>
+<button id="downloadDict" disabled>FeatureDictionary.json</button>
+<button id="downloadManifest" disabled>CoreManifest.json</button>
 </div>
 </section>
 
@@ -106,23 +97,56 @@ button{border:0;background:linear-gradient(135deg,var(--gold),#9f7d1d);color:#11
 <script>
 "use strict";
 const $=id=>document.getElementById(id),PIP=.01;
-let S={files:[],summaryFile:null,summary:null,bars:[],rows:[],ranking:[],selected:[],splitTime:null,cancel:false};
+let S={files:[],bars:[],rows:[],cancel:false,bad:0};
 
-$("csvFiles").addEventListener("change",e=>{S.files=[...e.target.files];updateFileInfo()});
-$("qualitySummary").addEventListener("change",e=>{S.summaryFile=e.target.files[0]||null;updateFileInfo()});
+const DICTIONARY=[
+["ATR","ATR14 absolute class compatible with Motion/Direction legacy rules"],
+["ATR5","ATR5 absolute class"],
+["ATR14","ATR14 absolute class"],
+["ATR50","ATR50 absolute class"],
+["ATRRatio5_50","ATR5 divided by ATR50"],
+["EMA8_30","EMA8 minus EMA30 class"],
+["EMA20_50","EMA20 minus EMA50 class"],
+["EMA55_200","EMA55 minus EMA200 class"],
+["EMA8Slope5","EMA8 slope over 5 bars"],
+["EMA21Slope13","EMA21 slope over 13 bars"],
+["RSI","RSI14 class compatible with legacy rules"],
+["RSI7","RSI7 class"],
+["RSI14","RSI14 class"],
+["RSI21","RSI21 class"],
+["Momentum3","Close change over 3 bars"],
+["Momentum5","Close change over 5 bars"],
+["Momentum8","Close change over 8 bars"],
+["Momentum13","Close change over 13 bars"],
+["Momentum21","Close change over 21 bars"],
+["Bollinger20","Close z-score against 20 bars"],
+["Bollinger50","Close z-score against 50 bars"],
+["RangePos20","Position inside recent 20-bar range"],
+["RangePos50","Position inside recent 50-bar range"],
+["Body","Current candle body class"],
+["Range","Current candle range class"],
+["UpperWick","Current upper wick class"],
+["LowerWick","Current lower wick class"],
+["BullCount5","Bull candles in last 5 bars"],
+["BearCount5","Bear candles in last 5 bars"],
+["Session","Tokyo/London/NewYork/Off"],
+["Weekday","Sun-Sat"],
+["Hour","JST hour 0-23"]
+];
+
+$("csvFiles").addEventListener("change",e=>{S.files=[...e.target.files];$("fileInfo").textContent=`CSV ${S.files.length}件`});
 $("runBtn").addEventListener("click",run);
 $("cancelBtn").addEventListener("click",()=>{S.cancel=true;log("中止要求")});
-$("downloadRanking").addEventListener("click",()=>downloadCsv("ScalpLayer_Origin_FeatureImportanceRanking_v1_0.csv",rankingRows()));
-$("downloadValues").addEventListener("click",()=>downloadCsv("ScalpLayer_Origin_FeatureValueStats_v1_0.csv",valueRows()));
-$("downloadSummary").addEventListener("click",()=>downloadText("ScalpLayer_Origin_FeatureImportanceSummary_v1_0.json",JSON.stringify(summary(),null,2),"application/json"));
+$("downloadCsv").addEventListener("click",()=>downloadText("ScalpLayer_Origin_CoreFeatures_v1_0.csv",toCsv(),"text/csv"));
+$("downloadJson").addEventListener("click",()=>downloadText("ScalpLayer_Origin_CoreFeatures_v1_0.json",JSON.stringify(jsonExport(),null,2),"application/json"));
+$("downloadDict").addEventListener("click",()=>downloadText("ScalpLayer_Origin_FeatureDictionary_v1_0.json",JSON.stringify(dictionaryExport(),null,2),"application/json"));
+$("downloadManifest").addEventListener("click",()=>downloadText("ScalpLayer_Origin_CoreManifest_v1_0.json",JSON.stringify(manifest(),null,2),"application/json"));
 
-function updateFileInfo(){$("fileInfo").textContent=`CSV ${S.files.length}件 / Quality JSON ${S.summaryFile?S.summaryFile.name:"未選択"}`}
 function log(s){let e=$("log");e.textContent+=`\n[${new Date().toLocaleTimeString()}] ${s}`;e.scrollTop=e.scrollHeight}
 function status(s,p){$("status").textContent=s;$("bar").style.width=Math.max(0,Math.min(100,p))+"%"}
 function breathe(){return new Promise(r=>setTimeout(r,0))}
 function esc(v){v=String(v??"");return /[",\n]/.test(v)?`"${v.replace(/"/g,'""')}"`:v}
 function downloadText(name,text,type="text/plain"){const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([text],{type:`${type};charset=utf-8`}));a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}
-function downloadCsv(name,rows){if(rows.length)downloadText(name,rows.map(r=>r.map(esc).join(",")).join("\n"),"text/csv")}
 function splitCsvLine(line){const out=[];let s="",q=false;for(let i=0;i<line.length;i++){let c=line[i];if(c==='"'){if(q&&line[i+1]==='"'){s+='"';i++}else q=!q}else if(c===","&&!q){out.push(s);s=""}else s+=c}out.push(s);return out}
 function parseDate(v){
  const s=String(v||"").trim().replace(/\//g,"-").replace(/\./g,"-").replace("T"," ");
@@ -138,10 +162,14 @@ async function parseFiles(files){
   const lines=(await files[fi].text()).split(/\r?\n/).filter(Boolean);if(!lines.length)continue;
   let first=splitCsvLine(lines[0]),map=headerMap(first),start=0;
   if(map.open>=0&&map.high>=0&&map.low>=0&&map.close>=0)start=1;else map={datetime:0,date:-1,clock:-1,open:1,high:2,low:3,close:4};
-  for(let i=start;i<lines.length;i++){let r=splitCsvLine(lines[i]);let dt=map.datetime>=0?parseDate(r[map.datetime]):parseDate(`${r[map.date]} ${r[map.clock]}`),o=+r[map.open],h=+r[map.high],l=+r[map.low],c=+r[map.close];if(dt&&[o,h,l,c].every(Number.isFinite)&&h>=l)all.push({t:dt,o,h,l,c});else bad++}
+  for(let i=start;i<lines.length;i++){
+   const r=splitCsvLine(lines[i]),dt=map.datetime>=0?parseDate(r[map.datetime]):parseDate(`${r[map.date]} ${r[map.clock]}`),o=+r[map.open],h=+r[map.high],l=+r[map.low],c=+r[map.close];
+   if(dt&&[o,h,l,c].every(Number.isFinite)&&h>=l)all.push({t:dt,o,h,l,c});else bad++
+  }
   status(`CSV読込 ${fi+1}/${files.length}`,3+(fi+1)/files.length*12);await breathe()
  }
- all.sort((a,b)=>a.t-b.t);const uniq=[];let last=-1;for(const b of all){let k=b.t.getTime();if(k!==last){uniq.push(b);last=k}else bad++}
+ all.sort((a,b)=>a.t-b.t);const uniq=[];let last=-1;
+ for(const b of all){let k=b.t.getTime();if(k!==last){uniq.push(b);last=k}else bad++}
  return{bars:uniq,bad}
 }
 function ema(vals,p){const out=new Float64Array(vals.length),k=2/(p+1);let x=vals[0]||0;for(let i=0;i<vals.length;i++){x=i?vals[i]*k+x*(1-k):vals[i];out[i]=x}return out}
@@ -151,135 +179,86 @@ function rolling(vals,p){const mean=new Float64Array(vals.length),sd=new Float64
 function binned(v,cuts,labels){for(let i=0;i<cuts.length;i++)if(v<cuts[i])return labels[i];return labels.at(-1)}
 function session(d){let h=d.getUTCHours();if(h>=8&&h<16)return"Tokyo";if(h>=16&&h<21)return"London";if(h>=21||h<6)return"NewYork";return"Off"}
 function weekday(d){return["Sun","Mon","Tue","Wed","Thu","Fri","Sat"][d.getUTCDay()]}
-function parsePattern(pattern){return String(pattern||"").split("&").map(x=>x.trim()).filter(Boolean).map(x=>{const i=x.indexOf("=");return[x.slice(0,i),x.slice(i+1)]})}
-function match(rule,f){for(const [k,v] of rule)if(f[k]!==v)return false;return true}
-function buildRows(bars,baseRule){
- const c=bars.map(x=>x.c),periods=[5,8,13,20,21,30,34,50,55,89,144,200],emas=Object.fromEntries(periods.map(p=>[p,ema(c,p)])),rsis={7:rsi(c,7),14:rsi(c,14),21:rsi(c,21)},atrs={5:atr(bars,5),14:atr(bars,14),50:atr(bars,50)},bb20=rolling(c,20),bb50=rolling(c,50),rows=[],stride=+$("stride").value;
- for(let i=220;i<bars.length-61;i+=stride){
+
+function generateFeatures(bars){
+ const c=bars.map(x=>x.c),periods=[8,20,21,30,50,55,200],emas=Object.fromEntries(periods.map(p=>[p,ema(c,p)]));
+ const rsis={7:rsi(c,7),14:rsi(c,14),21:rsi(c,21)},atrs={5:atr(bars,5),14:atr(bars,14),50:atr(bars,50)},bb20=rolling(c,20),bb50=rolling(c,50);
+ const rows=[],stride=+$("stride").value,warm=Math.max(220,+$("warmup").value||220);
+ for(let i=warm;i<bars.length;i+=stride){
   if(S.cancel)break;
   let hi20=-Infinity,lo20=Infinity,hi50=-Infinity,lo50=Infinity;
   for(let j=i-49;j<=i;j++){if(j>=i-19){hi20=Math.max(hi20,bars[j].h);lo20=Math.min(lo20,bars[j].l)}hi50=Math.max(hi50,bars[j].h);lo50=Math.min(lo50,bars[j].l)}
   const body=(bars[i].c-bars[i].o)/PIP,range=(bars[i].h-bars[i].l)/PIP,upper=(bars[i].h-Math.max(bars[i].o,bars[i].c))/PIP,lower=(Math.min(bars[i].o,bars[i].c)-bars[i].l)/PIP;
   let bull=0,bear=0;for(let j=i;j>=i-4;j--){if(bars[j].c>bars[j].o)bull++;else if(bars[j].c<bars[j].o)bear++}
-  const f={
-    EMA8_30:binned((emas[8][i]-emas[30][i])/PIP,[-2,-.5,.5,2],["StrongDown","Down","Flat","Up","StrongUp"]),
-    EMA20_50:binned((emas[20][i]-emas[50][i])/PIP,[-3,-1,1,3],["StrongDown","Down","Flat","Up","StrongUp"]),
-    EMA55_200:binned((emas[55][i]-emas[200][i])/PIP,[-8,-2,2,8],["StrongDown","Down","Flat","Up","StrongUp"]),
-    EMA8Slope5:binned((emas[8][i]-emas[8][i-5])/PIP,[-2,-.5,.5,2],["StrongDown","Down","Flat","Up","StrongUp"]),
-    EMA21Slope13:binned((emas[21][i]-emas[21][i-13])/PIP,[-4,-1,1,4],["StrongDown","Down","Flat","Up","StrongUp"]),
-    RSI7:binned(rsis[7][i],[30,40,50,60,70],["0-30","30-40","40-50","50-60","60-70","70-100"]),
-    RSI14:binned(rsis[14][i],[30,40,50,60,70],["0-30","30-40","40-50","50-60","60-70","70-100"]),
-    RSI21:binned(rsis[21][i],[35,45,55,65],["0-35","35-45","45-55","55-65","65-100"]),
-    ATR5:binned(atrs[5][i]/PIP,[1.5,2.5,4,6],["VeryLow","Low","Mid","High","VeryHigh"]),
-    ATR14:binned(atrs[14][i]/PIP,[1.5,2.5,4,6],["VeryLow","Low","Mid","High","VeryHigh"]),
-    ATRRatio5_50:binned(atrs[50][i]?atrs[5][i]/atrs[50][i]:1,[.7,.9,1.1,1.4],["VeryLow","Low","Normal","High","VeryHigh"]),
-    Momentum3:binned((c[i]-c[i-3])/PIP,[-2,-.5,.5,2],["StrongDown","Down","Flat","Up","StrongUp"]),
-    Momentum5:binned((c[i]-c[i-5])/PIP,[-3,-1,1,3],["StrongDown","Down","Flat","Up","StrongUp"]),
-    Momentum8:binned((c[i]-c[i-8])/PIP,[-4,-1.5,1.5,4],["StrongDown","Down","Flat","Up","StrongUp"]),
-    Momentum13:binned((c[i]-c[i-13])/PIP,[-5,-2,2,5],["StrongDown","Down","Flat","Up","StrongUp"]),
-    Momentum21:binned((c[i]-c[i-21])/PIP,[-7,-3,3,7],["StrongDown","Down","Flat","Up","StrongUp"]),
-    Bollinger20:binned(bb20.sd[i]?(c[i]-bb20.mean[i])/bb20.sd[i]:0,[-2,-1,0,1,2],["Below-2","-2--1","-1-0","0-1","1-2","Above2"]),
-    Bollinger50:binned(bb50.sd[i]?(c[i]-bb50.mean[i])/bb50.sd[i]:0,[-2,-1,0,1,2],["Below-2","-2--1","-1-0","0-1","1-2","Above2"]),
-    RangePos20:binned(hi20>lo20?(c[i]-lo20)/(hi20-lo20):.5,[.2,.4,.6,.8],["Bottom","LowMid","Middle","HighMid","Top"]),
-    RangePos50:binned(hi50>lo50?(c[i]-lo50)/(hi50-lo50):.5,[.2,.4,.6,.8],["Bottom","LowMid","Middle","HighMid","Top"]),
-    Body:binned(body,[-2,-.5,.5,2],["StrongBear","Bear","Small","Bull","StrongBull"]),
-    Range:binned(range,[2,4,6,10],["VerySmall","Small","Mid","Large","VeryLarge"]),
-    UpperWick:binned(upper,[.5,1.5,3,5],["Tiny","Small","Mid","Large","VeryLarge"]),
-    LowerWick:binned(lower,[.5,1.5,3,5],["Tiny","Small","Mid","Large","VeryLarge"]),
-    BullCount5:String(bull),BearCount5:String(bear),Session:session(bars[i].t),Weekday:weekday(bars[i].t),Hour:String(bars[i].t.getUTCHours())
-  };
-  if(match(baseRule,f))rows.push({i,t:bars[i].t,price:bars[i].c,f})
+  const atr14Class=binned(atrs[14][i]/PIP,[1.5,2.5,4,6],["VeryLow","Low","Mid","High","VeryHigh"]);
+  rows.push({
+   Index:i,DateTime:bars[i].t.toISOString(),Open:bars[i].o,High:bars[i].h,Low:bars[i].l,Close:bars[i].c,
+   ATR:atr14Class,
+   ATR5:binned(atrs[5][i]/PIP,[1.5,2.5,4,6],["VeryLow","Low","Mid","High","VeryHigh"]),
+   ATR14:atr14Class,
+   ATR50:binned(atrs[50][i]/PIP,[1.5,2.5,4,6],["VeryLow","Low","Mid","High","VeryHigh"]),
+   ATRRatio5_50:binned(atrs[50][i]?atrs[5][i]/atrs[50][i]:1,[.7,.9,1.1,1.4],["VeryLow","Low","Normal","High","VeryHigh"]),
+   EMA8_30:binned((emas[8][i]-emas[30][i])/PIP,[-2,-.5,.5,2],["StrongDown","Down","Flat","Up","StrongUp"]),
+   EMA20_50:binned((emas[20][i]-emas[50][i])/PIP,[-3,-1,1,3],["StrongDown","Down","Flat","Up","StrongUp"]),
+   EMA55_200:binned((emas[55][i]-emas[200][i])/PIP,[-8,-2,2,8],["StrongDown","Down","Flat","Up","StrongUp"]),
+   EMA8Slope5:binned((emas[8][i]-emas[8][i-5])/PIP,[-2,-.5,.5,2],["StrongDown","Down","Flat","Up","StrongUp"]),
+   EMA21Slope13:binned((emas[21][i]-emas[21][i-13])/PIP,[-4,-1,1,4],["StrongDown","Down","Flat","Up","StrongUp"]),
+   RSI:binned(rsis[14][i],[30,40,50,60,70],["0-30","30-40","40-50","50-60","60-70","70-100"]),
+   RSI7:binned(rsis[7][i],[30,40,50,60,70],["0-30","30-40","40-50","50-60","60-70","70-100"]),
+   RSI14:binned(rsis[14][i],[30,40,50,60,70],["0-30","30-40","40-50","50-60","60-70","70-100"]),
+   RSI21:binned(rsis[21][i],[35,45,55,65],["0-35","35-45","45-55","55-65","65-100"]),
+   Momentum3:binned((c[i]-c[i-3])/PIP,[-2,-.5,.5,2],["StrongDown","Down","Flat","Up","StrongUp"]),
+   Momentum5:binned((c[i]-c[i-5])/PIP,[-3,-1,1,3],["StrongDown","Down","Flat","Up","StrongUp"]),
+   Momentum8:binned((c[i]-c[i-8])/PIP,[-4,-1.5,1.5,4],["StrongDown","Down","Flat","Up","StrongUp"]),
+   Momentum13:binned((c[i]-c[i-13])/PIP,[-5,-2,2,5],["StrongDown","Down","Flat","Up","StrongUp"]),
+   Momentum21:binned((c[i]-c[i-21])/PIP,[-7,-3,3,7],["StrongDown","Down","Flat","Up","StrongUp"]),
+   Bollinger20:binned(bb20.sd[i]?(c[i]-bb20.mean[i])/bb20.sd[i]:0,[-2,-1,0,1,2],["Below-2","-2--1","-1-0","0-1","1-2","Above2"]),
+   Bollinger50:binned(bb50.sd[i]?(c[i]-bb50.mean[i])/bb50.sd[i]:0,[-2,-1,0,1,2],["Below-2","-2--1","-1-0","0-1","1-2","Above2"]),
+   RangePos20:binned(hi20>lo20?(c[i]-lo20)/(hi20-lo20):.5,[.2,.4,.6,.8],["Bottom","LowMid","Middle","HighMid","Top"]),
+   RangePos50:binned(hi50>lo50?(c[i]-lo50)/(hi50-lo50):.5,[.2,.4,.6,.8],["Bottom","LowMid","Middle","HighMid","Top"]),
+   Body:binned(body,[-2,-.5,.5,2],["StrongBear","Bear","Small","Bull","StrongBull"]),
+   Range:binned(range,[2,4,6,10],["VerySmall","Small","Mid","Large","VeryLarge"]),
+   UpperWick:binned(upper,[.5,1.5,3,5],["Tiny","Small","Mid","Large","VeryLarge"]),
+   LowerWick:binned(lower,[.5,1.5,3,5],["Tiny","Small","Mid","Large","VeryLarge"]),
+   BullCount5:String(bull),BearCount5:String(bear),Session:session(bars[i].t),Weekday:weekday(bars[i].t),Hour:String(bars[i].t.getUTCHours())
+  })
  }
  return rows
 }
-function simulateOne(row,bars,side,tp,sl,hold,cost){
- const entry=row.price,limit=Math.min(bars.length-1,row.i+hold);let gross=0,exitI=limit,reason="TIME";
- for(let j=row.i+1;j<=limit;j++){
-  const up=(bars[j].h-entry)/PIP,down=(entry-bars[j].l)/PIP,tpHit=side==="LONG"?up>=tp:down>=tp,slHit=side==="LONG"?down>=sl:up>=sl;
-  if(tpHit&&slHit){gross=-sl;reason="SL";exitI=j;break}
-  if(slHit){gross=-sl;reason="SL";exitI=j;break}
-  if(tpHit){gross=tp;reason="TP";exitI=j;break}
-  if(j===limit){gross=(side==="LONG"?(bars[j].c-entry):(entry-bars[j].c))/PIP;reason="TIME"}
- }
- return{net:gross-cost,reason,year:row.t.getFullYear()}
-}
-function stats(vals){
- let gp=0,gl=0,sum=0,w=0;for(const v of vals){sum+=v;if(v>0){gp+=v;w++}else gl+=-v}
- return{n:vals.length,pf:gl?gp/gl:(gp?99:0),avg:vals.length?sum/vals.length:0,winRate:vals.length?w/vals.length*100:0,net:sum}
-}
-function evaluateFeature(feature,rows,splitTime){
- const buckets={};
- for(const r of rows){const v=r.f[feature],part=r.t<splitTime?"train":"oos";buckets[v] ||= {train:[],oos:[],yearly:{}};buckets[v][part].push(r.result.net);buckets[v].yearly[r.result.year]=(buckets[v].yearly[r.result.year]||0)+r.result.net}
- const minTr=+$("minBucketTrain").value||40,minO=+$("minBucketOos").value||10,values=[];
- for(const [value,b] of Object.entries(buckets)){
-  const tr=stats(b.train),te=stats(b.oos);if(tr.n<minTr||te.n<minO)continue;
-  const years=Object.values(b.yearly),posYr=years.length?years.filter(x=>x>0).length/years.length:0;
-  values.push({value,train:tr,oos:te,positiveYearRate:posYr})
- }
- if(values.length<2)return null;
- const trAvgs=values.map(x=>x.train.avg),teAvgs=values.map(x=>x.oos.avg),spreadTr=Math.max(...trAvgs)-Math.min(...trAvgs),spreadTe=Math.max(...teAvgs)-Math.min(...teAvgs);
- const bestTr=[...values].sort((a,b)=>b.train.avg-a.train.avg)[0],bestTe=[...values].sort((a,b)=>b.oos.avg-a.oos.avg)[0];
- const directionStable=Math.sign(bestTr.train.avg)===Math.sign(bestTr.oos.avg)?1:0;
- const sameBest=bestTr.value===bestTe.value?1:0;
- const sample=Math.min(1,values.reduce((s,x)=>s+x.oos.n,0)/100);
- const stability=(directionStable*.5+sameBest*.25+bestTr.positiveYearRate*.25);
- const raw=Math.max(0,spreadTr)*20+Math.max(0,spreadTe)*30+Math.max(0,bestTr.oos.pf-1)*25+stability*20+sample*5;
- return{feature,importance:raw,trainSpread:spreadTr,oosSpread:spreadTe,bestTrainValue:bestTr.value,bestOosValue:bestTe.value,bestTrainAvg:bestTr.train.avg,bestOosAvg:bestTr.oos.avg,bestOosPF:bestTr.oos.pf,stability,sampleN:values.reduce((s,x)=>s+x.oos.n,0),values}
-}
-function cramersV(a,b,rows){
- const xs=[...new Set(rows.map(r=>r.f[a]))],ys=[...new Set(rows.map(r=>r.f[b]))];if(xs.length<2||ys.length<2)return 0;
- const xi=Object.fromEntries(xs.map((x,i)=>[x,i])),yi=Object.fromEntries(ys.map((y,i)=>[y,i])),m=Array.from({length:xs.length},()=>Array(ys.length).fill(0)),rx=Array(xs.length).fill(0),cy=Array(ys.length).fill(0);
- for(const r of rows){let i=xi[r.f[a]],j=yi[r.f[b]];m[i][j]++;rx[i]++;cy[j]++}
- const n=rows.length;let chi=0;for(let i=0;i<xs.length;i++)for(let j=0;j<ys.length;j++){let e=rx[i]*cy[j]/n;if(e>0)chi+=(m[i][j]-e)**2/e}
- return Math.sqrt(chi/(n*Math.max(1,Math.min(xs.length-1,ys.length-1))))
-}
-function selectFeatures(ranking,rows){
- const top=+$("topFeatures").value||20,thr=+$("corrThreshold").value||.85,selected=[];
- for(const x of ranking){let correlated=false;for(const y of selected){if(cramersV(x.feature,y.feature,rows)>=thr){correlated=true;break}}if(!correlated)selected.push(x);if(selected.length>=top)break}
- return selected
+function renderDictionary(){
+ $("dictionary").innerHTML=`<table><thead><tr><th>#</th><th>Feature</th><th>Definition</th></tr></thead><tbody>${DICTIONARY.map((x,i)=>`<tr><td>${i+1}</td><td>${x[0]}</td><td>${x[1]}</td></tr>`).join("")}</tbody></table>`
 }
 function renderData(){
- const v=[["Bars",S.bars.length.toLocaleString()],["Base Pattern",S.summary.basePattern],["Direction",S.summary.direction],["Base Exit",`TP${S.summary.baseExit.tpPips}/SL${S.summary.baseExit.slPips}/H${S.summary.baseExit.holdMinutes}`]];
+ const first=S.rows[0],last=S.rows.at(-1),v=[["Bars",S.bars.length.toLocaleString()],["Feature Rows",S.rows.length.toLocaleString()],["Features",DICTIONARY.length],["Period",first&&last?`${first.DateTime.slice(0,10)} → ${last.DateTime.slice(0,10)}`:"--"]];
  $("dataSummary").innerHTML=v.map(([a,x])=>`<div class="stat"><span>${a}</span><strong>${x}</strong></div>`).join("")
 }
-function renderRanking(){
- const max=S.ranking.length?S.ranking[0].importance:1,sel=new Set(S.selected.map(x=>x.feature));
- $("ranking").innerHTML=`<table><thead><tr><th>#</th><th>Feature</th><th>Importance</th><th>Visual</th><th>Train Separation</th><th>OOS Separation</th><th>Best Train Value</th><th>Best OOS Value</th><th>Best OOS PF</th><th>Stability</th><th>OOS N</th><th>Selected</th></tr></thead><tbody>${S.ranking.map((x,i)=>`<tr><td>${i+1}</td><td>${x.feature}</td><td>${x.importance.toFixed(2)}</td><td class="barCell"><div class="miniBar"><i style="width:${max?x.importance/max*100:0}%"></i></div></td><td>${x.trainSpread.toFixed(3)}</td><td>${x.oosSpread.toFixed(3)}</td><td>${x.bestTrainValue}</td><td>${x.bestOosValue}</td><td>${x.bestOosPF.toFixed(2)}</td><td>${(x.stability*100).toFixed(0)}%</td><td>${x.sampleN}</td><td class="${sel.has(x.feature)?"good":"warn"}">${sel.has(x.feature)?"KEEP":"DROP"}</td></tr>`).join("")}</tbody></table>`
+function renderPreview(){
+ const n=Math.max(1,+$("previewLimit").value||100),rows=S.rows.slice(0,n);if(!rows.length){$("preview").textContent="候補なし";return}
+ const cols=Object.keys(rows[0]);
+ $("preview").innerHTML=`<table><thead><tr>${cols.map(c=>`<th>${c}</th>`).join("")}</tr></thead><tbody>${rows.map(r=>`<tr>${cols.map(c=>`<td>${r[c]}</td>`).join("")}</tr>`).join("")}</tbody></table>`
 }
-function renderDetails(){
- const x=S.selected[0]||S.ranking[0];if(!x){$("details").textContent="候補なし";return}
- $("details").innerHTML=`<table><thead><tr><th>Feature</th><th>Value</th><th>Train N</th><th>Train PF</th><th>Train Avg</th><th>OOS N</th><th>OOS PF</th><th>OOS Avg</th><th>OOS Win%</th><th>Positive Years</th></tr></thead><tbody>${x.values.map(v=>`<tr><td>${x.feature}</td><td>${v.value}</td><td>${v.train.n}</td><td>${v.train.pf.toFixed(2)}</td><td>${v.train.avg.toFixed(3)}</td><td>${v.oos.n}</td><td>${v.oos.pf.toFixed(2)}</td><td>${v.oos.avg.toFixed(3)}</td><td>${v.oos.winRate.toFixed(1)}</td><td>${(v.positiveYearRate*100).toFixed(0)}%</td></tr>`).join("")}</tbody></table>`
+function toCsv(){
+ if(!S.rows.length)return"";const cols=Object.keys(S.rows[0]),d=Math.max(0,+$("digits").value||4);
+ return[cols.join(","),...S.rows.map(r=>cols.map(c=>typeof r[c]==="number"?Number(r[c]).toFixed(d):esc(r[c])).join(","))].join("\n")
 }
+function jsonExport(){
+ const lim=Math.max(1,+$("jsonLimit").value||200000);
+ return{version:"ScalpLayer Origin Core Feature Generator v1.0",generatedAt:new Date().toISOString(),rows:S.rows.slice(0,lim),truncated:S.rows.length>lim,totalRows:S.rows.length}
+}
+function dictionaryExport(){return{version:"ScalpLayer Origin Feature Dictionary v1.0",features:DICTIONARY.map(([name,definition])=>({name,definition}))}}
+function manifest(){return{version:"ScalpLayer Origin Core Manifest v1.0",generatedAt:new Date().toISOString(),sourceFiles:S.files.map(f=>f.name),bars:S.bars.length,featureRows:S.rows.length,featureCount:DICTIONARY.length,timezoneOutput:"JST-normalized Date object rendered as ISO",stride:+$("stride").value,warmup:+$("warmup").value,compatibility:{legacyBaseRules:["ATR","RSI","Session"],engines:["Motion Discovery","Direction Analyzer","Quality Filter","Feature Importance","Exit Optimizer","Final Trade Simulator"]},notes:["All downstream engines must consume these feature names without redefining them","ATR is an alias of ATR14 class","RSI is an alias of RSI14 class","Feature thresholds must be versioned together with this manifest"]}}
 async function run(){
- if(!S.files.length||!S.summaryFile){status("CSVとQuality Filter Summary JSONを選択してください。",0);return}
+ if(!S.files.length){status("CSVを選択してください。",0);return}
  S.cancel=false;$("runBtn").disabled=true;$("cancelBtn").disabled=false;
  try{
-  S.summary=JSON.parse(await S.summaryFile.text());if(!S.summary?.basePattern||!S.summary?.direction||!S.summary?.baseExit)throw new Error("Quality SummaryにbasePattern、direction、baseExitがありません");
-  status("CSV解析中",3);log("Feature Importance開始");const p=await parseFiles(S.files);S.bars=p.bars;if(S.bars.length<5000)throw new Error("有効バー不足");
-  renderData();const baseRule=parsePattern(S.summary.basePattern);status("特徴量生成中",20);S.rows=buildRows(S.bars,baseRule);
-  const ratio=Math.max(.5,Math.min(.9,+$("trainRatio").value||.8)),splitIndex=Math.floor(S.bars.length*ratio);S.splitTime=S.bars[splitIndex].t;
-  const cost=(+$("spread").value||.8)+(+$("slippage").value||.2),be=S.summary.baseExit;
-  for(let i=0;i<S.rows.length;i++){S.rows[i].result=simulateOne(S.rows[i],S.bars,S.summary.direction,be.tpPips,be.slPips,be.holdMinutes,cost);if(i%200===0){status(`Trade評価 ${i}/${S.rows.length}`,35+i/Math.max(1,S.rows.length)*20);await breathe()}}
-  const features=Object.keys(S.rows[0]?.f||{}),rank=[];
-  for(let i=0;i<features.length;i++){const x=evaluateFeature(features[i],S.rows,S.splitTime);if(x&&x.importance>=(+$("minImportance").value||0))rank.push(x);status(`重要度計算 ${i+1}/${features.length}`,58+(i+1)/features.length*25);await breathe()}
-  S.ranking=rank.sort((a,b)=>b.importance-a.importance);S.selected=selectFeatures(S.ranking,S.rows.filter(r=>r.t<S.splitTime));
-  renderRanking();renderDetails();["downloadRanking","downloadValues","downloadSummary"].forEach(id=>$(id).disabled=!S.ranking.length);
-  status("完了",100);log(`Features=${S.ranking.length}, Selected=${S.selected.map(x=>x.feature).join(", ")}`)
+  status("CSV解析中",3);log("Core生成開始");const p=await parseFiles(S.files);S.bars=p.bars;S.bad=p.bad;if(S.bars.length<5000)throw new Error("有効バー不足");
+  status("共通特徴量を生成中",20);S.rows=generateFeatures(S.bars);await breathe();
+  renderData();renderDictionary();renderPreview();["downloadCsv","downloadJson","downloadDict","downloadManifest"].forEach(id=>$(id).disabled=!S.rows.length);
+  status("完了",100);log(`Bars=${S.bars.length}, FeatureRows=${S.rows.length}, Bad=${S.bad}`)
  }catch(e){status("エラー: "+e.message,0);log("ERROR "+(e.stack||e.message))}
  finally{$("runBtn").disabled=false;$("cancelBtn").disabled=true}
 }
-function rankingRows(){
- const h=["Rank","Feature","Importance","TrainSeparation","OOSSeparation","BestTrainValue","BestOOSValue","BestOOSPF","Stability","OOSN","Selected"];
- const sel=new Set(S.selected.map(x=>x.feature));
- return[h,...S.ranking.map((x,i)=>[i+1,x.feature,x.importance.toFixed(4),x.trainSpread.toFixed(4),x.oosSpread.toFixed(4),x.bestTrainValue,x.bestOosValue,x.bestOosPF.toFixed(4),x.stability.toFixed(4),x.sampleN,sel.has(x.feature)])]
-}
-function valueRows(){
- const h=["Feature","Value","TrainN","TrainPF","TrainAvg","TrainWinRate","OOSN","OOSPF","OOSAvg","OOSWinRate","PositiveYearRate"];
- return[h,...S.ranking.flatMap(x=>x.values.map(v=>[x.feature,v.value,v.train.n,v.train.pf.toFixed(4),v.train.avg.toFixed(4),v.train.winRate.toFixed(2),v.oos.n,v.oos.pf.toFixed(4),v.oos.avg.toFixed(4),v.oos.winRate.toFixed(2),v.positiveYearRate.toFixed(4)]))]
-}
-function summary(){
- return{version:"ScalpLayer Origin Feature Importance Engine v1.0",generatedAt:new Date().toISOString(),sourceFiles:S.files.map(f=>f.name),qualitySummaryFile:S.summaryFile?.name||null,basePattern:S.summary?.basePattern||null,direction:S.summary?.direction||null,baseExit:S.summary?.baseExit||null,bars:S.bars.length,baseRows:S.rows.length,settings:{minimumBucketTrain:+$("minBucketTrain").value,minimumBucketOOS:+$("minBucketOos").value,topFeatures:+$("topFeatures").value,correlationThreshold:+$("corrThreshold").value,spreadPips:+$("spread").value,slippagePips:+$("slippage").value,trainRatio:+$("trainRatio").value},selectedFeatures:S.selected.map(x=>({feature:x.feature,importance:x.importance,bestTrainValue:x.bestTrainValue,bestOosValue:x.bestOosValue,bestOosPF:x.bestOosPF,stability:x.stability})),ranking:S.ranking.map(x=>({feature:x.feature,importance:x.importance,trainSeparation:x.trainSpread,oosSeparation:x.oosSpread,bestTrainValue:x.bestTrainValue,bestOosValue:x.bestOosValue,bestOosPF:x.bestOosPF,stability:x.stability,oosN:x.sampleN})),notes:["This is statistical feature importance, not XGBoost or LightGBM","Importance is relative and combines profit separation, PF, stability and sample size","Categorical association pruning uses Cramer's V","No nested walk-forward validation in v1.0","No multiple-testing correction in v1.0","Selected features must return to Quality Filter and then independent final validation"]}
-}
+renderDictionary();
 </script>
 </body>
 </html>
