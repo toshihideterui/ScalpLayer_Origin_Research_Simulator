@@ -3,38 +3,40 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>ScalpLayer Origin Direction Analyzer v1.0</title>
+<title>ScalpLayer Origin Exit Optimizer v1.0</title>
 <style>
-:root{--bg:#06080e;--panel:#111522;--line:rgba(212,175,55,.28);--gold:#d4af37;--gold2:#ffe47b;--text:#f8fafc;--muted:#b7c0cd;--green:#22c55e;--red:#ef4444;--cyan:#38bdf8;--violet:#a78bfa}
+:root{--bg:#06080e;--panel:#111522;--line:rgba(212,175,55,.28);--gold:#d4af37;--gold2:#ffe47b;--text:#f8fafc;--muted:#b7c0cd;--green:#22c55e;--red:#ef4444;--cyan:#38bdf8}
 *{box-sizing:border-box}body{margin:0;padding:18px;min-height:100vh;color:var(--text);font-family:system-ui,-apple-system,"Segoe UI",sans-serif;background:radial-gradient(circle at top left,rgba(212,175,55,.16),transparent 30%),linear-gradient(180deg,#141925,var(--bg) 48%);line-height:1.55}
-.wrap{max-width:1450px;margin:auto}.hero{text-align:center;padding:8px 0 20px}.hero h1{font-size:32px;margin:4px 0}.muted,.small{color:var(--muted);font-size:13px}
+.wrap{max-width:1480px;margin:auto}.hero{text-align:center;padding:8px 0 20px}.hero h1{font-size:32px;margin:4px 0}.muted,.small{color:var(--muted);font-size:13px}
 .card{background:rgba(17,21,34,.96);border:1px solid var(--line);border-radius:14px;padding:18px;margin-bottom:16px;box-shadow:0 16px 34px rgba(0,0,0,.32)}h2{margin:0 0 12px;color:var(--gold2)}
 .grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}.stat{background:rgba(5,7,13,.7);border:1px solid rgba(212,175,55,.2);border-radius:12px;padding:13px}.stat span{display:block;color:var(--muted);font-size:12px}.stat strong{display:block;font-size:20px;overflow-wrap:anywhere}
 .toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:end}.toolbar>*{flex:1 1 180px}label{display:block;margin:6px 0 5px;color:var(--muted);font-weight:800}
 input,select,button{width:100%;min-height:44px;border-radius:9px;border:1px solid rgba(212,175,55,.36);background:#070a11;color:var(--text);padding:9px 11px;margin-bottom:8px}
 button{border:0;background:linear-gradient(135deg,var(--gold),#9f7d1d);color:#111827;font-weight:950;cursor:pointer}button.secondary{background:#263244;color:#fff}button:disabled{opacity:.45;cursor:not-allowed}
+.checks{display:flex;gap:13px;flex-wrap:wrap}.checks label{display:flex;gap:7px;align-items:center}.checks input{width:auto;min-height:auto;margin:0}
 .progress{height:12px;border-radius:999px;background:rgba(148,163,184,.18);overflow:hidden}.progress i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--gold),var(--cyan),var(--green))}
-.tableWrap{overflow:auto;max-height:620px}table{width:100%;border-collapse:collapse;min-width:1500px}th,td{border-bottom:1px solid rgba(148,163,184,.15);padding:8px;text-align:left;font-size:12px;white-space:nowrap}th{position:sticky;top:0;background:#080b12;z-index:1}
+.tableWrap{overflow:auto;max-height:650px}table{width:100%;border-collapse:collapse;min-width:1650px}th,td{border-bottom:1px solid rgba(148,163,184,.15);padding:8px;text-align:left;font-size:12px;white-space:nowrap}th{position:sticky;top:0;background:#080b12;z-index:1}
 .good{color:#bbf7d0}.bad{color:#fecaca}.warn{color:#fde68a}.pill{display:inline-block;padding:4px 9px;border-radius:999px;border:1px solid var(--line);background:rgba(212,175,55,.12);color:#f7e6a5}
 .log{height:180px;overflow:auto;background:#04060a;border-radius:10px;padding:12px;font-family:ui-monospace,Consolas,monospace;font-size:12px;white-space:pre-wrap}
-.flow{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.flow>div{padding:14px;border-radius:12px;border:1px solid rgba(56,189,248,.25);background:rgba(56,189,248,.06)}
+.flow{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.flow>div{padding:14px;border-radius:12px;border:1px solid rgba(56,189,248,.25);background:rgba(56,189,248,.06)}
 @media(max-width:760px){body{padding:10px}.hero h1{font-size:24px}.grid,.flow{grid-template-columns:1fr}.card{padding:14px}}
 </style>
 </head>
 <body>
 <main class="wrap">
 <section class="hero">
-<div class="pill">MOTION PATTERN → DIRECTION EDGE</div>
-<h1>ScalpLayer Origin Direction Analyzer v1.0</h1>
-<p class="muted">Motion Discoveryで見つかった「動く場所」が、上方向・下方向のどちらに偏るかをOOSで検証する研究専用アナライザー</p>
+<div class="pill">PATTERN + SIDE + EXIT SEARCH</div>
+<h1>ScalpLayer Origin Exit Optimizer v1.0</h1>
+<p class="muted">Motion候補と方向候補に対し、固定TP・固定SL・時間決済を総当たりし、実取引に近い出口候補を探索する研究専用ツール</p>
 </section>
 
 <section class="card">
 <h2>研究パイプライン</h2>
 <div class="flow">
-<div><strong>1. Motion Discovery</strong><div class="small">大きく動く場所を抽出</div></div>
-<div><strong>2. Direction Analyzer</strong><div class="small">上昇率・下降率・MFE/MAEの非対称性を測定</div></div>
-<div><strong>3. Trade Simulator</strong><div class="small">有望方向だけをTP・SL・時間決済で検証</div></div>
+<div><strong>1. Motion Discovery</strong><div class="small">動く場所を抽出</div></div>
+<div><strong>2. Direction Analyzer</strong><div class="small">LONG/SHORT候補を決定</div></div>
+<div><strong>3. Exit Optimizer</strong><div class="small">TP・SL・保有時間を探索</div></div>
+<div><strong>4. Trade Simulator</strong><div class="small">同時保有・DD・連敗を精密検証</div></div>
 </div>
 </section>
 
@@ -42,8 +44,8 @@ button{border:0;background:linear-gradient(135deg,var(--gold),#9f7d1d);color:#11
 <h2>1. 入力ファイル</h2>
 <label>USDJPY M1 CSV</label>
 <input id="csvFiles" type="file" accept=".csv,text/csv" multiple>
-<label>Motion Summary JSON</label>
-<input id="motionSummary" type="file" accept=".json,application/json">
+<label>Direction Summary JSON</label>
+<input id="directionSummary" type="file" accept=".json,application/json">
 <div class="toolbar">
 <div><label>入力時刻</label><select id="timezoneMode"><option value="JST">JST</option><option value="UTC">UTC</option><option value="OFFSET">固定UTCオフセット</option></select></div>
 <div><label>入力UTCオフセット</label><input id="utcOffset" type="number" step="0.5" value="0"></div>
@@ -53,20 +55,26 @@ button{border:0;background:linear-gradient(135deg,var(--gold),#9f7d1d);color:#11
 </section>
 
 <section class="card">
-<h2>2. Direction設定</h2>
+<h2>2. コストとExit探索設定</h2>
 <div class="toolbar">
-<div><label>将来区間</label><select id="horizon"><option value="5">5分</option><option value="10" selected>10分</option><option value="15">15分</option><option value="30">30分</option><option value="60">60分</option></select></div>
+<div><label>Spread (pips)</label><input id="spread" type="number" step="0.1" value="0.8"></div>
+<div><label>Slippage (pips)</label><input id="slippage" type="number" step="0.1" value="0.2"></div>
 <div><label>Train比率</label><input id="trainRatio" type="number" step="0.05" min="0.5" max="0.9" value="0.8"></div>
-<div><label>最低OOSサンプル</label><input id="minOosSamples" type="number" value="30"></div>
-<div><label>最低方向優位性</label><input id="minDirectionBias" type="number" step="1" value="10"></div>
+<div><label>最低OOSトレード数</label><input id="minTrades" type="number" value="30"></div>
 </div>
 <div class="toolbar">
-<div><label>最低MFE/MAE比</label><input id="minExcursionRatio" type="number" step="0.05" value="1.10"></div>
-<div><label>表示件数</label><input id="displayLimit" type="number" value="100"></div>
+<div><label>TP候補 (pips)</label><input id="tpSet" value="2,3,5,8,10,15"></div>
+<div><label>SL候補 (pips)</label><input id="slSet" value="2,3,5,8,10,15,20"></div>
+<div><label>最大保有時間 (分)</label><input id="holdSet" value="5,10,15,20,30"></div>
+<div><label>最低OOS PF</label><input id="minPf" type="number" step="0.01" value="1.00"></div>
 </div>
-<button id="runBtn">Direction Analysisを実行</button>
+<div class="checks">
+<label><input id="sameBarSlFirst" type="checkbox" checked>同一バーTP/SLはSL優先</label>
+<label><input id="cooldownEnabled" type="checkbox">決済まで次Entryを禁止</label>
+</div>
+<button id="runBtn">Exit Optimizationを実行</button>
 <button id="cancelBtn" class="secondary" disabled>中止</button>
-<div id="status" class="small">CSVとMotion Summary JSONを選択してください。</div>
+<div id="status" class="small">CSVとDirection Summary JSONを選択してください。</div>
 <div class="progress"><i id="bar"></i></div>
 </section>
 
@@ -76,13 +84,13 @@ button{border:0;background:linear-gradient(135deg,var(--gold),#9f7d1d);color:#11
 </section>
 
 <section class="card">
-<h2>4. Direction Ranking</h2>
-<p class="small">上昇率・下降率・平均終値変化・上方向MFE・下方向MAE・方向別到達率・年別安定性を統合します。</p>
+<h2>4. Exit Ranking</h2>
+<p class="small">Trainで探索し、OOS PF・平均pips・最大DD・勝率・年別安定性・頻度を評価します。</p>
 <div id="ranking" class="tableWrap">未実行</div>
 </section>
 
 <section class="card">
-<h2>5. Best Direction Candidate</h2>
+<h2>5. Best Exit Candidate</h2>
 <div id="bestCards" class="grid"></div>
 <div id="yearly" class="tableWrap" style="margin-top:12px"></div>
 </section>
@@ -90,9 +98,9 @@ button{border:0;background:linear-gradient(135deg,var(--gold),#9f7d1d);color:#11
 <section class="card">
 <h2>6. Export</h2>
 <div class="toolbar">
-<button id="downloadRanking" disabled>DirectionRanking.csv</button>
-<button id="downloadSamples" disabled>BestDirectionSamples.csv</button>
-<button id="downloadSummary" disabled>DirectionSummary.json</button>
+<button id="downloadRanking" disabled>ExitRanking.csv</button>
+<button id="downloadTrades" disabled>BestExitTrades.csv</button>
+<button id="downloadSummary" disabled>ExitSummary.json</button>
 </div>
 </section>
 
@@ -102,17 +110,17 @@ button{border:0;background:linear-gradient(135deg,var(--gold),#9f7d1d);color:#11
 <script>
 "use strict";
 const $=id=>document.getElementById(id),PIP=.01;
-let S={files:[],motionFile:null,motion:null,bars:[],rows:[],candidates:[],best:null,split:0,cancel:false};
+let S={files:[],directionFile:null,direction:null,bars:[],signals:[],candidates:[],best:null,splitTime:null,cancel:false};
 
 $("csvFiles").addEventListener("change",e=>{S.files=[...e.target.files];updateFileInfo()});
-$("motionSummary").addEventListener("change",e=>{S.motionFile=e.target.files[0]||null;updateFileInfo()});
+$("directionSummary").addEventListener("change",e=>{S.directionFile=e.target.files[0]||null;updateFileInfo()});
 $("runBtn").addEventListener("click",run);
 $("cancelBtn").addEventListener("click",()=>{S.cancel=true;log("中止要求")});
-$("downloadRanking").addEventListener("click",()=>downloadCsv("ScalpLayer_Origin_DirectionRanking_v1_0.csv",rankingRows()));
-$("downloadSamples").addEventListener("click",()=>downloadCsv("ScalpLayer_Origin_BestDirectionSamples_v1_0.csv",sampleRows()));
-$("downloadSummary").addEventListener("click",()=>downloadText("ScalpLayer_Origin_DirectionSummary_v1_0.json",JSON.stringify(summary(),null,2),"application/json"));
+$("downloadRanking").addEventListener("click",()=>downloadCsv("ScalpLayer_Origin_ExitRanking_v1_0.csv",rankingRows()));
+$("downloadTrades").addEventListener("click",()=>downloadCsv("ScalpLayer_Origin_BestExitTrades_v1_0.csv",tradeRows()));
+$("downloadSummary").addEventListener("click",()=>downloadText("ScalpLayer_Origin_ExitSummary_v1_0.json",JSON.stringify(summary(),null,2),"application/json"));
 
-function updateFileInfo(){$("fileInfo").textContent=`CSV ${S.files.length}件 / Motion JSON ${S.motionFile?S.motionFile.name:"未選択"}`}
+function updateFileInfo(){$("fileInfo").textContent=`CSV ${S.files.length}件 / Direction JSON ${S.directionFile?S.directionFile.name:"未選択"}`}
 function log(s){let e=$("log");e.textContent+=`\n[${new Date().toLocaleTimeString()}] ${s}`;e.scrollTop=e.scrollHeight}
 function status(s,p){$("status").textContent=s;$("bar").style.width=Math.max(0,Math.min(100,p))+"%"}
 function breathe(){return new Promise(r=>setTimeout(r,0))}
@@ -147,20 +155,16 @@ function rolling(vals,p){const mean=new Float64Array(vals.length),sd=new Float64
 function binned(v,cuts,labels){for(let i=0;i<cuts.length;i++)if(v<cuts[i])return labels[i];return labels.at(-1)}
 function session(d){let h=d.getUTCHours();if(h>=8&&h<16)return"Tokyo";if(h>=16&&h<21)return"London";if(h>=21||h<6)return"NewYork";return"Off"}
 function weekday(d){return["Sun","Mon","Tue","Wed","Thu","Fri","Sat"][d.getUTCDay()]}
-
 function parsePattern(pattern){return String(pattern||"").split("&").map(x=>x.trim()).filter(Boolean).map(x=>{const i=x.indexOf("=");return[x.slice(0,i),x.slice(i+1)]})}
-function match(rule,row){for(const [k,v] of rule)if(row.f[k]!==v)return false;return true}
+function match(rule,f){for(const [k,v] of rule)if(f[k]!==v)return false;return true}
 
-function buildRows(bars){
- const c=bars.map(x=>x.c),e8=ema(c,8),e30=ema(c,30),r=rsi(c),a=atr(bars),bb=rolling(c,20),rows=[];
- const h=+$("horizon").value,stride=+$("stride").value;
- for(let i=40;i<bars.length-h;i+=stride){
+function buildSignals(bars,rule){
+ const c=bars.map(x=>x.c),e8=ema(c,8),e30=ema(c,30),r=rsi(c),a=atr(bars),bb=rolling(c,20),signals=[],stride=+$("stride").value;
+ for(let i=40;i<bars.length-1;i+=stride){
   if(S.cancel)break;
   let hi=-Infinity,lo=Infinity;for(let j=i-19;j<=i;j++){hi=Math.max(hi,bars[j].h);lo=Math.min(lo,bars[j].l)}
-  let futureHi=-Infinity,futureLo=Infinity;for(let j=i+1;j<=i+h;j++){futureHi=Math.max(futureHi,bars[j].h);futureLo=Math.min(futureLo,bars[j].l)}
-  const closeRet=(c[i+h]-c[i])/PIP,mfe=(futureHi-c[i])/PIP,mae=(c[i]-futureLo)/PIP;
   const trend=(e8[i]-e30[i])/PIP,mom=(c[i]-c[i-5])/PIP,atrp=a[i]/PIP,z=bb.sd[i]?(c[i]-bb.mean[i])/bb.sd[i]:0,rp=hi>lo?(c[i]-lo)/(hi-lo):.5,body=(bars[i].c-bars[i].o)/PIP;
-  let f={
+  const f={
     Trend:binned(trend,[-2,-.5,.5,2],["StrongDown","Down","Flat","Up","StrongUp"]),
     RSI:binned(r[i],[30,40,50,60,70],["0-30","30-40","40-50","50-60","60-70","70-100"]),
     ATR:binned(atrp,[1.5,2.5,4,6],["VeryLow","Low","Mid","High","VeryHigh"]),
@@ -171,78 +175,85 @@ function buildRows(bars){
     Session:session(bars[i].t),
     Weekday:weekday(bars[i].t)
   };
-  rows.push({t:bars[i].t,price:c[i],closeRet,mfe,mae,f})
+  if(match(rule,f))signals.push({i,t:bars[i].t,price:bars[i].c})
  }
- return rows
+ return signals
 }
-function directionStats(rows){
- if(!rows.length)return{n:0,upRate:0,downRate:0,avgClose:0,avgMfe:0,avgMae:0,longRatio:0,shortRatio:0,directionBias:0,longHitRate:0,shortHitRate:0};
- let up=0,down=0,sum=0,mfe=0,mae=0,longHit=0,shortHit=0;
- for(const r of rows){if(r.closeRet>0)up++;if(r.closeRet<0)down++;sum+=r.closeRet;mfe+=r.mfe;mae+=r.mae;if(r.mfe>=5)longHit++;if(r.mae>=5)shortHit++}
- const n=rows.length,upRate=up/n*100,downRate=down/n*100,avgMfe=mfe/n,avgMae=mae/n;
- return{n,upRate,downRate,avgClose:sum/n,avgMfe,avgMae,longRatio:avgMae?avgMfe/avgMae:99,shortRatio:avgMfe?avgMae/avgMfe:99,directionBias:Math.abs(upRate-downRate),longHitRate:longHit/n*100,shortHitRate:shortHit/n*100}
-}
-function yearly(rows){const m={};for(const r of rows){const y=r.t.getFullYear();(m[y]||(m[y]=[])).push(r)}const out={};for(const [y,a] of Object.entries(m))out[y]=directionStats(a);return out}
-
-function analyze(rows,split,rule){
- const train=rows.slice(0,split).filter(r=>match(rule,r)),test=rows.slice(split).filter(r=>match(rule,r));
- const tr=directionStats(train),te=directionStats(test),yrs=yearly(test);
- const directions=[];
- for(const side of["LONG","SHORT"]){
-  const ratio=side==="LONG"?te.longRatio:te.shortRatio;
-  const hit=side==="LONG"?te.longHitRate:te.shortHitRate;
-  const closeEdge=side==="LONG"?te.avgClose:-te.avgClose;
-  const winRate=side==="LONG"?te.upRate:te.downRate;
-  const yr=Object.values(yrs),yearStable=yr.length?yr.filter(x=>(side==="LONG"?x.avgClose:-x.avgClose)>0).length/yr.length:0;
-  const score=Math.min(100,winRate)*.3+Math.min(3,ratio)*15+Math.max(-5,Math.min(5,closeEdge))*5+yearStable*25;
-  directions.push({side,train:tr,test:te,ratio,hitRate:hit,closeEdge,winRate,yearStable,score,years:yrs})
+function simulate(signals,bars,side,tp,sl,hold,cost,splitTime){
+ const train=[],test=[];let blockedUntil=-1;
+ for(const s of signals){
+  if($("cooldownEnabled").checked&&s.i<=blockedUntil)continue;
+  const entry=s.price,limit=Math.min(bars.length-1,s.i+hold);let exitI=limit,reason="TIME",gross=0;
+  for(let j=s.i+1;j<=limit;j++){
+   const up=(bars[j].h-entry)/PIP,down=(entry-bars[j].l)/PIP;
+   const tpHit=side==="LONG"?up>=tp:down>=tp,slHit=side==="LONG"?down>=sl:up>=sl;
+   if(tpHit&&slHit){if($("sameBarSlFirst").checked){gross=-sl;reason="SL"}else{gross=tp;reason="TP"}exitI=j;break}
+   if(slHit){gross=-sl;reason="SL";exitI=j;break}
+   if(tpHit){gross=tp;reason="TP";exitI=j;break}
+   if(j===limit){gross=(side==="LONG"?(bars[j].c-entry):(entry-bars[j].c))/PIP;reason="TIME";exitI=j}
+  }
+  const net=gross-cost,trade={entryTime:s.t,exitTime:bars[exitI].t,entry:entry,exit:bars[exitI].c,side,tp,sl,hold,reason,gross,net,year:s.t.getFullYear()};
+  (s.t<splitTime?train:test).push(trade);blockedUntil=exitI
  }
- return directions.sort((a,b)=>b.score-a.score)
+ return{train,test}
+}
+function stats(trades){
+ let gp=0,gl=0,sum=0,w=0,eq=0,peak=0,dd=0;const yearly={};
+ for(const t of trades){sum+=t.net;eq+=t.net;peak=Math.max(peak,eq);dd=Math.max(dd,peak-eq);if(t.net>0){gp+=t.net;w++}else gl+=-t.net;yearly[t.year]=(yearly[t.year]||0)+t.net}
+ return{n:trades.length,pf:gl?gp/gl:(gp?99:0),avg:trades.length?sum/trades.length:0,winRate:trades.length?w/trades.length*100:0,net:sum,maxDD:dd,yearly}
+}
+function optimize(signals,bars,splitTime){
+ const tps=$("tpSet").value.split(",").map(Number).filter(x=>x>0),sls=$("slSet").value.split(",").map(Number).filter(x=>x>0),holds=$("holdSet").value.split(",").map(Number).filter(x=>x>0);
+ const spread=+$("spread").value||.8,slip=+$("slippage").value||.2,cost=spread+slip,side=S.direction.best.side,cands=[];let total=tps.length*sls.length*holds.length,n=0;
+ for(const tp of tps)for(const sl of sls)for(const hold of holds){
+  const sim=simulate(signals,bars,side,tp,sl,hold,cost,splitTime),tr=stats(sim.train),te=stats(sim.test),yrs=Object.values(te.yearly),posYr=yrs.length?yrs.filter(x=>x>0).length/yrs.length:0;
+  const score=Math.max(0,Math.min(2,te.pf)-1)*40+Math.max(0,Math.min(5,te.avg))*10+Math.min(1,te.n/(+$("minTrades").value||30))*15+posYr*20-Math.min(20,te.maxDD/1000)*5;
+  cands.push({tp,sl,hold,train:tr,test:te,positiveYearRate:posYr,score,trades:sim.test});n++;if(n%20===0)status(`Exit候補 ${n}/${total}`,45+n/total*45)
+ }
+ return cands.sort((a,b)=>b.score-a.score)
 }
 function renderData(b){
  const days=new Set(b.map(x=>x.t.toISOString().slice(0,10)));
- const v=[["Bars",b.length.toLocaleString()],["期間",b.length?`${b[0].t.toISOString().slice(0,10)} ～ ${b.at(-1).t.toISOString().slice(0,10)}`:"--"],["営業日",days.size],["Motion Pattern",S.motion?.best?.pattern||"--"]];
+ const v=[["Bars",b.length.toLocaleString()],["期間",b.length?`${b[0].t.toISOString().slice(0,10)} ～ ${b.at(-1).t.toISOString().slice(0,10)}`:"--"],["Motion Pattern",S.direction?.motionPattern||"--"],["Direction",S.direction?.best?.side||"--"]];
  $("dataSummary").innerHTML=v.map(([a,x])=>`<div class="stat"><span>${a}</span><strong>${x}</strong></div>`).join("")
 }
 function renderRanking(list){
- const show=list.slice(0,+$("displayLimit").value||100),minBias=+$("minDirectionBias").value||0,minRatio=+$("minExcursionRatio").value||1;
- $("ranking").innerHTML=`<table><thead><tr><th>#</th><th>Side</th><th>Pattern</th><th>Train N</th><th>OOS N</th><th>OOS Win%</th><th>OOS AvgClose</th><th>OOS MFE</th><th>OOS MAE</th><th>Excursion Ratio</th><th>5pip Hit%</th><th>Direction Bias</th><th>Year Stability</th><th>Score</th><th>Status</th></tr></thead><tbody>${show.map((x,i)=>`<tr><td>${i+1}</td><td>${x.side}</td><td>${S.motion.best.pattern}</td><td>${x.train.n}</td><td>${x.test.n}</td><td>${x.winRate.toFixed(1)}</td><td>${x.closeEdge.toFixed(3)}</td><td>${x.test.avgMfe.toFixed(3)}</td><td>${x.test.avgMae.toFixed(3)}</td><td>${x.ratio.toFixed(3)}</td><td>${x.hitRate.toFixed(1)}</td><td>${x.test.directionBias.toFixed(1)}</td><td>${(x.yearStable*100).toFixed(0)}%</td><td>${x.score.toFixed(1)}</td><td class="${x.test.directionBias>=minBias&&x.ratio>=minRatio?"good":"warn"}">${x.test.directionBias>=minBias&&x.ratio>=minRatio?"PASS":"RESEARCH"}</td></tr>`).join("")}</tbody></table>`
+ const show=list.slice(0,100),minPf=+$("minPf").value||1,minN=+$("minTrades").value||30;
+ $("ranking").innerHTML=`<table><thead><tr><th>#</th><th>TP</th><th>SL</th><th>Hold</th><th>Train N</th><th>Train PF</th><th>Train Avg</th><th>OOS N</th><th>OOS PF</th><th>OOS Avg</th><th>OOS Win%</th><th>OOS Net</th><th>OOS MaxDD</th><th>Positive Years</th><th>Score</th><th>Status</th></tr></thead><tbody>${show.map((x,i)=>`<tr><td>${i+1}</td><td>${x.tp}</td><td>${x.sl}</td><td>${x.hold}</td><td>${x.train.n}</td><td>${x.train.pf.toFixed(2)}</td><td>${x.train.avg.toFixed(3)}</td><td>${x.test.n}</td><td>${x.test.pf.toFixed(2)}</td><td>${x.test.avg.toFixed(3)}</td><td>${x.test.winRate.toFixed(1)}</td><td>${x.test.net.toFixed(1)}</td><td>${x.test.maxDD.toFixed(1)}</td><td>${(x.positiveYearRate*100).toFixed(0)}%</td><td>${x.score.toFixed(1)}</td><td class="${x.test.n>=minN&&x.test.pf>=minPf?"good":"warn"}">${x.test.n>=minN&&x.test.pf>=minPf?"PASS":"RESEARCH"}</td></tr>`).join("")}</tbody></table>`
 }
 function renderBest(b){
  if(!b){$("bestCards").innerHTML="候補なし";return}
- const v=[["Pattern",S.motion.best.pattern],["推奨方向",b.side],["OOS Samples",b.test.n],["OOS Win Rate",b.winRate.toFixed(1)+"%"],["Excursion Ratio",b.ratio.toFixed(3)],["Average Close Edge",b.closeEdge.toFixed(3)+" pips"],["Direction Bias",b.test.directionBias.toFixed(1)],["Year Stability",(b.yearStable*100).toFixed(0)+"%"]];
+ const v=[["Pattern",S.direction.motionPattern],["Direction",S.direction.best.side],["TP",b.tp+" pips"],["SL",b.sl+" pips"],["Max Hold",b.hold+"分"],["OOS PF",b.test.pf.toFixed(2)],["OOS Avg",b.test.avg.toFixed(3)+" pips"],["OOS MaxDD",b.test.maxDD.toFixed(1)+" pips"]];
  $("bestCards").innerHTML=v.map(([a,x])=>`<div class="stat"><span>${a}</span><strong>${x}</strong></div>`).join("");
- $("yearly").innerHTML=`<table><thead><tr><th>Year</th><th>N</th><th>Up%</th><th>Down%</th><th>AvgClose</th><th>AvgMFE</th><th>AvgMAE</th><th>LONG Ratio</th><th>SHORT Ratio</th></tr></thead><tbody>${Object.entries(b.years).map(([y,x])=>`<tr><td>${y}</td><td>${x.n}</td><td>${x.upRate.toFixed(1)}</td><td>${x.downRate.toFixed(1)}</td><td>${x.avgClose.toFixed(3)}</td><td>${x.avgMfe.toFixed(3)}</td><td>${x.avgMae.toFixed(3)}</td><td>${x.longRatio.toFixed(3)}</td><td>${x.shortRatio.toFixed(3)}</td></tr>`).join("")}</tbody></table>`
+ $("yearly").innerHTML=`<table><thead><tr><th>Year</th><th>Net pips</th><th>Result</th></tr></thead><tbody>${Object.entries(b.test.yearly).map(([y,n])=>`<tr><td>${y}</td><td>${n.toFixed(1)}</td><td class="${n>0?"good":"bad"}">${n>0?"PLUS":"MINUS"}</td></tr>`).join("")}</tbody></table>`
 }
 async function run(){
- if(!S.files.length||!S.motionFile){status("CSVとMotion Summary JSONを選択してください。",0);return}
+ if(!S.files.length||!S.directionFile){status("CSVとDirection Summary JSONを選択してください。",0);return}
  S.cancel=false;$("runBtn").disabled=true;$("cancelBtn").disabled=false;
  try{
-  S.motion=JSON.parse(await S.motionFile.text());if(!S.motion?.best?.pattern)throw new Error("Motion Summaryにbest.patternがありません");
-  if(S.motion.settings?.horizonMinutes)$("horizon").value=String(S.motion.settings.horizonMinutes);
-  status("CSV解析中",3);log("Direction Analysis開始");const p=await parseFiles(S.files);S.bars=p.bars;if(S.bars.length<5000)throw new Error("有効バー不足");renderData(S.bars);
-  status("Direction特徴生成中",20);S.rows=buildRows(S.bars);await breathe();
-  const ratio=Math.max(.5,Math.min(.9,+$("trainRatio").value||.8));S.split=Math.floor(S.rows.length*ratio);
-  const rule=parsePattern(S.motion.best.pattern);S.candidates=analyze(S.rows,S.split,rule);
-  const minN=+$("minOosSamples").value||30,minBias=+$("minDirectionBias").value||0,minRatio=+$("minExcursionRatio").value||1;
-  S.best=S.candidates.find(x=>x.test.n>=minN&&x.test.directionBias>=minBias&&x.ratio>=minRatio)||S.candidates[0]||null;
-  renderRanking(S.candidates);renderBest(S.best);["downloadRanking","downloadSamples","downloadSummary"].forEach(id=>$(id).disabled=!S.best);
-  status("完了",100);log(`Pattern=${S.motion.best.pattern}, Best=${S.best?.side||"none"}`)
+  S.direction=JSON.parse(await S.directionFile.text());if(!S.direction?.best?.side||!S.direction?.motionPattern)throw new Error("Direction Summaryにbest.sideまたはmotionPatternがありません");
+  status("CSV解析中",3);log("Exit Optimization開始");const p=await parseFiles(S.files);S.bars=p.bars;if(S.bars.length<5000)throw new Error("有効バー不足");renderData(S.bars);
+  const rule=parsePattern(S.direction.motionPattern);status("Entry候補抽出中",20);S.signals=buildSignals(S.bars,rule);await breathe();
+  const ratio=Math.max(.5,Math.min(.9,+$("trainRatio").value||.8)),splitIndex=Math.floor(S.bars.length*ratio);S.splitTime=S.bars[splitIndex].t;
+  log(`Signals=${S.signals.length}, Split=${S.splitTime.toISOString()}`);
+  status("TP/SL/Hold探索中",45);S.candidates=optimize(S.signals,S.bars,S.splitTime);
+  const minPf=+$("minPf").value||1,minN=+$("minTrades").value||30;S.best=S.candidates.find(x=>x.test.n>=minN&&x.test.pf>=minPf)||S.candidates[0]||null;
+  renderRanking(S.candidates);renderBest(S.best);["downloadRanking","downloadTrades","downloadSummary"].forEach(id=>$(id).disabled=!S.best);
+  status("完了",100);log(`Candidates=${S.candidates.length}, Best=${S.best?`TP${S.best.tp}/SL${S.best.sl}/H${S.best.hold}`:"none"}`)
  }catch(e){status("エラー: "+e.message,0);log("ERROR "+(e.stack||e.message))}
  finally{$("runBtn").disabled=false;$("cancelBtn").disabled=true}
 }
 function rankingRows(){
- const h=["Rank","Pattern","Side","TrainN","OOSN","OOSWinRate","OOSAverageCloseEdge","OOSAverageMFE","OOSAverageMAE","ExcursionRatio","FivePipHitRate","DirectionBias","YearStability","Score"];
- return[h,...S.candidates.map((x,i)=>[i+1,S.motion.best.pattern,x.side,x.train.n,x.test.n,x.winRate.toFixed(2),x.closeEdge.toFixed(4),x.test.avgMfe.toFixed(4),x.test.avgMae.toFixed(4),x.ratio.toFixed(4),x.hitRate.toFixed(2),x.test.directionBias.toFixed(2),x.yearStable.toFixed(4),x.score.toFixed(2)])]
+ const h=["Rank","Pattern","Direction","TP","SL","HoldMinutes","TrainN","TrainPF","TrainAvg","OOSN","OOSPF","OOSAvg","OOSWinRate","OOSNet","OOSMaxDD","PositiveYearRate","Score"];
+ return[h,...S.candidates.map((x,i)=>[i+1,S.direction.motionPattern,S.direction.best.side,x.tp,x.sl,x.hold,x.train.n,x.train.pf.toFixed(4),x.train.avg.toFixed(4),x.test.n,x.test.pf.toFixed(4),x.test.avg.toFixed(4),x.test.winRate.toFixed(2),x.test.net.toFixed(2),x.test.maxDD.toFixed(2),x.positiveYearRate.toFixed(4),x.score.toFixed(2)])]
 }
-function sampleRows(){
+function tradeRows(){
  if(!S.best)return[];
- const rule=parsePattern(S.motion.best.pattern),test=S.rows.slice(S.split).filter(r=>match(rule,r)).slice(0,10000);
- const h=["SampleId","Time","Pattern","SelectedSide","Price","CloseReturnPips","SideCloseEdgePips","MFE","MAE","Outcome"];
- return[h,...test.map((r,i)=>[i+1,r.t.toISOString(),S.motion.best.pattern,S.best.side,r.price.toFixed(3),r.closeRet.toFixed(3),(S.best.side==="LONG"?r.closeRet:-r.closeRet).toFixed(3),r.mfe.toFixed(3),r.mae.toFixed(3),(S.best.side==="LONG"?(r.closeRet>0?"WIN":"LOSS"):(r.closeRet<0?"WIN":"LOSS"))])]
+ const h=["TradeId","EntryTime","ExitTime","Pattern","Direction","TP","SL","HoldMinutes","EntryPrice","ExitPrice","ExitReason","GrossPips","NetPips","Year"];
+ return[h,...S.best.trades.map((t,i)=>[i+1,t.entryTime.toISOString(),t.exitTime.toISOString(),S.direction.motionPattern,t.side,t.tp,t.sl,t.hold,t.entry.toFixed(3),t.exit.toFixed(3),t.reason,t.gross.toFixed(3),t.net.toFixed(3),t.year])]
 }
 function summary(){
- return{version:"ScalpLayer Origin Direction Analyzer v1.0",generatedAt:new Date().toISOString(),sourceFiles:S.files.map(f=>f.name),motionSummaryFile:S.motionFile?.name||null,motionPattern:S.motion?.best?.pattern||null,bars:S.bars.length,featureRows:S.rows.length,trainRows:S.split,oosRows:S.rows.length-S.split,settings:{horizonMinutes:+$("horizon").value,minimumOOSSample:+$("minOosSamples").value,minimumDirectionBias:+$("minDirectionBias").value,minimumExcursionRatio:+$("minExcursionRatio").value,stride:+$("stride").value},best:S.best?{side:S.best.side,pattern:S.motion.best.pattern,train:S.best.train,oos:S.best.test,winRate:S.best.winRate,averageCloseEdgePips:S.best.closeEdge,excursionRatio:S.best.ratio,fivePipHitRate:S.best.hitRate,directionBias:S.best.test.directionBias,yearStability:S.best.yearStable,yearly:S.best.years,score:S.best.score}:null,notes:["Direction analysis only","No spread, slippage, TP, SL or position overlap is applied","MFE and MAE are descriptive excursion measures","Selected direction must be validated in a dedicated trade simulator"]}
+ return{version:"ScalpLayer Origin Exit Optimizer v1.0",generatedAt:new Date().toISOString(),sourceFiles:S.files.map(f=>f.name),directionSummaryFile:S.directionFile?.name||null,pattern:S.direction?.motionPattern||null,direction:S.direction?.best?.side||null,bars:S.bars.length,signals:S.signals.length,settings:{spreadPips:+$("spread").value,slippagePips:+$("slippage").value,trainRatio:+$("trainRatio").value,tpSet:$("tpSet").value,slSet:$("slSet").value,holdSet:$("holdSet").value,sameBarSLFirst:$("sameBarSlFirst").checked,cooldownEnabled:$("cooldownEnabled").checked},best:S.best?{tpPips:S.best.tp,slPips:S.best.sl,holdMinutes:S.best.hold,train:S.best.train,oos:S.best.test,positiveYearRate:S.best.positiveYearRate,score:S.best.score}:null,notes:["Research-only exit optimizer","Entry price uses signal-bar close","Same-bar TP/SL can use conservative SL-first","Spread and slippage are fixed pips","No variable spread, partial close, trailing stop or break-even in v1.0","Best candidate requires a dedicated final trade simulator and MT5 Strategy Tester validation"]}
 }
 </script>
 </body>
