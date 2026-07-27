@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>ScalpLayer Origin Feature Mining Engine v1.0</title>
+<title>ScalpLayer Origin Feature Mining Engine v1.1 Fast</title>
 <style>
 :root{--bg:#070910;--panel:#111522;--line:rgba(212,175,55,.28);--gold:#d4af37;--gold2:#ffe47b;--text:#f8fafc;--muted:#b7c0cd;--green:#22c55e;--cyan:#38bdf8;--red:#f87171}
 *{box-sizing:border-box}body{margin:0;padding:18px;background:linear-gradient(180deg,#151a28,var(--bg) 48%);color:var(--text);font-family:system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.55}
@@ -24,7 +24,7 @@ textarea{min-height:90px;resize:vertical}button{border:0;background:linear-gradi
 <main class="wrap">
 <section class="hero">
 <div class="pill">RULE DISCOVERY FROM FULL CORE</div>
-<h1>ScalpLayer Origin Feature Mining Engine v1.0</h1>
+<h1>ScalpLayer Origin Feature Mining Engine v1.1 Fast</h1>
 <p class="muted">CoreFeaturesから有望なFeature組み合わせをBeam Searchで発見し、Train/OOS安定性でふるいにかける研究エンジン</p>
 </section>
 
@@ -62,15 +62,15 @@ textarea{min-height:90px;resize:vertical}button{border:0;background:linear-gradi
 
 <div class="toolbar">
 <div><label>Train比率</label><input id="trainRatio" type="number" value="0.8" min="0.5" max="0.95" step="0.01"></div>
-<div><label>最大ルール深度</label><input id="maxDepth" type="number" value="3" min="1" max="5"></div>
-<div><label>Beam幅</label><input id="beamWidth" type="number" value="80" min="5" max="500"></div>
-<div><label>最大候補値/Feature</label><input id="maxValues" type="number" value="8" min="2" max="30"></div>
+<div><label>最大ルール深度</label><input id="maxDepth" type="number" value="2" min="1" max="5"></div>
+<div><label>Beam幅</label><input id="beamWidth" type="number" value="20" min="5" max="500"></div>
+<div><label>最大候補値/Feature</label><input id="maxValues" type="number" value="6" min="2" max="30"></div>
 <div><label>最小Train Trades</label><input id="minTrain" type="number" value="80"></div>
 <div><label>最小OOS Trades</label><input id="minOos" type="number" value="20"></div>
 </div>
 
 <div class="toolbar">
-<div><label>探索対象Feature</label><textarea id="includeFeatures" placeholder="空欄ならDictionary内の全Feature。例: Momentum5,EMA20_50,RSI14,Hour,Weekday"></textarea></div>
+<div><label>探索対象Feature</label><textarea id="includeFeatures">Momentum5,EMA20_50,EMA8Slope5,RSI14,RangePos20,Body,Hour,Weekday</textarea></div>
 <div><label>除外Feature</label><textarea id="excludeFeatures">Index,DateTime,Open,High,Low,Close,ATR,Session</textarea></div>
 </div>
 
@@ -80,12 +80,12 @@ textarea{min-height:90px;resize:vertical}button{border:0;background:linear-gradi
 <div class="progress"><i id="bar"></i></div>
 </section>
 
-<section class="card"><h2>3. Validation</h2><div id="validation" class="grid"></div></section>
-<section class="card"><h2>4. Ranking</h2><div id="ranking" class="tableWrap">未実行</div></section>
-<section class="card"><h2>5. Best Rule</h2><div id="bestRule" class="small">未実行</div></section>
+<section class="card"><h2>3. Validation</h2><div id="validation" class="grid"></div></section><section class="card"><h2>4. Fast Index</h2><div id="fastStats" class="grid"></div></section>
+<section class="card"><h2>5. Ranking</h2><div id="ranking" class="tableWrap">未実行</div></section>
+<section class="card"><h2>6. Best Rule</h2><div id="bestRule" class="small">未実行</div></section>
 
 <section class="card">
-<h2>6. Export</h2>
+<h2>7. Export</h2>
 <div class="toolbar">
 <button id="downloadRanking" disabled>MiningRanking.csv</button>
 <button id="downloadTrades" disabled>BestRuleTrades.csv</button>
@@ -99,13 +99,13 @@ textarea{min-height:90px;resize:vertical}button{border:0;background:linear-gradi
 <script>
 "use strict";
 const $=id=>document.getElementById(id),PIP=.01;
-let S={rows:[],manifest:null,dict:null,ranking:[],bestTrades:[],cancel:false};
+let S={rows:[],manifest:null,dict:null,ranking:[],bestTrades:[],cancel:false,tradePips:null,tradeExitIndex:null,tradeReason:null,split:0,baseIndices:[],indexMap:new Map()};
 
 $("runBtn").addEventListener("click",run);
 $("cancelBtn").addEventListener("click",()=>{S.cancel=true;log("中止要求")});
-$("downloadRanking").addEventListener("click",()=>downloadText("ScalpLayer_Origin_FeatureMining_Ranking_v1_0.csv",rankingCsv(),"text/csv"));
-$("downloadTrades").addEventListener("click",()=>downloadText("ScalpLayer_Origin_FeatureMining_BestRuleTrades_v1_0.csv",tradesCsv(),"text/csv"));
-$("downloadSummary").addEventListener("click",()=>downloadText("ScalpLayer_Origin_FeatureMining_Summary_v1_0.json",JSON.stringify(summary(),null,2),"application/json"));
+$("downloadRanking").addEventListener("click",()=>downloadText("ScalpLayer_Origin_FeatureMining_Ranking_v1_1_Fast.csv",rankingCsv(),"text/csv"));
+$("downloadTrades").addEventListener("click",()=>downloadText("ScalpLayer_Origin_FeatureMining_BestRuleTrades_v1_1_Fast.csv",tradesCsv(),"text/csv"));
+$("downloadSummary").addEventListener("click",()=>downloadText("ScalpLayer_Origin_FeatureMining_Summary_v1_1_Fast.json",JSON.stringify(summary(),null,2),"application/json"));
 
 function log(s){const e=$("log");e.textContent+=`\n[${new Date().toLocaleTimeString()}] ${s}`;e.scrollTop=e.scrollHeight}
 function status(s,p){$("status").textContent=s;$("bar").style.width=Math.max(0,Math.min(100,p))+"%"}
@@ -149,75 +149,61 @@ function validate(){
 }
 function simulateAt(i,direction,tp,sl,hold){
  const entry=S.rows[i].Close,dir=direction==="LONG"?1:-1,tpPx=entry+dir*tp*PIP,slPx=entry-dir*sl*PIP;
- let exitIndex=Math.min(S.rows.length-1,i+hold),exit= S.rows[exitIndex].Close,reason="HOLD";
+ let exitIndex=Math.min(S.rows.length-1,i+hold),exit=S.rows[exitIndex].Close,reason="HOLD";
  for(let j=i+1;j<=Math.min(S.rows.length-1,i+hold);j++){
   const r=S.rows[j],hitTP=dir===1?r.High>=tpPx:r.Low<=tpPx,hitSL=dir===1?r.Low<=slPx:r.High>=slPx;
   if(hitTP&&hitSL){exitIndex=j;exit=slPx;reason="BOTH_SL_FIRST";break}
   if(hitSL){exitIndex=j;exit=slPx;reason="SL";break}
   if(hitTP){exitIndex=j;exit=tpPx;reason="TP";break}
  }
- const pips=(exit-entry)/PIP*dir;
- return{entryIndex:i,exitIndex,entryTime:S.rows[i].DateTime,exitTime:S.rows[exitIndex].DateTime,entry,exit,pips,reason}
+ return{entryIndex:i,exitIndex,entryTime:S.rows[i].DateTime,exitTime:S.rows[exitIndex].DateTime,entry,exit,pips:(exit-entry)/PIP*dir,reason}
 }
-function evalRule(rule,split,tp,sl,hold,direction){
+async function precomputeTrades(){
+ const n=S.rows.length,hold=+$('hold').value,direction=$('direction').value,tp=+$('tp').value,sl=+$('sl').value;
+ S.tradePips=new Float32Array(n);S.tradeExitIndex=new Uint32Array(n);S.tradeReason=new Uint8Array(n);
+ for(let i=0;i<n;i++){
+  if(S.cancel)break;
+  if(i>=n-hold-1){S.tradePips[i]=NaN;continue}
+  const tr=simulateAt(i,direction,tp,sl,hold);S.tradePips[i]=tr.pips;S.tradeExitIndex[i]=tr.exitIndex;
+  S.tradeReason[i]=tr.reason==='TP'?1:tr.reason==='SL'?2:tr.reason==='BOTH_SL_FIRST'?3:4;
+  if(i%100000===0){status(`Trade事前計算 ${i.toLocaleString()}/${n.toLocaleString()}`,20+i/n*20);await breathe()}
+ }
+}
+function reasonName(code){return code===1?'TP':code===2?'SL':code===3?'BOTH_SL_FIRST':'HOLD'}
+async function buildFastIndex(base,features,values){
+ S.indexMap=new Map();
+ for(let fi=0;fi<features.length;fi++){
+  const f=features[fi];for(const v of values[f]||[])S.indexMap.set(`${f}\u0000${v}`,[]);
+  for(const i of S.baseIndices){const a=S.indexMap.get(`${f}\u0000${String(S.rows[i][f])}`);if(a)a.push(i)}
+  status(`Feature索引 ${fi+1}/${features.length}`,42+(fi+1)/Math.max(1,features.length)*13);await breathe()
+ }
+ const cards=[['Base Rows',S.baseIndices.length.toLocaleString()],['Indexed Features',features.length],['Index Buckets',S.indexMap.size],['Mode','PRECOMPUTED'],['Trade Cache',S.tradePips.length.toLocaleString()],['Split',S.split.toLocaleString()]];
+ $('fastStats').innerHTML=cards.map(([a,x])=>`<div class="stat"><span>${a}</span><strong>${x}</strong></div>`).join('')
+}
+function intersectSorted(a,b){const out=[];let i=0,j=0;while(i<a.length&&j<b.length){const x=a[i],y=b[j];if(x===y){out.push(x);i++;j++}else if(x<y)i++;else j++}return out}
+function statsFromIndices(indices){
  const stats={train:{trades:0,win:0,loss:0,net:0,wins:0},oos:{trades:0,win:0,loss:0,net:0,wins:0}};
- for(let i=0;i<S.rows.length-hold-1;i++){
-  if(!matchRule(S.rows[i],rule))continue;
-  const tr=simulateAt(i,direction,tp,sl,hold),bucket=i<split?stats.train:stats.oos,s=tr.pips;
-  bucket.trades++;bucket.net+=s;if(s>0){bucket.win+=s;bucket.wins++}else bucket.loss+=s;
- }
- for(const k of ["train","oos"]){const x=stats[k];x.pf=pf(x);x.avg=x.trades?x.net/x.trades:0;x.winRate=x.trades?x.wins/x.trades:0}
- return stats
+ for(const i of indices){const s=S.tradePips[i];if(!Number.isFinite(s))continue;const b=i<S.split?stats.train:stats.oos;b.trades++;b.net+=s;if(s>0){b.win+=s;b.wins++}else b.loss+=s}
+ for(const k of ['train','oos']){const x=stats[k];x.pf=pf(x);x.avg=x.trades?x.net/x.trades:0;x.winRate=x.trades?x.wins/x.trades:0}return stats
 }
-function scoreResult(s,minTrain,minOos){
- if(s.train.trades<minTrain||s.oos.trades<minOos)return-Infinity;
- const trainPf=Math.min(s.train.pf,5),oosPf=Math.min(s.oos.pf,5),stability=Math.max(0,1-Math.abs(trainPf-oosPf)/Math.max(1,trainPf,oosPf));
- const sample=Math.min(1,Math.log10(s.train.trades+s.oos.trades+1)/4);
- const avg=Math.max(-2,Math.min(2,(s.train.avg+s.oos.avg)/2));
- return oosPf*35+trainPf*15+stability*20+sample*15+avg*7.5;
-}
-function candidateFeatures(base){
- const include=parseList($("includeFeatures").value),exclude=new Set(parseList($("excludeFeatures").value));
- const baseNames=new Set(base.map(x=>x.feature)),dictNames=(S.dict.features||[]).map(x=>x.name);
- return (include.length?include:dictNames).filter(x=>!exclude.has(x)&&!baseNames.has(x)&&S.rows[0]&&x in S.rows[0]);
-}
-function featureValues(features,maxValues){
- const out={};
- for(const f of features){const m=new Map();for(const r of S.rows){const v=String(r[f]);m.set(v,(m.get(v)||0)+1)}
-  out[f]=[...m.entries()].sort((a,b)=>b[1]-a[1]).slice(0,maxValues).map(x=>x[0]);
- }
- return out
-}
+function scoreResult(s,minTrain,minOos){if(s.train.trades<minTrain||s.oos.trades<minOos)return-Infinity;const a=Math.min(s.train.pf,5),b=Math.min(s.oos.pf,5),st=Math.max(0,1-Math.abs(a-b)/Math.max(1,a,b)),sample=Math.min(1,Math.log10(s.train.trades+s.oos.trades+1)/4),avg=Math.max(-2,Math.min(2,(s.train.avg+s.oos.avg)/2));return b*35+a*15+st*20+sample*15+avg*7.5}
+function candidateFeatures(base){const include=parseList($('includeFeatures').value),exclude=new Set(parseList($('excludeFeatures').value)),baseNames=new Set(base.map(x=>x.feature)),dictNames=(S.dict.features||[]).map(x=>x.name);return(include.length?include:dictNames).filter(x=>!exclude.has(x)&&!baseNames.has(x)&&S.rows[0]&&x in S.rows[0])}
+function featureValues(features,maxValues){const out={};for(const f of features){const m=new Map();for(const i of S.baseIndices){const v=String(S.rows[i][f]);m.set(v,(m.get(v)||0)+1)}out[f]=[...m.entries()].sort((a,b)=>b[1]-a[1]).slice(0,maxValues).map(x=>x[0])}return out}
 async function mine(){
- const base=parsePattern($("basePattern").value),features=candidateFeatures(base),values=featureValues(features,+$("maxValues").value||8);
- const tp=+$("tp").value,sl=+$("sl").value,hold=+$("hold").value,direction=$("direction").value,split=Math.floor(S.rows.length*(+$("trainRatio").value||.8));
- const maxDepth=+$("maxDepth").value||3,beamWidth=+$("beamWidth").value||80,minTrain=+$("minTrain").value||80,minOos=+$("minOos").value||20;
- let beam=[{rule:base,used:new Set(base.map(x=>x.feature))}],all=[],seen=new Set([ruleText(base)]);
- log(`候補Feature=${features.length}, 最大深度=${maxDepth}, Beam=${beamWidth}`);
+ const base=parsePattern($('basePattern').value),features=candidateFeatures(base);S.split=Math.floor(S.rows.length*(+$('trainRatio').value||.8));
+ await precomputeTrades();S.baseIndices=[];for(let i=0;i<S.rows.length;i++)if(matchRule(S.rows[i],base))S.baseIndices.push(i);
+ const values=featureValues(features,+$('maxValues').value||6);await buildFastIndex(base,features,values);
+ const maxDepth=+$('maxDepth').value||2,beamWidth=+$('beamWidth').value||20,minTrain=+$('minTrain').value||80,minOos=+$('minOos').value||20;
+ let beam=[{rule:base,used:new Set(base.map(x=>x.feature)),indices:S.baseIndices}],all=[],seen=new Set([ruleText(base)]);log(`FAST: BaseRows=${S.baseIndices.length}, Feature=${features.length}, Depth=${maxDepth}, Beam=${beamWidth}`);
  for(let depth=1;depth<=maxDepth;depth++){
-  const next=[];
-  for(let bi=0;bi<beam.length;bi++){
-   if(S.cancel)break;
-   const b=beam[bi];
-   for(const f of features){if(b.used.has(f))continue;
-    for(const v of values[f]||[]){
-     const rule=[...b.rule,{feature:f,value:v}],key=ruleText(rule);if(seen.has(key))continue;seen.add(key);
-     const stats=evalRule(rule,split,tp,sl,hold,direction),score=scoreResult(stats,minTrain,minOos);
-     if(Number.isFinite(score))next.push({rule,used:new Set([...b.used,f]),stats,score,depth});
-    }
-   }
-   if(bi%5===0){status(`Depth ${depth}: ${bi+1}/${beam.length}`,25+(depth-1)/maxDepth*60+(bi+1)/Math.max(1,beam.length)*60/maxDepth);await breathe()}
+  const next=[];for(let bi=0;bi<beam.length;bi++){if(S.cancel)break;const b=beam[bi];
+   for(const f of features){if(b.used.has(f))continue;for(const v of values[f]||[]){const rule=[...b.rule,{feature:f,value:v}],key=ruleText(rule);if(seen.has(key))continue;seen.add(key);const idx=intersectSorted(b.indices,S.indexMap.get(`${f}\u0000${v}`)||[]);if(idx.length<minTrain+minOos)continue;const stats=statsFromIndices(idx),score=scoreResult(stats,minTrain,minOos);if(Number.isFinite(score))next.push({rule,used:new Set([...b.used,f]),stats,score,depth,indices:idx})}}
+   if(bi%3===0){status(`FAST Depth ${depth}: ${bi+1}/${beam.length}`,58+(depth-1)/maxDepth*38+(bi+1)/Math.max(1,beam.length)*38/maxDepth);await breathe()}
   }
-  next.sort((a,b)=>b.score-a.score);beam=next.slice(0,beamWidth);all.push(...beam);
-  log(`Depth ${depth}: valid=${next.length}, beam=${beam.length}`);
-  if(!beam.length||S.cancel)break;
+  next.sort((a,b)=>b.score-a.score);beam=next.slice(0,beamWidth);all.push(...beam);log(`FAST Depth ${depth}: valid=${next.length}, beam=${beam.length}`);if(!beam.length||S.cancel)break
  }
  all.sort((a,b)=>b.score-a.score);S.ranking=all.slice(0,500);
- if(S.ranking.length){
-  const best=S.ranking[0],trades=[];
-  for(let i=0;i<S.rows.length-hold-1;i++)if(matchRule(S.rows[i],best.rule))trades.push({...simulateAt(i,direction,tp,sl,hold),segment:i<split?"TRAIN":"OOS"});
-  S.bestTrades=trades
- }
+ if(S.ranking.length){const best=S.ranking[0];S.bestTrades=best.indices.map(i=>({segment:i<S.split?'TRAIN':'OOS',entryIndex:i,exitIndex:S.tradeExitIndex[i],entryTime:S.rows[i].DateTime,exitTime:S.rows[S.tradeExitIndex[i]]?.DateTime||'',entry:S.rows[i].Close,exit:S.rows[S.tradeExitIndex[i]]?.Close||'',pips:S.tradePips[i],reason:reasonName(S.tradeReason[i])}))}
 }
 function renderRanking(){
  if(!S.ranking.length){$("ranking").textContent="候補なし";$("bestRule").textContent="条件を満たす候補がありません。";return}
@@ -234,12 +220,12 @@ function tradesCsv(){
  return[h.join(","),...S.bestTrades.map(x=>[x.segment,x.entryIndex,x.exitIndex,x.entryTime,x.exitTime,x.entry,x.exit,x.pips,x.reason].join(","))].join("\n")
 }
 function summary(){
- return{version:"ScalpLayer Origin Feature Mining Engine v1.0",generatedAt:new Date().toISOString(),manifest:S.manifest,basePattern:$("basePattern").value,direction:$("direction").value,exit:{tp:+$("tp").value,sl:+$("sl").value,hold:+$("hold").value},settings:{trainRatio:+$("trainRatio").value,maxDepth:+$("maxDepth").value,beamWidth:+$("beamWidth").value,minTrain:+$("minTrain").value,minOos:+$("minOos").value},best:S.ranking[0]?{rule:ruleText(S.ranking[0].rule),score:S.ranking[0].score,stats:S.ranking[0].stats}:null}
+ return{version:"ScalpLayer Origin Feature Mining Engine v1.1 Fast",generatedAt:new Date().toISOString(),manifest:S.manifest,basePattern:$("basePattern").value,direction:$("direction").value,exit:{tp:+$("tp").value,sl:+$("sl").value,hold:+$("hold").value},settings:{trainRatio:+$("trainRatio").value,maxDepth:+$("maxDepth").value,beamWidth:+$("beamWidth").value,minTrain:+$("minTrain").value,minOos:+$("minOos").value},best:S.ranking[0]?{rule:ruleText(S.ranking[0].rule),score:S.ranking[0].score,stats:S.ranking[0].stats}:null}
 }
 async function run(){
  S.cancel=false;S.ranking=[];S.bestTrades=[];$("runBtn").disabled=true;$("cancelBtn").disabled=false;
  try{
-  status("入力読込",2);await loadInputs();validate();status("Mining中",22);await mine();renderRanking();
+  status("入力読込",2);await loadInputs();validate();status("高速索引を準備中",20);await mine();renderRanking();
   const ok=S.ranking.length>0;["downloadRanking","downloadTrades","downloadSummary"].forEach(id=>$(id).disabled=!ok);
   status(S.cancel?"中止":"完了",S.cancel?0:100);log(`完了 Ranking=${S.ranking.length}`)
  }catch(e){status("エラー: "+e.message,0);log("ERROR "+(e.stack||e.message))}
