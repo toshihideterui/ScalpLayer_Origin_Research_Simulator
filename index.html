@@ -3,91 +3,93 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>ScalpLayer Origin Core Feature Generator v1.1</title>
+<title>ScalpLayer Origin Feature Mining Engine v1.0</title>
 <style>
-:root{--bg:#070910;--panel:#111522;--line:rgba(212,175,55,.28);--gold:#d4af37;--gold2:#ffe47b;--text:#f8fafc;--muted:#b7c0cd;--green:#22c55e;--cyan:#38bdf8}
+:root{--bg:#070910;--panel:#111522;--line:rgba(212,175,55,.28);--gold:#d4af37;--gold2:#ffe47b;--text:#f8fafc;--muted:#b7c0cd;--green:#22c55e;--cyan:#38bdf8;--red:#f87171}
 *{box-sizing:border-box}body{margin:0;padding:18px;background:linear-gradient(180deg,#151a28,var(--bg) 48%);color:var(--text);font-family:system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.55}
-.wrap{max-width:1500px;margin:auto}.hero{text-align:center;padding:8px 0 20px}.hero h1{font-size:32px;margin:4px 0}.muted,.small{color:var(--muted);font-size:13px}
+.wrap{max-width:1600px;margin:auto}.hero{text-align:center;padding:8px 0 20px}.hero h1{font-size:32px;margin:4px 0}.muted,.small{color:var(--muted);font-size:13px}
 .card{background:rgba(17,21,34,.97);border:1px solid var(--line);border-radius:14px;padding:18px;margin-bottom:16px;box-shadow:0 16px 34px rgba(0,0,0,.32)}h2{margin:0 0 12px;color:var(--gold2)}
-.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}.stat{background:#080b12;border:1px solid rgba(212,175,55,.22);border-radius:12px;padding:13px}.stat span{display:block;color:var(--muted);font-size:12px}.stat strong{display:block;font-size:20px;overflow-wrap:anywhere}
+.grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:12px}.stat{background:#080b12;border:1px solid rgba(212,175,55,.22);border-radius:12px;padding:13px}.stat span{display:block;color:var(--muted);font-size:12px}.stat strong{display:block;font-size:20px;overflow-wrap:anywhere}
 .toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:end}.toolbar>*{flex:1 1 180px}label{display:block;margin:6px 0 5px;color:var(--muted);font-weight:800}
-input,select,button{width:100%;min-height:44px;border-radius:9px;border:1px solid rgba(212,175,55,.36);background:#070a11;color:var(--text);padding:9px 11px;margin-bottom:8px}
-button{border:0;background:linear-gradient(135deg,var(--gold),#9f7d1d);color:#111827;font-weight:950;cursor:pointer}button.secondary{background:#263244;color:#fff}button:disabled{opacity:.45;cursor:not-allowed}
+input,select,textarea,button{width:100%;min-height:44px;border-radius:9px;border:1px solid rgba(212,175,55,.36);background:#070a11;color:var(--text);padding:9px 11px;margin-bottom:8px}
+textarea{min-height:90px;resize:vertical}button{border:0;background:linear-gradient(135deg,var(--gold),#9f7d1d);color:#111827;font-weight:950;cursor:pointer}button.secondary{background:#263244;color:#fff}button:disabled{opacity:.45;cursor:not-allowed}
 .progress{height:12px;border-radius:999px;background:rgba(148,163,184,.18);overflow:hidden}.progress i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--gold),var(--cyan),var(--green))}
-.tableWrap{overflow:auto;max-height:620px}table{width:100%;border-collapse:collapse;min-width:1800px}th,td{border-bottom:1px solid rgba(148,163,184,.15);padding:8px;text-align:left;font-size:12px;white-space:nowrap}th{position:sticky;top:0;background:#080b12;z-index:1}
-.pill{display:inline-block;padding:4px 9px;border-radius:999px;border:1px solid var(--line);background:rgba(212,175,55,.12);color:#f7e6a5}.log{height:180px;overflow:auto;background:#04060a;border-radius:10px;padding:12px;font-family:ui-monospace,Consolas,monospace;font-size:12px;white-space:pre-wrap}
-.flow{display:grid;grid-template-columns:repeat(6,1fr);gap:10px}.flow>div{padding:14px;border-radius:12px;border:1px solid rgba(56,189,248,.25);background:rgba(56,189,248,.06)}
-@media(max-width:760px){body{padding:10px}.hero h1{font-size:24px}.grid,.flow{grid-template-columns:1fr}.card{padding:14px}}
+.tableWrap{overflow:auto;max-height:650px}table{width:100%;border-collapse:collapse;min-width:1700px}th,td{border-bottom:1px solid rgba(148,163,184,.15);padding:8px;text-align:left;font-size:12px;white-space:nowrap}th{position:sticky;top:0;background:#080b12;z-index:1}
+.pill{display:inline-block;padding:4px 9px;border-radius:999px;border:1px solid var(--line);background:rgba(212,175,55,.12);color:#f7e6a5}.log{height:190px;overflow:auto;background:#04060a;border-radius:10px;padding:12px;font-family:ui-monospace,Consolas,monospace;font-size:12px;white-space:pre-wrap}
+.warn{color:#fecaca}.ok{color:#bbf7d0}.flow{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}.flow>div{padding:14px;border-radius:12px;border:1px solid rgba(56,189,248,.25);background:rgba(56,189,248,.06)}
+@media(max-width:800px){body{padding:10px}.hero h1{font-size:24px}.grid,.flow{grid-template-columns:1fr}.card{padding:14px}}
 </style>
 </head>
 <body>
 <main class="wrap">
 <section class="hero">
-<div class="pill">ONE CORE, ONE FEATURE LANGUAGE</div>
-<h1>ScalpLayer Origin Core Feature Generator v1.1</h1>
-<p class="muted">Motion・Direction・Quality・Importance・Exit・Simulatorが同じ特徴量定義を共有するための共通Core</p>
+<div class="pill">RULE DISCOVERY FROM FULL CORE</div>
+<h1>ScalpLayer Origin Feature Mining Engine v1.0</h1>
+<p class="muted">CoreFeaturesから有望なFeature組み合わせをBeam Searchで発見し、Train/OOS安定性でふるいにかける研究エンジン</p>
 </section>
 
 <section class="card">
-<h2>共通アーキテクチャ</h2>
+<h2>研究フロー</h2>
 <div class="flow">
-<div><strong>Market Data</strong><div class="small">USDJPY M1</div></div>
-<div><strong>Core Features</strong><div class="small">共通定義</div></div>
-<div><strong>Motion</strong><div class="small">動く場所</div></div>
-<div><strong>Direction</strong><div class="small">LONG/SHORT</div></div>
-<div><strong>Quality</strong><div class="small">選別</div></div>
-<div><strong>Simulator</strong><div class="small">最終検証</div></div>
+<div><strong>FULL CORE</strong><div class="small">stride=1</div></div>
+<div><strong>Base Pattern</strong><div class="small">既存条件</div></div>
+<div><strong>Beam Search</strong><div class="small">組み合わせ探索</div></div>
+<div><strong>Train / OOS</strong><div class="small">時系列分割</div></div>
+<div><strong>Ranking</strong><div class="small">安定性評価</div></div>
 </div>
 </section>
 
 <section class="card">
 <h2>1. 入力</h2>
-<label>USDJPY M1 CSV</label>
-<input id="csvFiles" type="file" accept=".csv,text/csv" multiple>
+<label>CoreFeatures CSV</label>
+<input id="coreFile" type="file" accept=".csv,text/csv">
 <div class="toolbar">
-<div><label>入力時刻</label><select id="timezoneMode"><option value="JST">JST</option><option value="UTC">UTC</option><option value="OFFSET">固定UTCオフセット</option></select></div>
-<div><label>入力UTCオフセット</label><input id="utcOffset" type="number" step="0.5" value="0"></div>
-<div><label>出力間引き</label><select id="stride"><option value="1" selected>全バー（推奨・Simulator対応）</option><option value="2">2本ごと（分析専用）</option><option value="5">5本ごと（分析専用）</option></select></div>
+<div><label>Core Manifest JSON</label><input id="manifestFile" type="file" accept=".json,application/json"></div>
+<div><label>Feature Dictionary JSON</label><input id="dictFile" type="file" accept=".json,application/json"></div>
 </div>
-<div id="fileInfo" class="small">未選択</div><div id="strideWarning" class="small" style="color:#fde68a;margin-top:8px">全バー出力は、TP・SL・保有時間を正確に検証するために必要です。</div>
+<div id="inputInfo" class="small">未選択</div>
 </section>
 
 <section class="card">
-<h2>2. Core Feature設定</h2>
+<h2>2. 研究条件</h2>
 <div class="toolbar">
-<div><label>ウォームアップ本数</label><input id="warmup" type="number" value="220"></div>
-<div><label>JSON最大行数</label><input id="jsonLimit" type="number" value="200000"></div>
-<div><label>プレビュー件数</label><input id="previewLimit" type="number" value="100"></div>
-<div><label>CSV小数桁</label><input id="digits" type="number" value="4"></div>
+<div><label>Base Pattern</label><input id="basePattern" value="ATR=VeryHigh & Session=Off"></div>
+<div><label>Direction</label><select id="direction"><option>SHORT</option><option>LONG</option></select></div>
+<div><label>TP (pips)</label><input id="tp" type="number" value="3" step="0.1"></div>
+<div><label>SL (pips)</label><input id="sl" type="number" value="20" step="0.1"></div>
+<div><label>Hold (minutes)</label><input id="hold" type="number" value="5"></div>
 </div>
-<button id="runBtn">Core Featuresを生成</button>
+
+<div class="toolbar">
+<div><label>Train比率</label><input id="trainRatio" type="number" value="0.8" min="0.5" max="0.95" step="0.01"></div>
+<div><label>最大ルール深度</label><input id="maxDepth" type="number" value="3" min="1" max="5"></div>
+<div><label>Beam幅</label><input id="beamWidth" type="number" value="80" min="5" max="500"></div>
+<div><label>最大候補値/Feature</label><input id="maxValues" type="number" value="8" min="2" max="30"></div>
+<div><label>最小Train Trades</label><input id="minTrain" type="number" value="80"></div>
+<div><label>最小OOS Trades</label><input id="minOos" type="number" value="20"></div>
+</div>
+
+<div class="toolbar">
+<div><label>探索対象Feature</label><textarea id="includeFeatures" placeholder="空欄ならDictionary内の全Feature。例: Momentum5,EMA20_50,RSI14,Hour,Weekday"></textarea></div>
+<div><label>除外Feature</label><textarea id="excludeFeatures">Index,DateTime,Open,High,Low,Close,ATR,Session</textarea></div>
+</div>
+
+<button id="runBtn">Feature Miningを開始</button>
 <button id="cancelBtn" class="secondary" disabled>中止</button>
-<div id="status" class="small">CSVを選択してください。</div>
+<div id="status" class="small">FULL_COREの3ファイルを選択してください。</div>
 <div class="progress"><i id="bar"></i></div>
 </section>
 
-<section class="card">
-<h2>3. Data Quality</h2>
-<div id="dataSummary" class="grid"></div>
-</section>
-
-<section class="card">
-<h2>4. Feature Dictionary</h2>
-<div id="dictionary" class="tableWrap"></div>
-</section>
-
-<section class="card">
-<h2>5. Preview</h2>
-<div id="preview" class="tableWrap">未生成</div>
-</section>
+<section class="card"><h2>3. Validation</h2><div id="validation" class="grid"></div></section>
+<section class="card"><h2>4. Ranking</h2><div id="ranking" class="tableWrap">未実行</div></section>
+<section class="card"><h2>5. Best Rule</h2><div id="bestRule" class="small">未実行</div></section>
 
 <section class="card">
 <h2>6. Export</h2>
 <div class="toolbar">
-<button id="downloadCsv" disabled>CoreFeatures.csv</button>
-<button id="downloadJson" disabled>CoreFeatures.json</button>
-<button id="downloadDict" disabled>FeatureDictionary.json</button>
-<button id="downloadManifest" disabled>CoreManifest.json</button>
+<button id="downloadRanking" disabled>MiningRanking.csv</button>
+<button id="downloadTrades" disabled>BestRuleTrades.csv</button>
+<button id="downloadSummary" disabled>MiningSummary.json</button>
 </div>
 </section>
 
@@ -97,214 +99,152 @@ button{border:0;background:linear-gradient(135deg,var(--gold),#9f7d1d);color:#11
 <script>
 "use strict";
 const $=id=>document.getElementById(id),PIP=.01;
-let S={files:[],bars:[],rows:[],cancel:false,bad:0};
-
-const DICTIONARY=[
-["ATR","ATR14 absolute class compatible with Motion/Direction legacy rules"],
-["ATR5","ATR5 absolute class"],
-["ATR14","ATR14 absolute class"],
-["ATR50","ATR50 absolute class"],
-["ATRRatio5_50","ATR5 divided by ATR50"],
-["EMA8_30","EMA8 minus EMA30 class"],
-["EMA20_50","EMA20 minus EMA50 class"],
-["EMA55_200","EMA55 minus EMA200 class"],
-["EMA8Slope5","EMA8 slope over 5 bars"],
-["EMA21Slope13","EMA21 slope over 13 bars"],
-["RSI","RSI14 class compatible with legacy rules"],
-["RSI7","RSI7 class"],
-["RSI14","RSI14 class"],
-["RSI21","RSI21 class"],
-["Momentum3","Close change over 3 bars"],
-["Momentum5","Close change over 5 bars"],
-["Momentum8","Close change over 8 bars"],
-["Momentum13","Close change over 13 bars"],
-["Momentum21","Close change over 21 bars"],
-["Bollinger20","Close z-score against 20 bars"],
-["Bollinger50","Close z-score against 50 bars"],
-["RangePos20","Position inside recent 20-bar range"],
-["RangePos50","Position inside recent 50-bar range"],
-["Body","Current candle body class"],
-["Range","Current candle range class"],
-["UpperWick","Current upper wick class"],
-["LowerWick","Current lower wick class"],
-["BullCount5","Bull candles in last 5 bars"],
-["BearCount5","Bear candles in last 5 bars"],
-["Session","Tokyo/London/NewYork/Off"],
-["Weekday","Sun-Sat"],
-["Hour","JST hour 0-23"]
-];
-
-$("csvFiles").addEventListener("change",e=>{S.files=[...e.target.files];$("fileInfo").textContent=`CSV ${S.files.length}件`});
-$("stride").addEventListener("change",updateStrideWarning);
-function updateStrideWarning(){
- const n=+$("stride").value;
- $("strideWarning").textContent=n===1
-  ?"全バー出力です。Exit OptimizerとFinal Simulatorで1分足の高値・安値を欠落なく評価できます。"
-  :`警告：${n}本ごとの出力では途中バーが失われるため、TP・SL・最大保有時間の検証には使用できません。Motion/Importanceの軽量分析専用です。`;
- $("strideWarning").style.color=n===1?"#bbf7d0":"#fecaca";
-}
+let S={rows:[],manifest:null,dict:null,ranking:[],bestTrades:[],cancel:false};
 
 $("runBtn").addEventListener("click",run);
 $("cancelBtn").addEventListener("click",()=>{S.cancel=true;log("中止要求")});
-$("downloadCsv").addEventListener("click",()=>downloadText("ScalpLayer_Origin_CoreFeatures_v1_1.csv",toCsv(),"text/csv"));
-$("downloadJson").addEventListener("click",()=>downloadText("ScalpLayer_Origin_CoreFeatures_v1_1.json",JSON.stringify(jsonExport(),null,2),"application/json"));
-$("downloadDict").addEventListener("click",()=>downloadText("ScalpLayer_Origin_FeatureDictionary_v1_1.json",JSON.stringify(dictionaryExport(),null,2),"application/json"));
-$("downloadManifest").addEventListener("click",()=>downloadText("ScalpLayer_Origin_CoreManifest_v1_1.json",JSON.stringify(manifest(),null,2),"application/json"));
+$("downloadRanking").addEventListener("click",()=>downloadText("ScalpLayer_Origin_FeatureMining_Ranking_v1_0.csv",rankingCsv(),"text/csv"));
+$("downloadTrades").addEventListener("click",()=>downloadText("ScalpLayer_Origin_FeatureMining_BestRuleTrades_v1_0.csv",tradesCsv(),"text/csv"));
+$("downloadSummary").addEventListener("click",()=>downloadText("ScalpLayer_Origin_FeatureMining_Summary_v1_0.json",JSON.stringify(summary(),null,2),"application/json"));
 
-function log(s){let e=$("log");e.textContent+=`\n[${new Date().toLocaleTimeString()}] ${s}`;e.scrollTop=e.scrollHeight}
+function log(s){const e=$("log");e.textContent+=`\n[${new Date().toLocaleTimeString()}] ${s}`;e.scrollTop=e.scrollHeight}
 function status(s,p){$("status").textContent=s;$("bar").style.width=Math.max(0,Math.min(100,p))+"%"}
 function breathe(){return new Promise(r=>setTimeout(r,0))}
 function esc(v){v=String(v??"");return /[",\n]/.test(v)?`"${v.replace(/"/g,'""')}"`:v}
-function downloadText(name,text,type="text/plain"){const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([text],{type:`${type};charset=utf-8`}));a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}
+function downloadText(name,text,type){const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([text],{type:`${type};charset=utf-8`}));a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}
 function splitCsvLine(line){const out=[];let s="",q=false;for(let i=0;i<line.length;i++){let c=line[i];if(c==='"'){if(q&&line[i+1]==='"'){s+='"';i++}else q=!q}else if(c===","&&!q){out.push(s);s=""}else s+=c}out.push(s);return out}
-function parseDate(v){
- const s=String(v||"").trim().replace(/\//g,"-").replace(/\./g,"-").replace("T"," ");
- const m=s.match(/^(\d{4})-(\d{1,2})-(\d{1,2})[ _](\d{1,2}):(\d{1,2})(?::(\d{1,2}))?/);if(!m)return null;
- let ms=Date.UTC(+m[1],+m[2]-1,+m[3],+m[4],+m[5],+(m[6]||0));
- const mode=$("timezoneMode").value;if(mode==="UTC")ms+=9*3600000;if(mode==="OFFSET")ms+=(9-(+$("utcOffset").value||0))*3600000;
- return new Date(ms)
-}
-function headerMap(h){const n=h.map(x=>String(x).trim().toLowerCase().replace(/[^a-z0-9]/g,""));const f=(...ks)=>n.findIndex(x=>ks.includes(x));return{datetime:f("datetime","time","timestamp"),date:f("date"),clock:f("clock"),open:f("open"),high:f("high"),low:f("low"),close:f("close")}}
-async function parseFiles(files){
- const all=[];let bad=0;
- for(let fi=0;fi<files.length;fi++){
-  const lines=(await files[fi].text()).split(/\r?\n/).filter(Boolean);if(!lines.length)continue;
-  let first=splitCsvLine(lines[0]),map=headerMap(first),start=0;
-  if(map.open>=0&&map.high>=0&&map.low>=0&&map.close>=0)start=1;else map={datetime:0,date:-1,clock:-1,open:1,high:2,low:3,close:4};
-  for(let i=start;i<lines.length;i++){
-   const r=splitCsvLine(lines[i]),dt=map.datetime>=0?parseDate(r[map.datetime]):parseDate(`${r[map.date]} ${r[map.clock]}`),o=+r[map.open],h=+r[map.high],l=+r[map.low],c=+r[map.close];
-   if(dt&&[o,h,l,c].every(Number.isFinite)&&h>=l)all.push({t:dt,o,h,l,c});else bad++
-  }
-  status(`CSV読込 ${fi+1}/${files.length}`,3+(fi+1)/files.length*12);await breathe()
- }
- all.sort((a,b)=>a.t-b.t);const uniq=[];let last=-1;
- for(const b of all){let k=b.t.getTime();if(k!==last){uniq.push(b);last=k}else bad++}
- return{bars:uniq,bad}
-}
-function ema(vals,p){const out=new Float64Array(vals.length),k=2/(p+1);let x=vals[0]||0;for(let i=0;i<vals.length;i++){x=i?vals[i]*k+x*(1-k):vals[i];out[i]=x}return out}
-function rsi(vals,p=14){const out=new Float64Array(vals.length);let g=0,l=0;for(let i=1;i<vals.length;i++){let d=vals[i]-vals[i-1],u=Math.max(d,0),dn=Math.max(-d,0);if(i<=p){g+=u;l+=dn;if(i===p){g/=p;l/=p}}else{g=(g*(p-1)+u)/p;l=(l*(p-1)+dn)/p}out[i]=i<p?50:(l===0?100:100-100/(1+g/l))}return out}
-function atr(b,p=14){const out=new Float64Array(b.length);let x=0;for(let i=0;i<b.length;i++){let tr=i?Math.max(b[i].h-b[i].l,Math.abs(b[i].h-b[i-1].c),Math.abs(b[i].l-b[i-1].c)):b[i].h-b[i].l;x=i?((x*(p-1)+tr)/p):tr;out[i]=x}return out}
-function rolling(vals,p){const mean=new Float64Array(vals.length),sd=new Float64Array(vals.length);let s=0,s2=0;for(let i=0;i<vals.length;i++){s+=vals[i];s2+=vals[i]*vals[i];if(i>=p){s-=vals[i-p];s2-=vals[i-p]*vals[i-p]}let n=Math.min(i+1,p),m=s/n;mean[i]=m;sd[i]=Math.sqrt(Math.max(0,s2/n-m*m))}return{mean,sd}}
-function binned(v,cuts,labels){for(let i=0;i<cuts.length;i++)if(v<cuts[i])return labels[i];return labels.at(-1)}
-function session(d){let h=d.getUTCHours();if(h>=8&&h<16)return"Tokyo";if(h>=16&&h<21)return"London";if(h>=21||h<6)return"NewYork";return"Off"}
-function weekday(d){return["Sun","Mon","Tue","Wed","Thu","Fri","Sat"][d.getUTCDay()]}
+function parseList(v){return String(v||"").split(/[,\n]/).map(x=>x.trim()).filter(Boolean)}
+function parsePattern(s){return String(s||"").split("&").map(x=>x.trim()).filter(Boolean).map(x=>{const i=x.indexOf("=");return i<0?null:{feature:x.slice(0,i).trim(),value:x.slice(i+1).trim()}}).filter(Boolean)}
+function ruleText(rule){return rule.map(x=>`${x.feature}=${x.value}`).join(" & ")}
+function matchRule(row,rule){for(const x of rule)if(String(row[x.feature])!==String(x.value))return false;return true}
+function pf(stats){return stats.loss<0?stats.win/Math.abs(stats.loss):(stats.win>0?999:0)}
+function safeNum(v){const n=+v;return Number.isFinite(n)?n:0}
 
-function generateFeatures(bars){
- const c=bars.map(x=>x.c),periods=[8,20,21,30,50,55,200],emas=Object.fromEntries(periods.map(p=>[p,ema(c,p)]));
- const rsis={7:rsi(c,7),14:rsi(c,14),21:rsi(c,21)},atrs={5:atr(bars,5),14:atr(bars,14),50:atr(bars,50)},bb20=rolling(c,20),bb50=rolling(c,50);
- const rows=[],stride=+$("stride").value,warm=Math.max(220,+$("warmup").value||220);
- for(let i=warm;i<bars.length;i+=stride){
+async function loadInputs(){
+ const cf=$("coreFile").files[0],mf=$("manifestFile").files[0],df=$("dictFile").files[0];
+ if(!cf||!mf||!df)throw new Error("CoreFeatures・Manifest・Dictionaryの3ファイルが必要です。");
+ S.manifest=JSON.parse(await mf.text());S.dict=JSON.parse(await df.text());
+ const text=await cf.text(),lines=text.split(/\r?\n/).filter(Boolean),cols=splitCsvLine(lines[0]);S.rows=[];
+ for(let i=1;i<lines.length;i++){
   if(S.cancel)break;
-  let hi20=-Infinity,lo20=Infinity,hi50=-Infinity,lo50=Infinity;
-  for(let j=i-49;j<=i;j++){if(j>=i-19){hi20=Math.max(hi20,bars[j].h);lo20=Math.min(lo20,bars[j].l)}hi50=Math.max(hi50,bars[j].h);lo50=Math.min(lo50,bars[j].l)}
-  const body=(bars[i].c-bars[i].o)/PIP,range=(bars[i].h-bars[i].l)/PIP,upper=(bars[i].h-Math.max(bars[i].o,bars[i].c))/PIP,lower=(Math.min(bars[i].o,bars[i].c)-bars[i].l)/PIP;
-  let bull=0,bear=0;for(let j=i;j>=i-4;j--){if(bars[j].c>bars[j].o)bull++;else if(bars[j].c<bars[j].o)bear++}
-  const atr14Class=binned(atrs[14][i]/PIP,[1.5,2.5,4,6],["VeryLow","Low","Mid","High","VeryHigh"]);
-  rows.push({
-   Index:i,DateTime:bars[i].t.toISOString(),Open:bars[i].o,High:bars[i].h,Low:bars[i].l,Close:bars[i].c,
-   ATR:atr14Class,
-   ATR5:binned(atrs[5][i]/PIP,[1.5,2.5,4,6],["VeryLow","Low","Mid","High","VeryHigh"]),
-   ATR14:atr14Class,
-   ATR50:binned(atrs[50][i]/PIP,[1.5,2.5,4,6],["VeryLow","Low","Mid","High","VeryHigh"]),
-   ATRRatio5_50:binned(atrs[50][i]?atrs[5][i]/atrs[50][i]:1,[.7,.9,1.1,1.4],["VeryLow","Low","Normal","High","VeryHigh"]),
-   EMA8_30:binned((emas[8][i]-emas[30][i])/PIP,[-2,-.5,.5,2],["StrongDown","Down","Flat","Up","StrongUp"]),
-   EMA20_50:binned((emas[20][i]-emas[50][i])/PIP,[-3,-1,1,3],["StrongDown","Down","Flat","Up","StrongUp"]),
-   EMA55_200:binned((emas[55][i]-emas[200][i])/PIP,[-8,-2,2,8],["StrongDown","Down","Flat","Up","StrongUp"]),
-   EMA8Slope5:binned((emas[8][i]-emas[8][i-5])/PIP,[-2,-.5,.5,2],["StrongDown","Down","Flat","Up","StrongUp"]),
-   EMA21Slope13:binned((emas[21][i]-emas[21][i-13])/PIP,[-4,-1,1,4],["StrongDown","Down","Flat","Up","StrongUp"]),
-   RSI:binned(rsis[14][i],[30,40,50,60,70],["0-30","30-40","40-50","50-60","60-70","70-100"]),
-   RSI7:binned(rsis[7][i],[30,40,50,60,70],["0-30","30-40","40-50","50-60","60-70","70-100"]),
-   RSI14:binned(rsis[14][i],[30,40,50,60,70],["0-30","30-40","40-50","50-60","60-70","70-100"]),
-   RSI21:binned(rsis[21][i],[35,45,55,65],["0-35","35-45","45-55","55-65","65-100"]),
-   Momentum3:binned((c[i]-c[i-3])/PIP,[-2,-.5,.5,2],["StrongDown","Down","Flat","Up","StrongUp"]),
-   Momentum5:binned((c[i]-c[i-5])/PIP,[-3,-1,1,3],["StrongDown","Down","Flat","Up","StrongUp"]),
-   Momentum8:binned((c[i]-c[i-8])/PIP,[-4,-1.5,1.5,4],["StrongDown","Down","Flat","Up","StrongUp"]),
-   Momentum13:binned((c[i]-c[i-13])/PIP,[-5,-2,2,5],["StrongDown","Down","Flat","Up","StrongUp"]),
-   Momentum21:binned((c[i]-c[i-21])/PIP,[-7,-3,3,7],["StrongDown","Down","Flat","Up","StrongUp"]),
-   Bollinger20:binned(bb20.sd[i]?(c[i]-bb20.mean[i])/bb20.sd[i]:0,[-2,-1,0,1,2],["Below-2","-2--1","-1-0","0-1","1-2","Above2"]),
-   Bollinger50:binned(bb50.sd[i]?(c[i]-bb50.mean[i])/bb50.sd[i]:0,[-2,-1,0,1,2],["Below-2","-2--1","-1-0","0-1","1-2","Above2"]),
-   RangePos20:binned(hi20>lo20?(c[i]-lo20)/(hi20-lo20):.5,[.2,.4,.6,.8],["Bottom","LowMid","Middle","HighMid","Top"]),
-   RangePos50:binned(hi50>lo50?(c[i]-lo50)/(hi50-lo50):.5,[.2,.4,.6,.8],["Bottom","LowMid","Middle","HighMid","Top"]),
-   Body:binned(body,[-2,-.5,.5,2],["StrongBear","Bear","Small","Bull","StrongBull"]),
-   Range:binned(range,[2,4,6,10],["VerySmall","Small","Mid","Large","VeryLarge"]),
-   UpperWick:binned(upper,[.5,1.5,3,5],["Tiny","Small","Mid","Large","VeryLarge"]),
-   LowerWick:binned(lower,[.5,1.5,3,5],["Tiny","Small","Mid","Large","VeryLarge"]),
-   BullCount5:String(bull),BearCount5:String(bear),Session:session(bars[i].t),Weekday:weekday(bars[i].t),Hour:String(bars[i].t.getUTCHours())
-  })
+  const a=splitCsvLine(lines[i]),r={};for(let c=0;c<cols.length;c++)r[cols[c]]=a[c];
+  r.Index=safeNum(r.Index);r.Open=safeNum(r.Open);r.High=safeNum(r.High);r.Low=safeNum(r.Low);r.Close=safeNum(r.Close);S.rows.push(r);
+  if(i%100000===0){status(`Core読込 ${i.toLocaleString()}/${(lines.length-1).toLocaleString()}`,3+i/lines.length*17);await breathe()}
  }
- return rows
+ $("inputInfo").textContent=`Rows ${S.rows.length.toLocaleString()} / Features ${S.dict.features?.length||0}`;
 }
-function renderDictionary(){
- $("dictionary").innerHTML=`<table><thead><tr><th>#</th><th>Feature</th><th>Definition</th></tr></thead><tbody>${DICTIONARY.map((x,i)=>`<tr><td>${i+1}</td><td>${x[0]}</td><td>${x[1]}</td></tr>`).join("")}</tbody></table>`
+function validate(){
+ const m=S.manifest||{},problems=[];
+ if(m.stride!==1)problems.push("Manifest strideが1ではありません");
+ if(m.simulatorSafe!==true)problems.push("simulatorSafeがtrueではありません");
+ if(m.validation?.status!=="FULL_CORE")problems.push("validation.statusがFULL_COREではありません");
+ if(m.validation?.missingIntermediateBars!==false)problems.push("途中バー欠落の可能性があります");
+ const expected=(m.bars||0)-(m.warmup||0);
+ if(m.featureRows!==expected)problems.push(`featureRows不一致: expected ${expected}, manifest ${m.featureRows}`);
+ const cols=S.rows[0]?Object.keys(S.rows[0]):[];
+ for(const x of ["Index","DateTime","Open","High","Low","Close","ATR","RSI","Session"])if(!cols.includes(x))problems.push(`必須列なし: ${x}`);
+ const v=[["Rows",S.rows.length.toLocaleString()],["Manifest",m.version||"--"],["Stride",m.stride],["Simulator Safe",m.simulatorSafe?"TRUE":"FALSE"],["Status",m.validation?.status||"--"],["Validation",problems.length?`${problems.length} ERROR`:"PASS"]];
+ $("validation").innerHTML=v.map(([a,x])=>`<div class="stat"><span>${a}</span><strong class="${problems.length&&a==="Validation"?"warn":a==="Validation"?"ok":""}">${x}</strong></div>`).join("");
+ if(problems.length)throw new Error(problems.join(" / "));
 }
-function renderData(){
- const first=S.rows[0],last=S.rows.at(-1),stride=+$("stride").value,v=[["Bars",S.bars.length.toLocaleString()],["Feature Rows",S.rows.length.toLocaleString()],["Features",DICTIONARY.length],["Simulator Safety",stride===1?"SAFE":"ANALYSIS ONLY"],["Period",first&&last?`${first.DateTime.slice(0,10)} → ${last.DateTime.slice(0,10)}`:"--"]];
- $("dataSummary").innerHTML=v.map(([a,x])=>`<div class="stat"><span>${a}</span><strong>${x}</strong></div>`).join("")
-}
-function renderPreview(){
- const n=Math.max(1,+$("previewLimit").value||100),rows=S.rows.slice(0,n);if(!rows.length){$("preview").textContent="候補なし";return}
- const cols=Object.keys(rows[0]);
- $("preview").innerHTML=`<table><thead><tr>${cols.map(c=>`<th>${c}</th>`).join("")}</tr></thead><tbody>${rows.map(r=>`<tr>${cols.map(c=>`<td>${r[c]}</td>`).join("")}</tr>`).join("")}</tbody></table>`
-}
-function toCsv(){
- if(!S.rows.length)return"";const cols=Object.keys(S.rows[0]),d=Math.max(0,+$("digits").value||4);
- return[cols.join(","),...S.rows.map(r=>cols.map(c=>typeof r[c]==="number"?Number(r[c]).toFixed(d):esc(r[c])).join(","))].join("\n")
-}
-function jsonExport(){
- const lim=Math.max(1,+$("jsonLimit").value||200000);
- return{version:"ScalpLayer Origin Core Feature Generator v1.1",generatedAt:new Date().toISOString(),rows:S.rows.slice(0,lim),truncated:S.rows.length>lim,totalRows:S.rows.length}
-}
-function dictionaryExport(){return{version:"ScalpLayer Origin Feature Dictionary v1.1",features:DICTIONARY.map(([name,definition])=>({name,definition}))}}
-function manifest(){
- const stride=+$("stride").value;
- return{
-  version:"ScalpLayer Origin Core Manifest v1.1",
-  generatedAt:new Date().toISOString(),
-  sourceFiles:S.files.map(f=>f.name),
-  bars:S.bars.length,
-  featureRows:S.rows.length,
-  featureCount:DICTIONARY.length,
-  timezoneOutput:"JST-normalized Date object rendered as ISO",
-  stride,
-  warmup:+$("warmup").value,
-  simulatorSafe:stride===1,
-  compatibility:{
-   legacyBaseRules:["ATR","RSI","Session"],
-   engines:stride===1
-    ?["Motion Discovery","Direction Analyzer","Quality Filter","Feature Importance","Exit Optimizer","Final Trade Simulator"]
-    :["Motion Discovery","Direction Analyzer","Quality Filter","Feature Importance"]
-  },
-  validation:{
-   continuousM1RequiredForExit:true,
-   missingIntermediateBars:stride>1,
-   status:stride===1?"FULL_CORE":"ANALYSIS_ONLY"
-  },
-  notes:[
-   "All downstream engines must consume these feature names without redefining them",
-   "ATR is an alias of ATR14 class",
-   "RSI is an alias of RSI14 class",
-   "Feature thresholds must be versioned together with this manifest",
-   stride===1
-    ?"This bundle preserves every M1 bar and is safe for TP/SL/Hold simulation"
-    :"This sampled bundle omits intermediate M1 bars and must not be used for TP/SL/Hold simulation"
-  ]
+function simulateAt(i,direction,tp,sl,hold){
+ const entry=S.rows[i].Close,dir=direction==="LONG"?1:-1,tpPx=entry+dir*tp*PIP,slPx=entry-dir*sl*PIP;
+ let exitIndex=Math.min(S.rows.length-1,i+hold),exit= S.rows[exitIndex].Close,reason="HOLD";
+ for(let j=i+1;j<=Math.min(S.rows.length-1,i+hold);j++){
+  const r=S.rows[j],hitTP=dir===1?r.High>=tpPx:r.Low<=tpPx,hitSL=dir===1?r.Low<=slPx:r.High>=slPx;
+  if(hitTP&&hitSL){exitIndex=j;exit=slPx;reason="BOTH_SL_FIRST";break}
+  if(hitSL){exitIndex=j;exit=slPx;reason="SL";break}
+  if(hitTP){exitIndex=j;exit=tpPx;reason="TP";break}
  }
+ const pips=(exit-entry)/PIP*dir;
+ return{entryIndex:i,exitIndex,entryTime:S.rows[i].DateTime,exitTime:S.rows[exitIndex].DateTime,entry,exit,pips,reason}
+}
+function evalRule(rule,split,tp,sl,hold,direction){
+ const stats={train:{trades:0,win:0,loss:0,net:0,wins:0},oos:{trades:0,win:0,loss:0,net:0,wins:0}};
+ for(let i=0;i<S.rows.length-hold-1;i++){
+  if(!matchRule(S.rows[i],rule))continue;
+  const tr=simulateAt(i,direction,tp,sl,hold),bucket=i<split?stats.train:stats.oos,s=tr.pips;
+  bucket.trades++;bucket.net+=s;if(s>0){bucket.win+=s;bucket.wins++}else bucket.loss+=s;
+ }
+ for(const k of ["train","oos"]){const x=stats[k];x.pf=pf(x);x.avg=x.trades?x.net/x.trades:0;x.winRate=x.trades?x.wins/x.trades:0}
+ return stats
+}
+function scoreResult(s,minTrain,minOos){
+ if(s.train.trades<minTrain||s.oos.trades<minOos)return-Infinity;
+ const trainPf=Math.min(s.train.pf,5),oosPf=Math.min(s.oos.pf,5),stability=Math.max(0,1-Math.abs(trainPf-oosPf)/Math.max(1,trainPf,oosPf));
+ const sample=Math.min(1,Math.log10(s.train.trades+s.oos.trades+1)/4);
+ const avg=Math.max(-2,Math.min(2,(s.train.avg+s.oos.avg)/2));
+ return oosPf*35+trainPf*15+stability*20+sample*15+avg*7.5;
+}
+function candidateFeatures(base){
+ const include=parseList($("includeFeatures").value),exclude=new Set(parseList($("excludeFeatures").value));
+ const baseNames=new Set(base.map(x=>x.feature)),dictNames=(S.dict.features||[]).map(x=>x.name);
+ return (include.length?include:dictNames).filter(x=>!exclude.has(x)&&!baseNames.has(x)&&S.rows[0]&&x in S.rows[0]);
+}
+function featureValues(features,maxValues){
+ const out={};
+ for(const f of features){const m=new Map();for(const r of S.rows){const v=String(r[f]);m.set(v,(m.get(v)||0)+1)}
+  out[f]=[...m.entries()].sort((a,b)=>b[1]-a[1]).slice(0,maxValues).map(x=>x[0]);
+ }
+ return out
+}
+async function mine(){
+ const base=parsePattern($("basePattern").value),features=candidateFeatures(base),values=featureValues(features,+$("maxValues").value||8);
+ const tp=+$("tp").value,sl=+$("sl").value,hold=+$("hold").value,direction=$("direction").value,split=Math.floor(S.rows.length*(+$("trainRatio").value||.8));
+ const maxDepth=+$("maxDepth").value||3,beamWidth=+$("beamWidth").value||80,minTrain=+$("minTrain").value||80,minOos=+$("minOos").value||20;
+ let beam=[{rule:base,used:new Set(base.map(x=>x.feature))}],all=[],seen=new Set([ruleText(base)]);
+ log(`候補Feature=${features.length}, 最大深度=${maxDepth}, Beam=${beamWidth}`);
+ for(let depth=1;depth<=maxDepth;depth++){
+  const next=[];
+  for(let bi=0;bi<beam.length;bi++){
+   if(S.cancel)break;
+   const b=beam[bi];
+   for(const f of features){if(b.used.has(f))continue;
+    for(const v of values[f]||[]){
+     const rule=[...b.rule,{feature:f,value:v}],key=ruleText(rule);if(seen.has(key))continue;seen.add(key);
+     const stats=evalRule(rule,split,tp,sl,hold,direction),score=scoreResult(stats,minTrain,minOos);
+     if(Number.isFinite(score))next.push({rule,used:new Set([...b.used,f]),stats,score,depth});
+    }
+   }
+   if(bi%5===0){status(`Depth ${depth}: ${bi+1}/${beam.length}`,25+(depth-1)/maxDepth*60+(bi+1)/Math.max(1,beam.length)*60/maxDepth);await breathe()}
+  }
+  next.sort((a,b)=>b.score-a.score);beam=next.slice(0,beamWidth);all.push(...beam);
+  log(`Depth ${depth}: valid=${next.length}, beam=${beam.length}`);
+  if(!beam.length||S.cancel)break;
+ }
+ all.sort((a,b)=>b.score-a.score);S.ranking=all.slice(0,500);
+ if(S.ranking.length){
+  const best=S.ranking[0],trades=[];
+  for(let i=0;i<S.rows.length-hold-1;i++)if(matchRule(S.rows[i],best.rule))trades.push({...simulateAt(i,direction,tp,sl,hold),segment:i<split?"TRAIN":"OOS"});
+  S.bestTrades=trades
+ }
+}
+function renderRanking(){
+ if(!S.ranking.length){$("ranking").textContent="候補なし";$("bestRule").textContent="条件を満たす候補がありません。";return}
+ const rows=S.ranking;
+ $("ranking").innerHTML=`<table><thead><tr><th>#</th><th>Rule</th><th>Depth</th><th>Score</th><th>Train Trades</th><th>Train PF</th><th>Train Avg</th><th>Train Win%</th><th>OOS Trades</th><th>OOS PF</th><th>OOS Avg</th><th>OOS Win%</th></tr></thead><tbody>${rows.map((x,i)=>`<tr><td>${i+1}</td><td>${ruleText(x.rule)}</td><td>${x.depth}</td><td>${x.score.toFixed(2)}</td><td>${x.stats.train.trades}</td><td>${x.stats.train.pf.toFixed(3)}</td><td>${x.stats.train.avg.toFixed(3)}</td><td>${(x.stats.train.winRate*100).toFixed(1)}</td><td>${x.stats.oos.trades}</td><td>${x.stats.oos.pf.toFixed(3)}</td><td>${x.stats.oos.avg.toFixed(3)}</td><td>${(x.stats.oos.winRate*100).toFixed(1)}</td></tr>`).join("")}</tbody></table>`;
+ const b=rows[0];$("bestRule").innerHTML=`<div class="stat"><span>Best Rule</span><strong>${ruleText(b.rule)}</strong></div><div class="grid" style="margin-top:10px"><div class="stat"><span>Score</span><strong>${b.score.toFixed(2)}</strong></div><div class="stat"><span>Train PF</span><strong>${b.stats.train.pf.toFixed(3)}</strong></div><div class="stat"><span>OOS PF</span><strong>${b.stats.oos.pf.toFixed(3)}</strong></div><div class="stat"><span>OOS Trades</span><strong>${b.stats.oos.trades}</strong></div><div class="stat"><span>OOS Avg</span><strong>${b.stats.oos.avg.toFixed(3)}</strong></div></div>`;
+}
+function rankingCsv(){
+ const h=["Rank","Rule","Depth","Score","TrainTrades","TrainPF","TrainAvg","TrainWinRate","OOSTrades","OOSPF","OOSAvg","OOSWinRate"];
+ return[h.join(","),...S.ranking.map((x,i)=>[i+1,esc(ruleText(x.rule)),x.depth,x.score,x.stats.train.trades,x.stats.train.pf,x.stats.train.avg,x.stats.train.winRate,x.stats.oos.trades,x.stats.oos.pf,x.stats.oos.avg,x.stats.oos.winRate].join(","))].join("\n")
+}
+function tradesCsv(){
+ const h=["Segment","EntryIndex","ExitIndex","EntryTime","ExitTime","Entry","Exit","Pips","Reason"];
+ return[h.join(","),...S.bestTrades.map(x=>[x.segment,x.entryIndex,x.exitIndex,x.entryTime,x.exitTime,x.entry,x.exit,x.pips,x.reason].join(","))].join("\n")
+}
+function summary(){
+ return{version:"ScalpLayer Origin Feature Mining Engine v1.0",generatedAt:new Date().toISOString(),manifest:S.manifest,basePattern:$("basePattern").value,direction:$("direction").value,exit:{tp:+$("tp").value,sl:+$("sl").value,hold:+$("hold").value},settings:{trainRatio:+$("trainRatio").value,maxDepth:+$("maxDepth").value,beamWidth:+$("beamWidth").value,minTrain:+$("minTrain").value,minOos:+$("minOos").value},best:S.ranking[0]?{rule:ruleText(S.ranking[0].rule),score:S.ranking[0].score,stats:S.ranking[0].stats}:null}
 }
 async function run(){
- if(!S.files.length){status("CSVを選択してください。",0);return}
- S.cancel=false;$("runBtn").disabled=true;$("cancelBtn").disabled=false;
+ S.cancel=false;S.ranking=[];S.bestTrades=[];$("runBtn").disabled=true;$("cancelBtn").disabled=false;
  try{
-  updateStrideWarning();
-  if(+$("stride").value!==1)log("WARNING: 間引き出力は分析専用です。Exit/Simulatorには使用しないでください。");
-  status("CSV解析中",3);log("Core生成開始");const p=await parseFiles(S.files);S.bars=p.bars;S.bad=p.bad;if(S.bars.length<5000)throw new Error("有効バー不足");
-  status("共通特徴量を生成中",20);S.rows=generateFeatures(S.bars);await breathe();
-  renderData();renderDictionary();renderPreview();["downloadCsv","downloadJson","downloadDict","downloadManifest"].forEach(id=>$(id).disabled=!S.rows.length);
-  status("完了",100);log(`Bars=${S.bars.length}, FeatureRows=${S.rows.length}, Bad=${S.bad}`)
+  status("入力読込",2);await loadInputs();validate();status("Mining中",22);await mine();renderRanking();
+  const ok=S.ranking.length>0;["downloadRanking","downloadTrades","downloadSummary"].forEach(id=>$(id).disabled=!ok);
+  status(S.cancel?"中止":"完了",S.cancel?0:100);log(`完了 Ranking=${S.ranking.length}`)
  }catch(e){status("エラー: "+e.message,0);log("ERROR "+(e.stack||e.message))}
  finally{$("runBtn").disabled=false;$("cancelBtn").disabled=true}
 }
-renderDictionary();
-updateStrideWarning();
 </script>
 </body>
 </html>
